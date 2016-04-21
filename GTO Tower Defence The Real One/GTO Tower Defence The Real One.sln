@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTO Tower Defence The Real One.CSharp.Plugins", "GTO Tower Defence The Real One.CSharp.Plugins.csproj", "{848D33F5-3AFC-DA68-D627-9E4A79A068DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTO Tower Defence The Real One.CSharp", "GTO Tower Defence The Real One.CSharp.csproj", "{972BBECD-FDE4-C3A6-6FF6-8E15E65C37AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTO Tower Defence The Real One.CSharp.Editor.Plugins", "GTO Tower Defence The Real One.CSharp.Editor.Plugins.csproj", "{45B33379-884F-514D-F4D4-65284B087165}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTO Tower Defence The Real One.CSharp.Editor", "GTO Tower Defence The Real One.CSharp.Editor.csproj", "{EA31144A-1BFF-98A8-66D6-DB8DC0321903}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{848D33F5-3AFC-DA68-D627-9E4A79A068DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{848D33F5-3AFC-DA68-D627-9E4A79A068DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{848D33F5-3AFC-DA68-D627-9E4A79A068DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{848D33F5-3AFC-DA68-D627-9E4A79A068DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{972BBECD-FDE4-C3A6-6FF6-8E15E65C37AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{972BBECD-FDE4-C3A6-6FF6-8E15E65C37AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{972BBECD-FDE4-C3A6-6FF6-8E15E65C37AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{972BBECD-FDE4-C3A6-6FF6-8E15E65C37AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45B33379-884F-514D-F4D4-65284B087165}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45B33379-884F-514D-F4D4-65284B087165}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45B33379-884F-514D-F4D4-65284B087165}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45B33379-884F-514D-F4D4-65284B087165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA31144A-1BFF-98A8-66D6-DB8DC0321903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA31144A-1BFF-98A8-66D6-DB8DC0321903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA31144A-1BFF-98A8-66D6-DB8DC0321903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA31144A-1BFF-98A8-66D6-DB8DC0321903}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
