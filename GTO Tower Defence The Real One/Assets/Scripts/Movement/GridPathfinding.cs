@@ -102,9 +102,8 @@ public class GridPathfinding : MonoBehaviour{
         for (int j = 0; j < tiles.Length; j++){
             TileScript tile = tiles[j].GetComponent<TileScript>();
             this.grid[tile.x][tile.z].tileObject = tiles[j];
+            this.grid[tile.x][tile.z].isObstacle = tile.isObstacle;
             this.grid[tile.x][tile.z].canPlaceTower = !tile.isObstacle;
-            // UUUHM FIX THIS!!!
-            this.grid[tile.x][tile.z].tower = GameObject.FindGameObjectWithTag("Building");
         }
     }
 
@@ -178,6 +177,7 @@ public class Tile{
     public GameObject tileObject { get; set; }
     public GameObject tower { get; set; }
     public GameObject ghostTower { get; set; }
+    public bool isObstacle = true;
     public bool canPlaceTower = true;
     public int distanceFromRoot { get; set; }
     public int x { get; set; }

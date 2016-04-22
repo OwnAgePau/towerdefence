@@ -120,9 +120,9 @@ public class BFS : MonoBehaviour {
             // Voor alle adjacent tiles van 't' kijk welke nog niet bezocht zijn en voeg deze aan de queue toe
             foreach (Tile friend in t.adjacentTiles){ 
                 if (!S.Contains(friend)){
-                    if (friend.tower == null){
+                    if (friend.tower == null && !friend.isObstacle){
                         // De afstand van adjacent tiles is 1 hoger dan 't's afstand tot de root
-                        friend.distanceFromRoot = t.distanceFromRoot + 1; 
+                        friend.distanceFromRoot = t.distanceFromRoot + 1;
                         friend.previousTile = t;
                         if (friend.ghostTower == null){
                             Q.Enqueue(friend);
