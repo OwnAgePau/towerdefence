@@ -57,6 +57,7 @@ public class Controls : MonoBehaviour {
                         this.selectedMaterial = this.towerInfoInstance.currentTower.GetComponent<MeshRenderer>().material;
                         this.selectedMaterial.SetColor("_EmissionColor", new Color(1f, 0f, 0f));
                         this.isEmissionOn = true;
+                        this.towerInfoInstance.OpenMenu();
                         // TO DO HIGHLIGHT TOWER
                     }
                 }
@@ -67,6 +68,7 @@ public class Controls : MonoBehaviour {
                         this.selectedMaterial.SetColor("_EmissionColor", new Color(0f, 0f, 0f));
                         this.selectedMaterial = null;
                     }
+                    this.towerInfoInstance.HideMenu();
                     this.isEmissionOn = false;
                 }
             }

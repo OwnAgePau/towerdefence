@@ -5,17 +5,26 @@ using System.Collections.Generic;
 
 public class TowerInfo : MonoBehaviour {
 
+    //public static TowerInfo instance;
+    [Header("Menu Object Instances")]
+    public GameObject towerInfoMenu;
+    public GameObject towerUpgradeMenu;
+    public GameObject towerUpgradeArrowMenu;
+
+    [Header("Tower Selection Info")]
     public GameObject currentTowerObject;
     public Tower currentTower;
 
     public GameObject towerSelection;
 
+    [Header("Basic Tower Info")]
     public Text towerName;
     public Text towerDamage;
     public Text towerLevel;
     public Text towerProjectiles;
     public Text towerSlow;
     public GameObject towerImage;
+    [Header("Upgrade Tower Info")]
     public Text damageUpgrade;
     public Text speedUpgrade;
     public Text projUpgrade;
@@ -24,11 +33,17 @@ public class TowerInfo : MonoBehaviour {
 
     private bool isHoveringUpgrade;
 
+    private bool isAnimatingMenu = false;
+
     //public string standardDamageText = " Damage";
     //public string standardSpeedText = " Speed";
     //public string standardProjectilesText = " Projectiles";
     //public string standardSlowText = "% Slow";
     // Upgrades
+
+    /*void Awake(){
+        instance = this;
+    }*/
 
     // Use this for initialization
     void Start () {
@@ -101,5 +116,25 @@ public class TowerInfo : MonoBehaviour {
 
     public void SetIsHovering(bool state){
         this.isHoveringUpgrade = state;
+    }
+
+    public void OpenMenu(){
+        // Scale up the menu
+        if(!this.isAnimatingMenu){
+            StartCoroutine(LerpHandler.instance.Scale(5f, this.towerInfoMenu, true, LerpSmoothness.Smooth));
+            this.isAnimatingMenu = true;
+        }  
+    }
+
+    public void HideMenu(){
+        // Scale down the menu
+        if (!this.isAnimatingMenu){
+            StartCoroutine(LerpHandler.instance.Scale(5f, this.towerInfoMenu, true, LerpSmoothness.SmoothDown));
+            this.isAnimatingMenu = false;
+        }
+        else
+        {
+            // Start coroutine to close menu after it opened.
+        }
     }
 }

@@ -3,7 +3,8 @@ using System.Collections;
 
 public enum LerpSmoothness{
     Smooth,
-    Linear
+    Linear,
+    SmoothDown
 }
 
 public class LerpHandler : MonoBehaviour{
@@ -11,6 +12,7 @@ public class LerpHandler : MonoBehaviour{
 
     public AnimationCurve SmoothCurve;
     public AnimationCurve LinearCurve;
+    public AnimationCurve SmoothDownCurve;
 
     void Awake(){
         instance = this;
@@ -48,12 +50,32 @@ public class LerpHandler : MonoBehaviour{
         }
     }
 
+    public IEnumerator Scale(float duration, GameObject item, bool isScalingUp, LerpSmoothness smoothness){
+        float timerCur = 0f;
+        AnimationCurve curve = GetCurveByEnum(smoothness);
+        Quaternion start = new Quaternion(0f, 0f, 0f, 0);
+        Quaternion to = new Quaternion(1f, 1f, 1f, 0);
+        while (timerCur <= duration){
+            timerCur += Time.deltaTime;
+            float newScale = curve.Evaluate(timerCur / duration);
+            if (isScalingUp){
+                item.transform.localScale = new Vector3(newScale, newScale, newScale);
+            }
+            else{
+                item.transform.localScale = new Vector3(1f - newScale, 1f - newScale, 1f - newScale);
+            }
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
     private AnimationCurve GetCurveByEnum(LerpSmoothness smoothness){
         switch (smoothness){
             case LerpSmoothness.Linear:
                 return LinearCurve;
             case LerpSmoothness.Smooth:
                 return SmoothCurve;
+            case LerpSmoothness.SmoothDown:
+                return SmoothDownCurve;
 
             default:
                 return SmoothCurve;
