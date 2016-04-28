@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class TowerInfo : MonoBehaviour {
 
-    //public static TowerInfo instance;
+    public static TowerInfo instance;
     [Header("Menu Object Instances")]
     public GameObject towerInfoMenu;
     public GameObject towerUpgradeMenu;
@@ -33,7 +33,9 @@ public class TowerInfo : MonoBehaviour {
 
     private bool isHoveringUpgrade;
 
-    private bool isAnimatingMenu = false;
+    public bool isAnimatingMenu = false;
+    public bool isMenuOpen = false;
+    public bool shouldMenuBeOpen = false;
 
     //public string standardDamageText = " Damage";
     //public string standardSpeedText = " Speed";
@@ -41,9 +43,9 @@ public class TowerInfo : MonoBehaviour {
     //public string standardSlowText = "% Slow";
     // Upgrades
 
-    /*void Awake(){
+    void Awake(){
         instance = this;
-    }*/
+    }
 
     // Use this for initialization
     void Start () {
@@ -52,6 +54,17 @@ public class TowerInfo : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(GUIcontroller.instance.isUICanvasLoaded && !this.isAnimatingMenu){
+            if(this.isMenuOpen && !this.shouldMenuBeOpen){
+                // Menu is open but should be close
+                this.HideMenu();
+            }
+            else if(!this.isMenuOpen && this.shouldMenuBeOpen){
+                // Menu is closed but should be open
+                this.OpenMenu();
+            }
+        }
+
         if(this.currentTower != null && GUIcontroller.instance.isUICanvasLoaded){
             // Display info of tower on screen
             this.towerSelection.SetActive(true);
@@ -116,25 +129,40 @@ public class TowerInfo : MonoBehaviour {
 
     public void SetIsHovering(bool state){
         this.isHoveringUpgrade = state;
+        if (state){
+            this.ShowTowerUpgradeInfo();
+        }
+        else{
+            this.HideTowerUpgradeInfo();
+        }
     }
 
     public void OpenMenu(){
         // Scale up the menu
-        if(!this.isAnimatingMenu){
-            StartCoroutine(LerpHandler.instance.Scale(5f, this.towerInfoMenu, true, LerpSmoothness.Smooth));
+        this.shouldMenuBeOpen = true;
+        if (!this.isAnimatingMenu && !this.isMenuOpen){
             this.isAnimatingMenu = true;
-        }  
+            StartCoroutine(LerpHandler.instance.Scale(0.5f, this.towerInfoMenu, true, LerpHandler.instance.curves[3], true));
+            StartCoroutine(LerpHandler.instance.Scale(0.5f, this.towerUpgradeArrowMenu, true, LerpHandler.instance.curves[3], true));
+        }
     }
 
     public void HideMenu(){
         // Scale down the menu
-        if (!this.isAnimatingMenu){
-            StartCoroutine(LerpHandler.instance.Scale(5f, this.towerInfoMenu, true, LerpSmoothness.SmoothDown));
-            this.isAnimatingMenu = false;
+        this.shouldMenuBeOpen = false;
+        if (!this.isAnimatingMenu && this.isMenuOpen){
+            StartCoroutine(LerpHandler.instance.Scale(0.3f, this.towerInfoMenu, true, LerpHandler.instance.curves[2], false));
+            StartCoroutine(LerpHandler.instance.Scale(0.3f, this.towerUpgradeArrowMenu, true, LerpHandler.instance.curves[2], false));
         }
-        else
-        {
-            // Start coroutine to close menu after it opened.
-        }
+    }
+
+    public void ShowTowerUpgradeInfo()
+    {
+        this.towerUpgradeMenu.transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    public void HideTowerUpgradeInfo()
+    {
+        this.towerUpgradeMenu.transform.localScale = new Vector3(0f, 0f, 0f);
     }
 }

@@ -34,6 +34,6 @@ public class PopUpText : MonoBehaviour {
 	}
 
     private IEnumerator LerpFromTable(GameObject obj, Vector3 target){
-        yield return StartCoroutine(LerpHandler.instance.LerpPositionTo(1f, obj.transform, obj.transform.position, target, LerpSmoothness.Linear));
+        yield return StartCoroutine(LerpHandler.instance.LerpPositionTo(1f, obj.transform, obj.transform.position, target, LerpHandler.instance.curves[1]));
     }
 }
