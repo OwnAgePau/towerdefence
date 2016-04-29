@@ -64,12 +64,14 @@ public class Controls : MonoBehaviour {
                 else{
                     //this.towerInfoInstance.currentTower = null;
                     //this.towerInfoInstance.HideTowerInfo();
-                    if(this.selectedMaterial != null){
-                        this.selectedMaterial.SetColor("_EmissionColor", new Color(0f, 0f, 0f));
-                        this.selectedMaterial = null;
+                    if (!this.towerInfoInstance.isHovering){
+                        if (this.selectedMaterial != null){
+                            this.selectedMaterial.SetColor("_EmissionColor", new Color(0f, 0f, 0f));
+                            this.selectedMaterial = null;
+                        }
+                        this.towerInfoInstance.HideMenu();
+                        this.isEmissionOn = false;
                     }
-                    this.towerInfoInstance.HideMenu();
-                    this.isEmissionOn = false;
                 }
             }
         }

@@ -7,8 +7,10 @@ public class TowerInfo : MonoBehaviour {
 
     public static TowerInfo instance;
     [Header("Menu Object Instances")]
+    public GameObject towerInfoPosMenu;
     public GameObject towerInfoMenu;
     public GameObject towerUpgradeMenu;
+    public GameObject towerUpgradeCostMenu;
     public GameObject towerUpgradeArrowMenu;
 
     [Header("Tower Selection Info")]
@@ -26,7 +28,7 @@ public class TowerInfo : MonoBehaviour {
     public GameObject towerImage;
     [Header("Upgrade Tower Info")]
     public Text damageUpgrade;
-    public Text speedUpgrade;
+    //public Text speedUpgrade;
     public Text projUpgrade;
     public Text slowUpgrade;
     public GameObject upgradeButton;
@@ -36,6 +38,7 @@ public class TowerInfo : MonoBehaviour {
     public bool isAnimatingMenu = false;
     public bool isMenuOpen = false;
     public bool shouldMenuBeOpen = false;
+    public bool isHovering = false;
 
     //public string standardDamageText = " Damage";
     //public string standardSpeedText = " Speed";
@@ -86,11 +89,11 @@ public class TowerInfo : MonoBehaviour {
                     if(this.isHoveringUpgrade)
                         this.damageUpgrade.gameObject.SetActive(true);
                 }
-                else if (part.type.Equals(UpgradeType.SPEED)){
+                /*else if (part.type.Equals(UpgradeType.SPEED)){
                     this.speedUpgrade.text = "+" + part.amount.ToString();// + this.standardSpeedText;
                     if (this.isHoveringUpgrade)
                         this.speedUpgrade.gameObject.SetActive(true);
-                }
+                }*/
                 else if (part.type.Equals(UpgradeType.PROJNR)){
                     int amount = part.amount - this.currentTower.projectiles;
                     this.projUpgrade.text = "+" + amount.ToString();// + this.standardProjectilesText;
@@ -122,7 +125,7 @@ public class TowerInfo : MonoBehaviour {
 
     public void SetUpgradeText(bool state) { 
         this.damageUpgrade.gameObject.SetActive(state);
-        this.speedUpgrade.gameObject.SetActive(state);
+        //this.speedUpgrade.gameObject.SetActive(state);
         this.projUpgrade.gameObject.SetActive(state);
         this.slowUpgrade.gameObject.SetActive(state);
     }
@@ -139,6 +142,7 @@ public class TowerInfo : MonoBehaviour {
 
     public void OpenMenu(){
         // Scale up the menu
+        // Transform the tower position to a screen position to put the menu 
         this.shouldMenuBeOpen = true;
         if (!this.isAnimatingMenu && !this.isMenuOpen){
             this.isAnimatingMenu = true;
@@ -156,13 +160,17 @@ public class TowerInfo : MonoBehaviour {
         }
     }
 
-    public void ShowTowerUpgradeInfo()
-    {
-        this.towerUpgradeMenu.transform.localScale = new Vector3(1f, 1f, 1f);
+    public void ShowTowerUpgradeInfo(){
+        //this.towerUpgradeMenu.transform.localScale = new Vector3(1f, 1f, 1f);
+        this.towerUpgradeMenu.SetActive(true);
+        this.towerUpgradeCostMenu.SetActive(true);
+        this.isHovering = true;
     }
 
-    public void HideTowerUpgradeInfo()
-    {
-        this.towerUpgradeMenu.transform.localScale = new Vector3(0f, 0f, 0f);
+    public void HideTowerUpgradeInfo(){
+        //this.towerUpgradeMenu.transform.localScale = new Vector3(0f, 0f, 0f);
+        this.towerUpgradeMenu.SetActive(false);
+        this.towerUpgradeCostMenu.SetActive(false);
+        this.isHovering = false;
     }
 }
