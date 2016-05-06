@@ -11,7 +11,7 @@ public class PopUpText : MonoBehaviour {
     public float startAlpha = 1.0f;
     public float currentAlpha = 1.0f;
 
-    public float moveUpAmount = 10f;
+    public float moveUpAmount = -10f;
 
 	// Use this for initialization
 	void Start () {

@@ -19,6 +19,7 @@ public class GUIcontroller : MonoBehaviour {
     public Image hoverImage;
     public Text hoverTowernameText;
     public Text hoverTowerAspireText;
+    public Text hoverUpgradeCostText;
 
     [Header("Hover Info")]
     public HoverInfo hoverUpgradeObject;

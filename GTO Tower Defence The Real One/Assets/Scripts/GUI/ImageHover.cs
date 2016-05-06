@@ -24,6 +24,7 @@ public class ImageHover : MonoBehaviour {
                 if (info.aspireCost > 0){
                     GUIcontroller.instance.isHoverAspireCost = true;
                     GUIcontroller.instance.hoverAspireText = info.aspireCost.ToString();
+                    GUIcontroller.instance.hoverUpgradeCostText.text = info.aspireCost.ToString();
                 }
                 else{
                     GUIcontroller.instance.isHoverAspireCost = false;

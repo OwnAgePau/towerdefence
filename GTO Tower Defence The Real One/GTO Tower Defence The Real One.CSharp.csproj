@@ -102,6 +102,7 @@
     <Compile Include="Assets\Scripts\GUI\ImageHover.cs" />
     <Compile Include="Assets\Scripts\GUI\PopUpText.cs" />
     <Compile Include="Assets\Scripts\GUI\TowerInfo.cs" />
+    <Compile Include="Assets\Scripts\GUI\UpgradeHover.cs" />
     <Compile Include="Assets\Scripts\Grid.cs" />
     <Compile Include="Assets\Scripts\LerpHandler.cs" />
     <Compile Include="Assets\Scripts\Movement\BFS.cs" />
