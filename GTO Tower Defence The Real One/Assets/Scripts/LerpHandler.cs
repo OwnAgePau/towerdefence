@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public enum LerpSmoothness{
     Smooth,
@@ -39,7 +40,7 @@ public class LerpHandler : MonoBehaviour{
         while (timerCur <= duration){
             timerCur += Time.deltaTime;
             movable.position = Vector3.Lerp(from, target.position + targetOffset, curve.Evaluate(timerCur / duration));
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.01f)  ;
         }
     }
 
@@ -71,19 +72,30 @@ public class LerpHandler : MonoBehaviour{
         TowerInfo.instance.isMenuOpen = isMenuOpen;
     }
 
-    /* AnimationCurve GetCurveByEnum(LerpSmoothness smoothness){
-        switch (smoothness){
-            case LerpSmoothness.Linear:
-                return LinearCurve;
-            case LerpSmoothness.Smooth:
-                return SmoothCurve;
-            case LerpSmoothness.SmoothDown:
-                return SmoothDownCurve;
-            case LerpSmoothness.LinearSmooth:
-                return LinearSmoothCurve;
-
-            default:
-                return SmoothCurve;
+    public IEnumerator Fade(float duration, GameObject item, float targetAlpha, AnimationCurve curve){
+        float timerCur = 0f;
+        Image image = item.GetComponentInChildren<Image>();
+        while (timerCur <= duration){
+            timerCur += Time.deltaTime;
+            float alpha = curve.Evaluate(timerCur / duration) * targetAlpha;
+            image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
+            yield return new WaitForSeconds(0.01f);
         }
-    }*/
-}
+    }
+
+        /* AnimationCurve GetCurveByEnum(LerpSmoothness smoothness){
+            switch (smoothness){
+                case LerpSmoothness.Linear:
+                    return LinearCurve;
+                case LerpSmoothness.Smooth:
+                    return SmoothCurve;
+                case LerpSmoothness.SmoothDown:
+                    return SmoothDownCurve;
+                case LerpSmoothness.LinearSmooth:
+                    return LinearSmoothCurve;
+
+                default:
+                    return SmoothCurve;
+            }
+        }*/
+    }
