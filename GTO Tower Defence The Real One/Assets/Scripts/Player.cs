@@ -152,11 +152,12 @@ public class Player : MonoBehaviour {
     }
 
     public void AddPopUpText(Vector3 textLocation, Color color, string text){
-        Vector3 aboveTextLocation = new Vector3(textLocation.x, textLocation.y + 5f, textLocation.z);
+        Vector3 aboveTextLocation = new Vector3(textLocation.x, textLocation.y - 5f, textLocation.z);
         GameObject popUpText = GameObject.Instantiate(this.popUpTextPrefab, aboveTextLocation, this.gameObject.transform.rotation) as GameObject;
         popUpText.name = this.popUpTextPrefab.name;
         popUpText.GetComponent<Text>().text = text;
-        popUpText.GetComponent<PopUpText>().textColor = color;
+        //popUpText.GetComponent<PopUpText>().textColor = color;
+        popUpText.GetComponent<Outline>().effectColor = color;
         popUpText.transform.parent = this.canvas.transform;
     }
 }

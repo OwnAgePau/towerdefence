@@ -25,6 +25,15 @@ public class ImageHover : MonoBehaviour {
                     GUIcontroller.instance.isHoverAspireCost = true;
                     GUIcontroller.instance.hoverAspireText = info.aspireCost.ToString();
                     GUIcontroller.instance.hoverUpgradeCostText.text = info.aspireCost.ToString();
+                    if(info.aspireCost <= Player.instance.aspirePoints){
+                        // Set the colour of the outline of upgrade info to green
+                        GUIcontroller.instance.upgradCost.effectColor = Player.instance.goodColor;
+                        
+                    }
+                    else{
+                        // Set the colour of the outline of ugprade info to red
+                        GUIcontroller.instance.upgradCost.effectColor = Player.instance.badColor;
+                    }
                 }
                 else{
                     GUIcontroller.instance.isHoverAspireCost = false;

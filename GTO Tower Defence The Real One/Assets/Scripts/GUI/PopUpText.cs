@@ -5,12 +5,8 @@ using UnityEngine.UI;
 public class PopUpText : MonoBehaviour {
 
     public Text textComponent;
-
     public Color textColor;
-
-    public float startAlpha = 1.0f;
     public float currentAlpha = 1.0f;
-
     public float moveUpAmount = -10f;
 
 	// Use this for initialization
@@ -22,12 +18,13 @@ public class PopUpText : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //LerpHandler.instance.Fade(0.5, this.)
 	    if(this.currentAlpha > 0){
             //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + (moveUpAmount * Time.deltaTime), this.transform.position.z);
-            this.currentAlpha -= 0.02f;
+            this.currentAlpha -= Time.deltaTime * 1f;
             this.textColor.a = this.currentAlpha;
             this.textComponent.color = this.textColor;     
-            if(this.currentAlpha < 0.2){
+            if(this.currentAlpha < 0.5){
                 Destroy(this.gameObject);
             }       
         }

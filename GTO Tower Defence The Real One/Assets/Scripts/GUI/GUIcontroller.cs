@@ -21,6 +21,13 @@ public class GUIcontroller : MonoBehaviour {
     public Text hoverTowerAspireText;
     public Text hoverUpgradeCostText;
 
+    [Header("Upgrade Cost")]
+    public Outline upgradCost;
+
+    [Header("Building Cost")]
+    public GameObject buildCost;
+    public GameObject buildName;
+
     [Header("Hover Info")]
     public HoverInfo hoverUpgradeObject;
     public string hoverText;

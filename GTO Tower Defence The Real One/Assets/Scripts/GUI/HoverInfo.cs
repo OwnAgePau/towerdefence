@@ -46,4 +46,19 @@ public class HoverInfo : MonoBehaviour {
             button.enabled = true;
         }
     }
+    
+    public void SetCostText(int cost){
+        GUIcontroller.instance.buildCost.GetComponent<Text>().text = cost.ToString();
+        Outline outline = GUIcontroller.instance.buildCost.GetComponent<Outline>();
+        if(cost > Player.instance.aspirePoints){
+            outline.effectColor = Player.instance.badColor;
+        }
+        else{
+            outline.effectColor = Player.instance.goodColor;
+        }
+    }
+
+    public void SetTowerName(string name){
+
+    }
 }
