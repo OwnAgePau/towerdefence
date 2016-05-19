@@ -1,0 +1,159 @@
+-debug
+-target:library
+-nowarn:0169
+-out:Temp/Assembly-CSharp.dll
+-r:"C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll"
+-r:Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll
+-r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll"
+-r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll"
+-r:"C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll"
+-define:UNITY_5_3_2
+-define:UNITY_5_3
+-define:UNITY_5
+-define:ENABLE_NEW_BUGREPORTER
+-define:ENABLE_AUDIO
+-define:ENABLE_CACHING
+-define:ENABLE_CLOTH
+-define:ENABLE_DUCK_TYPING
+-define:ENABLE_FRAME_DEBUGGER
+-define:ENABLE_GENERICS
+-define:ENABLE_HOME_SCREEN
+-define:ENABLE_IMAGEEFFECTS
+-define:ENABLE_LIGHT_PROBES_LEGACY
+-define:ENABLE_MICROPHONE
+-define:ENABLE_MULTIPLE_DISPLAYS
+-define:ENABLE_PHYSICS
+-define:ENABLE_PLUGIN_INSPECTOR
+-define:ENABLE_SHADOWS
+-define:ENABLE_SINGLE_INSTANCE_BUILD_SETTING
+-define:ENABLE_SPRITERENDERER_FLIPPING
+-define:ENABLE_SPRITES
+-define:ENABLE_SPRITE_POLYGON
+-define:ENABLE_TERRAIN
+-define:ENABLE_RAKNET
+-define:ENABLE_UNET
+-define:ENABLE_UNITYEVENTS
+-define:ENABLE_WEBCAM
+-define:ENABLE_WWW
+-define:ENABLE_CLOUD_SERVICES
+-define:ENABLE_CLOUD_SERVICES_ADS
+-define:ENABLE_CLOUD_HUB
+-define:ENABLE_CLOUD_PROJECT_ID
+-define:ENABLE_CLOUD_SERVICES_PURCHASING
+-define:ENABLE_CLOUD_SERVICES_ANALYTICS
+-define:ENABLE_CLOUD_SERVICES_UNET
+-define:ENABLE_CLOUD_SERVICES_BUILD
+-define:ENABLE_CLOUD_LICENSE
+-define:ENABLE_EDITOR_METRICS
+-define:ENABLE_EDITOR_METRICS_CACHING
+-define:INCLUDE_DYNAMIC_GI
+-define:INCLUDE_GI
+-define:INCLUDE_IL2CPP
+-define:INCLUDE_DIRECTX12
+-define:PLATFORM_SUPPORTS_MONO
+-define:RENDER_SOFTWARE_CURSOR
+-define:ENABLE_LOCALIZATION
+-define:ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION
+-define:ENABLE_EDITOR_TESTS_RUNNER
+-define:UNITY_WEBPLAYER
+-define:ENABLE_SUBSTANCE
+-define:WEBPLUG
+-define:ENABLE_TEXTUREID_MAP
+-define:ENABLE_RUNTIME_GI
+-define:ENABLE_MOVIES
+-define:ENABLE_NETWORK
+-define:ENABLE_CRUNCH_TEXTURE_COMPRESSION
+-define:ENABLE_MONO
+-define:ENABLE_PROFILER
+-define:DEBUG
+-define:TRACE
+-define:UNITY_ASSERTIONS
+-define:UNITY_EDITOR
+-define:UNITY_EDITOR_64
+-define:UNITY_EDITOR_WIN
+"Assets/Monster Assets/Mummy/C#/Axe.cs"
+"Assets/Monster Assets/Mummy/C#/BaseAnimController.cs"
+"Assets/Monster Assets/Mummy/C#/CameraController.cs"
+"Assets/Monster Assets/Mummy/C#/MainController.cs"
+"Assets/Monster Assets/Mummy/C#/Spear.cs"
+"Assets/Monster Assets/Mummy/C#/Spear_Shield.cs"
+"Assets/Monster Assets/Mummy/C#/Sword_Shield.cs"
+"Assets/Monster Assets/Mummy/C#/Weaponless.cs"
+"Assets/Particle Assets/PyroParticles/Demo/DemoScript.cs"
+"Assets/Particle Assets/PyroParticles/Prefab/Script/FireBaseScript.cs"
+"Assets/Particle Assets/PyroParticles/Prefab/Script/FireCollisionForwardScript.cs"
+"Assets/Particle Assets/PyroParticles/Prefab/Script/FireConstantBaseScript.cs"
+"Assets/Particle Assets/PyroParticles/Prefab/Script/FireLightScript.cs"
+"Assets/Particle Assets/PyroParticles/Prefab/Script/FireProjectileScript.cs"
+"Assets/Particle Assets/PyroParticles/Prefab/Script/MeteorSwarmScript.cs"
+"Assets/Particle Assets/PyroParticles/Prefab/Script/SingleLineAttribute.cs"
+"Assets/Particle Assets/Tazo_fx/Script/ActiveSelf.cs"
+"Assets/Particle Assets/Tazo_fx/Script/AnimateTiledTextureOnTrail.cs"
+"Assets/Particle Assets/Tazo_fx/Script/BillBoard.cs"
+"Assets/Particle Assets/Tazo_fx/Script/DestroySelf.cs"
+Assets/Scripts/API/API_Facebook.cs
+Assets/Scripts/API/API_Gamejolt.cs
+Assets/Scripts/Achievements.cs
+Assets/Scripts/DisplayGamejoltButtons.cs
+Assets/Scripts/Enemies/Debuf.cs
+Assets/Scripts/Enemies/DebufScript.cs
+Assets/Scripts/Enemies/Enemy.cs
+Assets/Scripts/Enemies/HealthBar.cs
+Assets/Scripts/GUI/CameraMovement.cs
+Assets/Scripts/GUI/Controls.cs
+Assets/Scripts/GUI/GUIcontroller.cs
+Assets/Scripts/GUI/HoverInfo.cs
+Assets/Scripts/GUI/ImageHover.cs
+Assets/Scripts/GUI/MenuSelector.cs
+Assets/Scripts/GUI/PopUpText.cs
+Assets/Scripts/GUI/TowerInfo.cs
+Assets/Scripts/Grid.cs
+Assets/Scripts/LerpHandler.cs
+Assets/Scripts/Movement/BFS.cs
+Assets/Scripts/Movement/EditorGridInstantiate.cs
+Assets/Scripts/Movement/EnemyMovement.cs
+Assets/Scripts/Movement/GridPathfinding.cs
+Assets/Scripts/Movement/Moving.cs
+Assets/Scripts/Movement/NavmeshPathfinding.cs
+Assets/Scripts/Movement/SpawnCube.cs
+Assets/Scripts/Movement/TileScript.cs
+Assets/Scripts/Persistence/PersistenceData.cs
+Assets/Scripts/Persistence/PersistenceEnemies.cs
+Assets/Scripts/Persistence/PersistenceTowers.cs
+Assets/Scripts/Persistence/Wrappers/BulletsData.cs
+Assets/Scripts/Persistence/Wrappers/EnemiesData.cs
+Assets/Scripts/Persistence/Wrappers/PlayerData.cs
+Assets/Scripts/Persistence/Wrappers/TowersData.cs
+Assets/Scripts/Player.cs
+Assets/Scripts/SceneManager.cs
+Assets/Scripts/SelfDestruct.cs
+Assets/Scripts/Sound/AudioScript.cs
+Assets/Scripts/Tower/Bullet.cs
+Assets/Scripts/Tower/BulletParticle.cs
+Assets/Scripts/Tower/PlaceTower.cs
+Assets/Scripts/Tower/SelectTower.cs
+Assets/Scripts/Tower/Tower.cs
+Assets/Scripts/Tower/TowerShooting/BulletHandler.cs
+Assets/Scripts/Tower/TowerShooting/DemonBeam.cs
+Assets/Scripts/Tower/TowerShooting/TowerProjectile.cs
+Assets/Scripts/Tower/TowerUpgrade.cs
+Assets/Scripts/Wave/Wave.cs
+Assets/Scripts/Wave/Waves.cs
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/BlurEffect.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/ColorCorrectionEffect.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/ContrastStretchEffect.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/EdgeDetectEffect.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/GlowEffect.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/GrayscaleEffect.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/ImageEffectBase.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/ImageEffects.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/MotionBlur.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/NoiseEffect.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/SSAOEffect.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/SepiaToneEffect.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/TwirlEffect.cs"
+"Assets/Top Down/Standard Assets/Image Effects (Pro Only)/VortexEffect.cs"
+"Assets/Top Down/tools scripts/AttachCamera.cs"
+"Assets/Top Down/tools scripts/MovementScript.cs"
+"Assets/Top Down/tools scripts/TerrainRand.cs"
+"Assets/Top Down/tools scripts/desaturate/Image Based/DesaturateEffect.cs"

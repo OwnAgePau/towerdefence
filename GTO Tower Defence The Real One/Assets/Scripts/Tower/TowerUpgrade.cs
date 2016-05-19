@@ -8,6 +8,7 @@ public class TowerUpgrade : MonoBehaviour {
     public int maxProjectiles = 0;
     public Tower tower;
     public HoverInfo hoverInfo;
+    public int maxLevel = 0;
 
     private float dmgToScaleFrom = 0;
     private float projToScaleFrom = 0;
@@ -39,34 +40,19 @@ public class TowerUpgrade : MonoBehaviour {
 
     public Upgrade GetNextUpgrade(int towerLevel){
         int upgradeTo = towerLevel;
+        if(upgradeTo >= maxLevel){
+            return null;
+        }
         if (upgradeTo > upgrades.Length - 1){
-            // Modify upgrade so that it goes up and up and up
-            
-            //Debug.Log("Damage Scale From : " + this.dmgToScaleFrom + ", " + (this.dmgToScaleFrom * this.damageEndMod) + ", towerLevel : " + towerLevel);
-            float currentDamage = (this.damageEndMod * this.dmgToScaleFrom) + this.dmgToScaleFrom;
-            float currentProjectile = this.projToScaleFrom + 1;
-            float currentCost = (this.costEndMod * this.costToScaleFrom) + this.costToScaleFrom;
-            hoverInfo.aspireCost = (int)currentCost;
-            //Debug.Log("Cost Scale From : " + this.costToScaleFrom + ", " + (this.costToScaleFrom * this.costEndMod) + ", towerLevel : " + towerLevel + ", total : " + currentCost);
-            // Determine what upgrade is being done (damage / proj)
-            UpgradePart[] parts = new UpgradePart[1];
-            if (this.currentUpgradeType.Equals(0)){
-                // Damage
-                parts[0] = new UpgradePart(UpgradeType.DAMAGE, (int)currentDamage);
-            }
-            else if (this.currentUpgradeType.Equals(1)){
-                // Projectile
-                parts[0] = new UpgradePart(UpgradeType.PROJNR, (int)currentProjectile);
-            }
-            
-            Upgrade newUpgrade = new Upgrade(parts, towerLevel + 1, (int)currentCost);
-                        
-// Add a new upgrade to the list, the next time it runs through this statement again as its level is equal to the list size
+            // Create an endless upgrade
+            Upgrade newUpgrade = this.CreateEndlessUpgrade(towerLevel);            
+            // Add a new upgrade to the list, the next time it runs through this statement again as its level is equal to the list size
             return newUpgrade;
         }
         else{
+            // Return an upgrade from the upgrade list
             Upgrade upgrade = this.upgrades[upgradeTo];
-            hoverInfo.aspireCost = (int)upgrade.upgradeCost;
+            hoverInfo.aspireCost = (int)upgrade.upgradeCost; // THis should not be in this class, this is GUI stuff
             return upgrade;
         }
     }
@@ -85,11 +71,13 @@ public class TowerUpgrade : MonoBehaviour {
                     this.currentUpgradeType = 1;
                 }
                 Upgrade upgrade = this.GetNextUpgrade(towerLevel);
-                if (Player.instance.aspirePoints >= upgrade.upgradeCost){
-                    // Upgrade tower and remove cost
-                    Player.instance.RemoveAspirePoints(upgrade.upgradeCost);
-                    this.UpgradeTowerStats(upgrade, towerLevel);
-                    this.costToScaleFrom = upgrade.upgradeCost;
+                if (upgrade != null){
+                    if (Player.instance.aspirePoints >= upgrade.upgradeCost){
+                        // Upgrade tower and remove cost
+                        Player.instance.RemoveAspirePoints(upgrade.upgradeCost);
+                        this.UpgradeTowerStats(upgrade, towerLevel);
+                        this.costToScaleFrom = upgrade.upgradeCost;
+                    }
                 }
                 return upgrade;
             }
@@ -133,6 +121,30 @@ public class TowerUpgrade : MonoBehaviour {
                     break;
             }
         }
+    }
+
+    public Upgrade CreateEndlessUpgrade(int towerLevel) {
+        float currentDamage = (this.damageEndMod * this.dmgToScaleFrom) + this.dmgToScaleFrom;
+        float currentProjectile = this.projToScaleFrom + 1;
+        float currentSpeed = 1;
+        float currentCost = (this.costEndMod * this.costToScaleFrom) + this.costToScaleFrom;
+        hoverInfo.aspireCost = (int)currentCost;
+        //Debug.Log("Cost Scale From : " + this.costToScaleFrom + ", " + (this.costToScaleFrom * this.costEndMod) + ", towerLevel : " + towerLevel + ", total : " + currentCost);
+        // Determine what upgrade is being done (damage / proj)
+        UpgradePart[] parts = new UpgradePart[1];
+        if (this.currentUpgradeType.Equals(0)){
+            // Damage
+            parts[0] = new UpgradePart(UpgradeType.DAMAGE, (int)currentDamage);
+        }
+        else if (this.currentUpgradeType.Equals(1)){
+            // Projectile
+            parts[0] = new UpgradePart(UpgradeType.PROJNR, (int)currentProjectile);
+        }
+        else if (this.currentUpgradeType.Equals(3))
+        {
+            parts[0] = new UpgradePart(UpgradeType.SPEED, (int)currentSpeed);
+        }
+        return new Upgrade(parts, towerLevel + 1, (int)currentCost);
     }
 }
 

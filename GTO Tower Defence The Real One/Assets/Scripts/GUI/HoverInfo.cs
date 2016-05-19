@@ -47,15 +47,28 @@ public class HoverInfo : MonoBehaviour {
         }
     }
     
-    public void SetCostText(int cost){
+    public void SetCostText(int towerNr){
+        Tower tower = SelectTower.instance.towers[towerNr].GetComponent<Tower>();
+        int cost = tower.aspireCost;
+        GUIcontroller.instance.buildName.GetComponent<Text>().text = tower.name;
         GUIcontroller.instance.buildCost.GetComponent<Text>().text = cost.ToString();
-        Outline outline = GUIcontroller.instance.buildCost.GetComponent<Outline>();
-        if(cost > Player.instance.aspirePoints){
-            outline.effectColor = Player.instance.badColor;
+        GUIcontroller.instance.hoverImage.enabled = true;
+        Outline costOutline = GUIcontroller.instance.buildCost.GetComponent<Outline>();
+        Outline nameOutline = GUIcontroller.instance.buildName.GetComponent<Outline>();
+        if (cost > Player.instance.aspirePoints){
+            costOutline.effectColor = Player.instance.badColor;
+            nameOutline.effectColor = Player.instance.badColor;
         }
         else{
-            outline.effectColor = Player.instance.goodColor;
+            costOutline.effectColor = Player.instance.goodColor;
+            nameOutline.effectColor = Player.instance.goodColor;
         }
+    }
+
+    public void ExitHover(){
+        GUIcontroller.instance.buildCost.GetComponent<Text>().text = "";
+        GUIcontroller.instance.buildName.GetComponent<Text>().text = "";
+        GUIcontroller.instance.hoverImage.enabled = false;
     }
 
     public void SetTowerName(string name){

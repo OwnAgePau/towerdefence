@@ -20,6 +20,7 @@ public class UpgradeEditorScript : Editor {
         TowerUpgrade towerUpgrade = (TowerUpgrade)target;
         towerUpgrade.hasEndlessUpgrades = EditorGUILayout.Toggle("Has Endless Upgrades", towerUpgrade.hasEndlessUpgrades);
         towerUpgrade.maxProjectiles = EditorGUILayout.IntField("Max Projectiles", towerUpgrade.maxProjectiles);
+        towerUpgrade.maxLevel = EditorGUILayout.IntField("Max Level", towerUpgrade.maxLevel);
         towerUpgrade.tower = EditorGUILayout.ObjectField("Tower Script", towerUpgrade.tower, typeof(Tower), true) as Tower;
         towerUpgrade.hoverInfo = EditorGUILayout.ObjectField("Hover Info", towerUpgrade.hoverInfo, typeof(HoverInfo), true) as HoverInfo;
         serializedObject.FindProperty("tower");

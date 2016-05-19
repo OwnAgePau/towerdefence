@@ -52,12 +52,16 @@ public class Controls : MonoBehaviour {
                 GameObject hitObject = SelectTower.instance.GetMouseClick("tower", layerMask);
                 if (hitObject != null){
                     if (hitObject.GetComponent<Tower>() != null){
-                        this.towerInfoInstance.currentTower = hitObject.GetComponent<Tower>();
-                        this.towerInfoInstance.currentTowerObject = hitObject;
-                        this.selectedMaterial = this.towerInfoInstance.currentTower.GetComponent<MeshRenderer>().material;
-                        this.selectedMaterial.SetColor("_EmissionColor", new Color(1f, 0f, 0f));
+                        
+                        //this.selectedMaterial = this.towerInfoInstance.currentTower.GetComponent<MeshRenderer>().material;
+                        //this.selectedMaterial.SetColor("_EmissionColor", new Color(1f, 0f, 0f));
                         this.isEmissionOn = true;
-                        this.towerInfoInstance.OpenMenu();
+                        // Check if the menu is open so that you only select a new tower if it isn't
+                        if (!this.towerInfoInstance.isHovering){
+                            this.towerInfoInstance.currentTower = hitObject.GetComponent<Tower>();
+                            this.towerInfoInstance.currentTowerObject = hitObject;
+                            this.towerInfoInstance.OpenMenu();
+                        }
                         // TO DO HIGHLIGHT TOWER
                     }
                 }
@@ -65,10 +69,10 @@ public class Controls : MonoBehaviour {
                     //this.towerInfoInstance.currentTower = null;
                     //this.towerInfoInstance.HideTowerInfo();
                     if (!this.towerInfoInstance.isHovering){
-                        if (this.selectedMaterial != null){
+                        /*if (this.selectedMaterial != null){
                             this.selectedMaterial.SetColor("_EmissionColor", new Color(0f, 0f, 0f));
                             this.selectedMaterial = null;
-                        }
+                        }*/
                         this.towerInfoInstance.HideMenu();
                         this.isEmissionOn = false;
                     }
@@ -87,7 +91,7 @@ public class Controls : MonoBehaviour {
         }
 
         if (this.isEmissionOn){
-            this.DoFancyEmissionStuff();
+            //this.DoFancyEmissionStuff();
         }
     }
 

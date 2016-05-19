@@ -65,9 +65,9 @@ public class GUIcontroller : MonoBehaviour {
             if (PersistenceData.instance.isSaved){
                 gameSaved.SetActive(true);
             }
-            this.hoverImage.enabled = this.isHoverAspireCost;
+            /*this.hoverImage.enabled = this.isHoverAspireCost;
             this.hoverTowerAspireText.text = this.hoverAspireText;
-            this.hoverTowernameText.text = this.hoverText;
+            this.hoverTowernameText.text = this.hoverText;*/
         }
         if (!Application.platform.Equals(RuntimePlatform.WindowsPlayer) && !Application.platform.Equals(RuntimePlatform.WindowsEditor)){
             foreach(GameObject obj in mobileGUIButtons){

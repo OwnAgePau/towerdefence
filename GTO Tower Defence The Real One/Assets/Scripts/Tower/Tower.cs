@@ -79,7 +79,9 @@ public class Tower : MonoBehaviour {
         // Check upgrade cost
         TowerUpgrade upgradeScript = this.towerUpgradeObject;
         Upgrade upgrade = upgradeScript.UpgradeTower(this.towerLevel);
-        this.towerLevel++;
+        if(upgrade != null){
+            this.towerLevel++;
+        }
         return upgrade;
     }
 
