@@ -82,7 +82,8 @@ public class TowerUpgrade : MonoBehaviour {
                 return upgrade;
             }
             /// Temp, when an endless upgrade is not enabled the button should not be interactable
-            return this.upgrades[upgrades.Length - 1];
+            // this.upgrades[upgrades.Length - 1];
+            return null;
         }
         else {
             Upgrade upgrade = this.upgrades[towerLevel];

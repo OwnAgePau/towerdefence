@@ -72,10 +72,9 @@ public class Player : MonoBehaviour {
         this.power = damage;
         if (this.lives <= 0) {
             this.hasLost = true;
-            Controls controls = this.gameObject.GetComponentInChildren<Controls>();
-            controls.menu.SetActive(true);
+            Controls.instance.menu.SetActive(true);
             PlayerPrefs.SetInt("Highscore", GUIcontroller.instance.GetHighscore());
-            foreach (RectTransform child in controls.menu.transform){
+            foreach (RectTransform child in Controls.instance.menu.transform){
                 if(child.gameObject.tag.Equals("Menu") || child.gameObject.tag.Equals("LooseMenu")){
                     child.gameObject.SetActive(true);
                 }

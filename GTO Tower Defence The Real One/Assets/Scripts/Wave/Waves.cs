@@ -5,6 +5,17 @@ using UnityEngine.UI;
 
 public class Waves : MonoBehaviour {
 
+    // TO DO : Add extension to allow different wave types like FAST, HORDE & BOSS. To change the health, speed or amount of enemies
+    // Do this by using both DamageType enum and a new enum called WaveType to determine what enemies and how many
+    public enum WaveType{
+        NORMAL,
+        FAST,
+        STRONG,
+        HORDE,
+        BOSS
+    }
+
+
     //public List<GameObject> waves = new List<GameObject>();
     //public Wave wave;
     //public int currentWave = 0;

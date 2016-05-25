@@ -11,7 +11,6 @@ public class Enemy : MonoBehaviour {
     public float currentSpeed = 1f;
     public float speed = 1f;
     public DamageType enemyType;
-    //public Dictionary<DamageType, int> hasResistenceFor = new Dictionary<DamageType, int>();
 
     [System.Serializable]
     public struct ResistanceToDamageType {
@@ -69,6 +68,7 @@ public class Enemy : MonoBehaviour {
                 this.enemyCurrentFlickerTime += Time.deltaTime;
             }
             else{
+                // Enemy has taken damage, make it flicker
                 this.isEnemyDamaged = false;
                 this.enemyCurrentFlickerTime = 0f;
                 foreach (SkinnedMeshRenderer renderer in this.meshes){
@@ -81,6 +81,7 @@ public class Enemy : MonoBehaviour {
 
         if (this.health <= 0) {
             if (!this.deathScoreRecieved) {
+                this.GetComponent<BoxCollider>().enabled = false;
                 this.SetAnimationDead();
                 this.PreDeath();
                 this.RemoveEnemyFromTowers();

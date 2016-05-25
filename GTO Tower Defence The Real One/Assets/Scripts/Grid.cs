@@ -115,16 +115,16 @@ public class Grid : MonoBehaviour {
         }
         return null;
     }
+}
 
-    public class GridLocation{
-        public int x;
-        public int z;
-        public GameObject gridItem;
+public class GridLocation{
+    public int x;
+    public int z;
+    public GameObject gridItem;
 
-        public GridLocation(int x, int z, GameObject gridItem){
-            this.x = x;
-            this.z = z;
-            this.gridItem = gridItem;
-        }
+    public GridLocation(int x, int z, GameObject gridItem){
+        this.x = x;
+        this.z = z;
+        this.gridItem = gridItem;
     }
 }

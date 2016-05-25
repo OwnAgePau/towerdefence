@@ -29,7 +29,7 @@ public class TowerData{
     public int level;
 
     public int damage;
-    public int speed;
+    public float cooldown;
     public int nrProjectiles;
     public float slowPercentage;
 
@@ -37,16 +37,16 @@ public class TowerData{
 
     public Focus focusType;
 
-    public TowerData(DamageType damageType, int gridX, int gridZ, int level, int damage, int speed, int nrProjectiles, float slowPercentage, float cooldown, Focus focusType){
+    public TowerData(DamageType damageType, int gridX, int gridZ, int level, int damage, float cooldown, int nrProjectiles, float slowPercentage, float currentCooldown, Focus focusType){
         this.damageType = damageType;
         this.gridX = gridX;
         this.gridZ = gridZ;
         this.level = level;
         this.damage = damage;
-        this.speed = speed;
+        this.cooldown = cooldown;
         this.nrProjectiles = nrProjectiles;
         this.slowPercentage = slowPercentage;
-        this.currentCooldown = cooldown;
+        this.currentCooldown = currentCooldown;
         this.focusType = focusType;
     }
 }

@@ -64,7 +64,7 @@ public class PlaceTower : MonoBehaviour{
         return Player.instance.CheckAspirePoints(towerScript.aspireCost);
     }
 
-    public void PlaceOnGrid(GameObject tower, Tile tile, float x, float y, float z){
+    public GameObject PlaceOnGrid(GameObject tower, Tile tile, float x, float y, float z){
         // Tower place 
         // new Vector3(x, tile.tileObject.transform.position.y + y, z)
         // SelectTower.instance.hoveringTile.tileObject.transform.position
@@ -73,13 +73,15 @@ public class PlaceTower : MonoBehaviour{
         towerOnGrid.name = tower.name;
         //Tower towerScript = tower.GetComponent<Tower>();
         this.gpManager.grid[tile.x][tile.z].tower = towerOnGrid;
+        return towerOnGrid;
     }
 
-    public void PlaceNewTower(GameObject tower, Tile tile, float x, float y, float z){
-        this.PlaceOnGrid(tower, tile, x, y, z);
+    public GameObject PlaceNewTower(GameObject tower, Tile tile, float x, float y, float z){
+        GameObject newTower = this.PlaceOnGrid(tower, tile, x, y, z);
         this.bfs.UpdateTiles();
         /// Place below method in a thread for each enemy seperately
         this.bfs.CalculateNewRoute(this.gpManager.startPoint, this.gpManager.checkPoint, this.gpManager.endPoint);
+        return newTower;
     }
 
     public void SubstractTowerCost(GameObject tower){

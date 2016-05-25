@@ -156,12 +156,12 @@ public class TowerInfo : MonoBehaviour {
         if (!this.isAnimatingMenu && !this.isMenuOpen){
             this.isAnimatingMenu = true;
             StartCoroutine(LerpHandler.instance.Scale(0.5f, this.towerInfoMenu, true, LerpHandler.instance.curves[3], true));
-            if (this.currentTower.towerLevel < this.currentTower.towerUpgradeObject.maxLevel){
-                StartCoroutine(LerpHandler.instance.Scale(0.5f, this.towerUpgradeArrowMenu, true, LerpHandler.instance.curves[3], true));
-            }
-            else{
-                this.towerUpgradeArrowMenu.transform.localScale = new Vector3(0, 0, 0);
-            }
+        }
+        if (this.currentTower.towerLevel < this.currentTower.towerUpgradeObject.maxLevel){
+            StartCoroutine(LerpHandler.instance.Scale(0.5f, this.towerUpgradeArrowMenu, true, LerpHandler.instance.curves[3], true));
+        }
+        else{
+            this.towerUpgradeArrowMenu.transform.localScale = new Vector3(0, 0, 0);
         }
     }
 

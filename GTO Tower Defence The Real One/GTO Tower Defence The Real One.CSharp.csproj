@@ -118,6 +118,7 @@
     <Compile Include="Assets\Scripts\Persistence\PersistenceTowers.cs" />
     <Compile Include="Assets\Scripts\Persistence\Wrappers\BulletsData.cs" />
     <Compile Include="Assets\Scripts\Persistence\Wrappers\EnemiesData.cs" />
+    <Compile Include="Assets\Scripts\Persistence\Wrappers\GridData.cs" />
     <Compile Include="Assets\Scripts\Persistence\Wrappers\PlayerData.cs" />
     <Compile Include="Assets\Scripts\Persistence\Wrappers\TowersData.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />

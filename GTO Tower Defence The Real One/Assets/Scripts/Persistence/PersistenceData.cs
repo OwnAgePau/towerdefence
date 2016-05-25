@@ -47,7 +47,7 @@ public class PersistenceData : MonoBehaviour {
     }
 
     public void ExitToMainMenu(){
-        controls.PauseGame();
+        controls.PauseMenu(false);
         this.ExitGame();
     }
 
@@ -79,6 +79,11 @@ public class PersistenceData : MonoBehaviour {
         BulletsData bulletData = PersistenceTowers.instance.CreateBulletsData();
         bf.Serialize(file, bulletData);
         file.Close();
+
+        file = File.Create(Application.persistentDataPath + "/gridInfo.dat");
+        GridData gridData = this.CreateGridData();
+        bf.Serialize(file, gridData);
+        file.Close();
         this.isSaved = true;
     }
 
@@ -109,6 +114,12 @@ public class PersistenceData : MonoBehaviour {
             PersistenceTowers.instance.LoadBulletsData(data);
             file.Close();
         }
+        if (File.Exists(Application.persistentDataPath + "/gridInfo.dat")){
+            file = File.Open(Application.persistentDataPath + "/gridInfo.dat", FileMode.Open);
+            GridData data = (GridData)bf.Deserialize(file);
+            this.LoadGridData(data);
+            file.Close();
+        }
     }
 
     public PlayerData CreatePlayerData(){
@@ -126,5 +137,22 @@ public class PersistenceData : MonoBehaviour {
         p.lives = data.lives;
         p.enemyHealth = data.enemyHealth;
         p.enemyScore = data.enemyScore;
+    }
+
+    public GridData CreateGridData(){
+        return new GridData(GridPathfinding.instance.grid);
+    }
+
+    public void LoadGridData(GridData data){
+        GridPathfinding pathfinding = GridPathfinding.instance;
+        for (int i = 0; i < data.gridFieldsData.Length; i++){
+            for(int j = 0; j < data.gridFieldsData[i].Length; j++){
+                GridFieldData fieldData = data.gridFieldsData[i][j];
+                Tile tile = pathfinding.grid[i][j];
+                tile.x = fieldData.xPos;
+                tile.z = fieldData.zPos;
+                tile.isObstacle = fieldData.isObstacle;
+            }
+        }
     }
 }

@@ -85,9 +85,9 @@ public class Controls : MonoBehaviour {
             // Cancel Selection
             this.towerInfoInstance.currentTower = null;
         }
-        if (Input.GetButtonDown("Cancel")){
+        if (Input.GetButtonDown("Cancel") && Player.instance.lives <= 0){
             PersistenceData.instance.isSaved = false;
-            this.PauseGame();
+            this.PauseMenu(!Player.instance.isPaused);
         }
 
         if (this.isEmissionOn){
@@ -118,20 +118,21 @@ public class Controls : MonoBehaviour {
         selectedMaterial.SetColor("_EmissionColor", emissionColour);
     }
 
-    public void PauseMenu(){
+    public void PauseMenu(bool pauseGame){
         PersistenceData.instance.isSaved = false;
-        this.PauseGame();
+        this.PauseGame(pauseGame);
     }
 
-    public void PauseGame(){
+    public void PauseGame(bool pauseGame)
+    {
         this.menuSound.PlaySound();
         this.menu.SetActive(!this.menu.active);
-        Player.instance.isPaused = !Player.instance.isPaused;
+        Player.instance.isPaused = pauseGame;
         SelectTower.instance.StopPlacingTower();
-        if (Time.timeScale > 0.0f){
+        if (Player.instance.isPaused){
             Time.timeScale = 0.0f;
         }
-        else{
+        else if(!Player.instance.isPaused){
             Time.timeScale = 1.0f;
         }
         foreach (GameObject button in this.buttons){

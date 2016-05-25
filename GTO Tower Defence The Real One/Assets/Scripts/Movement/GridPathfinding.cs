@@ -20,14 +20,6 @@ public class GridPathfinding : MonoBehaviour{
 
     public float tileSize = 4f;
 
-    //Materials
-    /*public Material red; // Destination
-    public Material green; // Start
-    public Material blue; // Obstacle
-    public Material yellow; // Movable
-    public Material purple; // Route */
-
-    //public GameObject towerPrefab;
     public GameObject gridParent;
 
     public List<Tile> currentRoute = new List<Tile>();

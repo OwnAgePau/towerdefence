@@ -54,7 +54,7 @@ public class Tower : MonoBehaviour {
                 Enemy enemy = enemyObj.GetComponent<Enemy>();
                 if (this.type == DamageType.ICE){ // Slow
                     float newSpeed = 1f - this.slowAmount;
-                    Debug.Log("Slow Amount : " + this.slowAmount + ", slow : " + newSpeed);
+                    //Debug.Log("Slow Amount : " + this.slowAmount + ", slow : " + newSpeed);
                     GameObject debufs = GameObject.Find("Debufs");
                     DebufScript debuf = debufs.transform.FindChild("Slowed").gameObject.GetComponent<DebufScript>();
                     Debuf slowDebuf = debuf.CreateDebuf();

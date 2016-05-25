@@ -18,7 +18,7 @@ public class PersistenceTowers : MonoBehaviour {
             Tower towerScript = tower.GetComponent<Tower>();
             Tile tile = GridPathfinding.instance.GetTileWithTower(tower);
             TowerData towerData = new TowerData(towerScript.type, tile.x, tile.z, towerScript.towerLevel,
-                towerScript.damage, 0, towerScript.projectiles, towerScript.slowAmount, towerScript.currentCooldown, towerScript.focus);
+                towerScript.damage, towerScript.cooldown, towerScript.projectiles, towerScript.slowAmount, towerScript.currentCooldown, towerScript.focus);
             towerList.Add(towerData);
         }
         towersData.SetTowerList(towerList);
@@ -31,7 +31,15 @@ public class PersistenceTowers : MonoBehaviour {
             GameObject prefab = this.GetTowerPrefab(towerData.damageType);
             float x = GridPathfinding.instance.startPosX + (tile.x * GridPathfinding.instance.tileSize);
             float z = GridPathfinding.instance.startPosZ + (tile.z * GridPathfinding.instance.tileSize);
-            PlaceTower.instance.PlaceNewTower(prefab, tile, x, 0.5f, z);
+            GameObject towerInstance = PlaceTower.instance.PlaceNewTower(prefab, tile, x, 0.5f, z);
+            Tower tower = towerInstance.GetComponent<Tower>();
+            tower.towerLevel = towerData.level;
+            tower.damage = towerData.damage;
+            tower.cooldown = towerData.cooldown;
+            tower.currentCooldown = towerData.currentCooldown;
+            tower.projectiles = towerData.nrProjectiles;
+            tower.slowAmount = towerData.slowPercentage;
+            tower.focus = towerData.focusType;
         }
     }
 
