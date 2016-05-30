@@ -46,7 +46,7 @@ public class Player : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (this.currentTime > 0f){
             this.currentTime -= Time.deltaTime;
         }
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour {
             this.AddVillager();
         }
 
-        // Do a continues calculation of power whenever a tower is added
+        // Do a calculation of power whenever a tower is added instead of the continues calculation you are doing now
         GameObject[] towers = GameObject.FindGameObjectsWithTag("tower");
         int damage = 0;
         if (towers.Length > 0){

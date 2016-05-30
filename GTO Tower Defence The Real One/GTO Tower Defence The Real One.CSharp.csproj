@@ -135,6 +135,7 @@
     <Compile Include="Assets\Scripts\Tower\TowerShooting\TowerProjectile.cs" />
     <Compile Include="Assets\Scripts\Tower\TowerUpgrade.cs" />
     <Compile Include="Assets\Scripts\Wave\Wave.cs" />
+    <Compile Include="Assets\Scripts\Wave\WaveTypeInfo.cs" />
     <Compile Include="Assets\Scripts\Wave\Waves.cs" />
     <Compile Include="Assets\Top Down\Standard Assets\Image Effects (Pro Only)\BlurEffect.cs" />
     <Compile Include="Assets\Top Down\Standard Assets\Image Effects (Pro Only)\ColorCorrectionEffect.cs" />

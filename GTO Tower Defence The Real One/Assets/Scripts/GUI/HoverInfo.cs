@@ -11,31 +11,41 @@ public class HoverInfo : MonoBehaviour {
     public bool isDisabled;
     public bool isButton; // Veranderen naar button object
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    private Text towerAspireCostTxt;
+    private Text towerVillagerCostTxt;
+    private Text towerNameTxt;
+    private Image towerAspireImg;
+    private Image towerVillagerImg;
+
+    // Use this for initialization
+    void Start() {
+        this.towerAspireCostTxt = GUIcontroller.instance.buildCost.GetComponent<Text>();
+        this.towerVillagerCostTxt = GUIcontroller.instance.buildVillagerCost.GetComponent<Text>();
+        this.towerNameTxt = GUIcontroller.instance.buildName.GetComponent<Text>();
+        this.towerAspireImg = GUIcontroller.instance.hoverImage;
+        this.towerVillagerImg = GUIcontroller.instance.towerVillagerCost;
+    }
+
+    // Update is called once per frame
+    void Update() {
         if (tower != null) {
             this.aspireCost = tower.aspireCost;
             this.nameToShow = tower.gameObject.name;
             this.SetButtonState();
         }
-        else if (this.isButton){
+        else if (this.isButton) {
             this.SetButtonState();
             this.nameToShow = this.gameObject.name;
         }
-        else{
+        else {
             this.nameToShow = this.gameObject.name;
         }
-	}
+    }
 
-    private void SetButtonState(){
+    private void SetButtonState() {
         Image image = this.gameObject.GetComponent<Image>();
         Button button = this.gameObject.GetComponent<Button>();
-        if (Player.instance.aspirePoints < this.aspireCost){
+        if (Player.instance.aspirePoints < this.aspireCost || Player.instance.villagers < 1){
             image.color = new Color(0.5f, 0.001f, 0.001f);
             this.isDisabled = true;
             button.enabled = false;
@@ -47,31 +57,42 @@ public class HoverInfo : MonoBehaviour {
         }
     }
     
+
+    // These 2 methods below could better go to GUIcontroller, or even better a new controller for the BuildButtons
     public void SetCostText(int towerNr){
         Tower tower = SelectTower.instance.towers[towerNr].GetComponent<Tower>();
         int cost = tower.aspireCost;
-        GUIcontroller.instance.buildName.GetComponent<Text>().text = tower.name;
-        GUIcontroller.instance.buildCost.GetComponent<Text>().text = cost.ToString();
-        GUIcontroller.instance.hoverImage.enabled = true;
-        Outline costOutline = GUIcontroller.instance.buildCost.GetComponent<Outline>();
-        Outline nameOutline = GUIcontroller.instance.buildName.GetComponent<Outline>();
+        this.towerNameTxt.text = tower.name;
+        this.towerAspireCostTxt.text = cost.ToString();
+        this.towerVillagerCostTxt.text = 1.ToString();
+        this.towerAspireImg.gameObject.SetActive(true);
+        this.towerVillagerImg.gameObject.SetActive(true);
+        Outline costOutline = this.towerAspireCostTxt.GetComponent<Outline>();
+        Outline nameOutline = this.towerNameTxt.GetComponent<Outline>();
+        Outline vilCostOutline = this.towerVillagerCostTxt.GetComponent<Outline>();
+        nameOutline.effectColor = Player.instance.goodColor;
         if (cost > Player.instance.aspirePoints){
             costOutline.effectColor = Player.instance.badColor;
             nameOutline.effectColor = Player.instance.badColor;
         }
         else{
             costOutline.effectColor = Player.instance.goodColor;
-            nameOutline.effectColor = Player.instance.goodColor;
+        }
+
+        if(1 > Player.instance.villagers){
+            vilCostOutline.effectColor = Player.instance.badColor;
+            nameOutline.effectColor = Player.instance.badColor;
+        }
+        else{
+            vilCostOutline.effectColor = Player.instance.goodColor;
         }
     }
 
     public void ExitHover(){
-        GUIcontroller.instance.buildCost.GetComponent<Text>().text = "";
-        GUIcontroller.instance.buildName.GetComponent<Text>().text = "";
-        GUIcontroller.instance.hoverImage.enabled = false;
-    }
-
-    public void SetTowerName(string name){
-
+        this.towerAspireCostTxt.text = "";
+        this.towerNameTxt.text = "";
+        this.towerVillagerCostTxt.text = "";
+        this.towerAspireImg.gameObject.SetActive(false);
+        this.towerVillagerImg.gameObject.SetActive(false);
     }
 }

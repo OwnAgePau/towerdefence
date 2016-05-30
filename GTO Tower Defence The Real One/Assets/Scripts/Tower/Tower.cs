@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Tower : MonoBehaviour {
 
+    [Header("General")]
     public List<GameObject> enemiesInRange = new List<GameObject>();
     // Upgrades and current level
     public int towerLevel = 0;
@@ -13,10 +14,11 @@ public class Tower : MonoBehaviour {
 
     // Aura towers
     public bool isAuraTower = false;
-
     public int aspireCost;
+    public int villagerCost = 1;
 
     // Target information
+    [Header("Target Info")]
     public GameObject target;
     public Focus focus = Focus.FIRST;
     public float height = 8f;
@@ -26,15 +28,12 @@ public class Tower : MonoBehaviour {
     public int projectiles = 1;
 
     // Shooting speed TO DO CHANGE THIS!!!!!!
+    [Header("Speed")]
     public float cooldown = 0.5f; // How long to wait untill shooting again
     public float currentCooldown = 0.0f; // Time till shooting
-
-	// Use this for initialization
-	void Start () {
-    }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         //this.target = this.GetTarget();
         // Aura Tower effect
         if (this.isAuraTower){

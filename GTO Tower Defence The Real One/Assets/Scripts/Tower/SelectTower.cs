@@ -105,7 +105,6 @@ public class SelectTower : MonoBehaviour{
 
     public bool CanPlaceTower(Tile tile){
         bool isValid = this.gridPathfinding.CheckIsValidPoint(tile.x, tile.z);
-
         // was SearchRouteTo
         if (this.bfs.SearchRouteTo(this.gridPathfinding.startPoint, this.gridPathfinding.checkPoint) != null && 
             this.bfs.SearchRouteTo(this.gridPathfinding.checkPoint, this.gridPathfinding.endPoint) != null && isValid){
@@ -133,6 +132,7 @@ public class SelectTower : MonoBehaviour{
         if (!Player.instance.isPaused){
             this.selectedTowerNr = towerNr;
             this.selectedTower = this.towers[towerNr];
+            BFS.instance.UpdateTiles();
             this.ShowAllGridSpots();
             // Call Method to display tower info (to see what you get when building the tower)  || actually needs to happen when hovering the button
         }

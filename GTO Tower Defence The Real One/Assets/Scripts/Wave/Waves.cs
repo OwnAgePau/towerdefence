@@ -4,40 +4,37 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class Waves : MonoBehaviour {
-
-    // TO DO : Add extension to allow different wave types like FAST, HORDE & BOSS. To change the health, speed or amount of enemies
-    // Do this by using both DamageType enum and a new enum called WaveType to determine what enemies and how many
-    public enum WaveType{
-        NORMAL,
-        FAST,
-        STRONG,
-        HORDE,
-        BOSS
-    }
-
-
     //public List<GameObject> waves = new List<GameObject>();
     //public Wave wave;
     //public int currentWave = 0;
     //public int lastWave;
 
-    public int enemiesLeft = 99;
+    //public int enemiesLeft = 99;
+    public static Waves instance;
 
     public GameObject startPoint;
-
-    //public float waveTime = 20.0f; // Time to clear a wave
     
+    // To DO : Display this break time (TIME UNTILL WAVE: (In the bottom left), Use a coloured bar to show the time untill next wave (this can also be calculated and simulated)
     public float breakTime = 10.0f; // Time between waves (a break)
     public float currentBreakTime = 0f;
     public bool isBreak = false;
 
     [Header("Wave Info")]
+    // Interval between each enemy
+    public float enemyInterval = 1.0f;
+    // Time before the next enemy spawns
+    public float timeTillNextEnemy = 1.0f;
+    // The amount of enemies before the stats get an upgrade
+    public int upgradeEnemies = 5;
+    public int enemiesLeft = 0;
     public Text currentWaveText;
+    public DamageType currentWaveDmgType;
     public Text nextWaveText;
-    public DamageType currentWaveType;
-    public DamageType nextWaveType;
-
-    //public List<GameObject> enemies = new List<GameObject>();
+    public DamageType nextWaveDmgType;
+    public int currentWaveIndex;
+    private WaveTypeInfo currentWaveType;
+    public WaveTypeInfo[] waveOrder;
+    
     [System.Serializable]
     public struct EnemyListObject{
         public DamageType enemyType;
@@ -72,12 +69,6 @@ public class Waves : MonoBehaviour {
     public GameObject enemy;
     //public string enemyName;
 
-    public float timeTillNextEnemy = 1.0f;
-    public float enemyInterval = 1.0f;
-    public int upgradeEnemies = 5;
-
-    public static Waves instance;
-
     void Awake(){
         instance = this;
     }
@@ -88,69 +79,78 @@ public class Waves : MonoBehaviour {
             this.spawnChance.Add(resDmgType.enemyType, resDmgType.chance);
         }
         this.UpgradeEnemies();
+        this.SetWaveType();
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         // Check if there is a break
         if (!isBreak) {
-            this.SpawnEnemies();
-        }
-        else{
-            if(this.currentBreakTime > 0.0f){
-                this.currentBreakTime -= Time.deltaTime;
+            if (this.enemyInterval <= 0.0f){
+                this.SpawnEnemies();
+                this.SetWaveType();
+                this.enemyInterval = this.timeTillNextEnemy;
             }
             else{
+                this.enemyInterval -= Time.deltaTime;
+            }
+        }
+        else{
+            if(this.currentBreakTime <= 0.0f){
                 this.isBreak = false;
+            }
+            else{
+                this.currentBreakTime -= Time.deltaTime;
             }
         }
     }
 
+    void SetWaveType(){
+        if(this.currentWaveType == null || enemiesLeft <= 0){
+            this.currentWaveIndex++;
+            if (this.currentWaveIndex >= this.waveOrder.Length){
+                this.currentWaveIndex = 0;
+            }
+            this.currentWaveType = this.waveOrder[this.currentWaveIndex];
+            this.isBreak = true;
+            this.currentBreakTime = this.breakTime;
+            this.enemiesLeft = this.currentWaveType.amountOfEnemies;
+            this.timeTillNextEnemy = this.currentWaveType.enemySpawnInterval;
+        }
+    }
+
     void SpawnEnemies(){
-        if(this.enemyInterval <= 0.0f){
-            this.enemyInterval = this.timeTillNextEnemy;
-            GameObject enemyParent = GameObject.FindGameObjectWithTag("enemyParent");
-            GameObject enemyPrefab = this.DecideEnemyType();
-            GameObject enemy = (GameObject)Instantiate(enemyPrefab, this.startPoint.transform.position, this.startPoint.transform.rotation);
-            enemy.name = enemyPrefab.name;
-            enemy.transform.parent = enemyParent.transform;
-            Enemy enemyScript = enemy.GetComponent<Enemy>();
-            enemyScript.fullHealth = enemyScript.health + Player.instance.enemyHealth;
-            enemyScript.health = enemyScript.fullHealth;
-            enemyScript.score += Player.instance.enemyScore;
-            this.UpgradeEnemies();
-        }
-        else{
-            this.enemyInterval -= Time.deltaTime;
-        }
+        GameObject enemyParent = GameObject.FindGameObjectWithTag("enemyParent");
+        GameObject enemyPrefab = this.GetEnemyPrefabToSpawn(currentWaveDmgType);
+        GameObject enemy = (GameObject)Instantiate(enemyPrefab, this.startPoint.transform.position, this.startPoint.transform.rotation);
+        enemy.name = enemyPrefab.name;
+        enemy.transform.parent = enemyParent.transform;
+        Enemy enemyScript = enemy.GetComponent<Enemy>();
+        enemyScript.fullHealth = (int)(enemyScript.health + (Player.instance.enemyHealth * this.currentWaveType.healthBonusFactor));
+        enemyScript.health = (int)(enemyScript.fullHealth * this.currentWaveType.healthBonusFactor); // This health bonus is only temporary
+        enemyScript.currentSpeed = enemyScript.speed * this.currentWaveType.speedBonusFactor;
+        enemyScript.score += (int)(Player.instance.enemyScore * this.currentWaveType.scoreBonusFactor);
+        this.UpgradeEnemies();
+        this.enemiesLeft--;
     }
 
     void UpgradeEnemies(){
         this.upgradeEnemies--;
         if (this.upgradeEnemies <= 0){
             Player.instance.IncreaseEnemyHealth();
-            if (this.nextWaveType.Equals(DamageType.NONE)){
+            if (this.nextWaveDmgType.Equals(DamageType.NONE)){
                 // Set current and future wave
                 this.CalculateEnemyTypeChances();
-                this.currentWaveType = this.nextWaveType;
+                this.currentWaveDmgType = this.nextWaveDmgType;
             }
             else{
-                this.currentWaveType = this.nextWaveType;
+                this.currentWaveDmgType = this.nextWaveDmgType;
                 this.CalculateEnemyTypeChances();
             }
-            this.currentWaveText.text = "Current Wave : " + this.currentWaveType.ToString().ToUpper();
-            this.nextWaveText.text = "Next Wave : " + this.nextWaveType.ToString().ToUpper();
+            this.currentWaveText.text = "Current Wave : " + this.currentWaveDmgType.ToString().ToUpper();
+            this.nextWaveText.text = "Next Wave : " + this.nextWaveDmgType.ToString().ToUpper();
             this.upgradeEnemies = 5;
         }
-    }
-
-    GameObject DecideEnemyType(){
-        /*if (this.upgradeEnemies <= 0){
-            this.CalculateEnemyTypeChances();
-        }*/
-        return this.enemy = this.GetEnemyPrefabToSpawn(currentWaveType);
-        //return this.enemy;
-        //return Resources.Load(this.enemyName) as GameObject;
     }
 
     void CalculateEnemyTypeChances(){
@@ -203,12 +203,12 @@ public class Waves : MonoBehaviour {
             // Step 4
             this.CalculateChancePerType(towerPercentage, damagePercentage);
             // Step 5
-            this.nextWaveType = this.GetEnemyTypeToSpawn();
+            this.nextWaveDmgType = this.GetEnemyTypeToSpawn();
         }
         else{
             // Spawn enemies when there are no towers yet!! (Or maybe not and wait for the player to start the game?)
             //this.enemy = this.GetEnemyPrefabToSpawn(DamageType.MAGE);
-            this.nextWaveType = DamageType.MAGE;
+            this.nextWaveDmgType = DamageType.MAGE;
         }
     }
 

@@ -18,6 +18,7 @@ public class BFS : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         this.gpManager = GridPathfinding.instance;
+        this.UpdateTiles();
     }
 
     void Update(){
@@ -42,8 +43,7 @@ public class BFS : MonoBehaviour {
                     GridPathfinding.instance.endPoint != tile){
                     tile.canPlaceTower = true;
                 }
-                else
-                {
+                else{
                     tile.canPlaceTower = false;
                 }
                 tile.ghostTower = null;

@@ -27,7 +27,7 @@ public class Achievements : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if(Player.instance.enemiesKilled > 1000){
             // First Day achievement achieved!
             this.UnlockTrophy(this.firstDayID);

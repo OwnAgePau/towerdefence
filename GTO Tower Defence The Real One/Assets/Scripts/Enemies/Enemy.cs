@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Enemy : MonoBehaviour {
 
     // Enemy Info
+    [Header("General Stats")]
     public int fullHealth = 50;
     public int health = 50;
     public int score = 20;
@@ -21,6 +22,7 @@ public class Enemy : MonoBehaviour {
     public List<ResistanceToDamageType> resistentTo = new List<ResistanceToDamageType>();
     private Dictionary<DamageType, float> hasResistanceTo = new Dictionary<DamageType, float>();
 
+    [Header("Death")]
     public float timeTillDeath = 2.8f;
     public bool isDead = false;
     public bool deathScoreRecieved = false;
@@ -30,6 +32,7 @@ public class Enemy : MonoBehaviour {
     public float enemyCurrentFlickerTime = 0f;
 
     // Debufs
+    [Header("Debufs")]
     public List<Debuf> debufs = new List<Debuf>();
     private List<Debuf> debufsToRemove = new List<Debuf>();
 
@@ -62,7 +65,7 @@ public class Enemy : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
         if (this.isEnemyDamaged) {
             if(this.enemyCurrentFlickerTime < this.enemyFlickerTime){
                 this.enemyCurrentFlickerTime += Time.deltaTime;

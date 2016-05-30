@@ -17,6 +17,7 @@ public class GUIcontroller : MonoBehaviour {
 
     [Header("Hover Text Objects")]
     public Image hoverImage;
+    public Image towerVillagerCost;
     public Text hoverTowernameText;
     public Text hoverTowerAspireText;
     public Text hoverUpgradeCostText;
@@ -27,6 +28,7 @@ public class GUIcontroller : MonoBehaviour {
     [Header("Building Cost")]
     public GameObject buildCost;
     public GameObject buildName;
+    public GameObject buildVillagerCost;
 
     [Header("Hover Info")]
     public HoverInfo hoverUpgradeObject;
