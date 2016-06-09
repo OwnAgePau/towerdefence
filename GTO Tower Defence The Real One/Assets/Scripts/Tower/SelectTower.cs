@@ -14,8 +14,10 @@ public class SelectTower : MonoBehaviour{
 
     [Header("Placement")]
     public GameObject[] towers;
+    public Tower[] towerScripts;
     public Tile hoveringTile;
     public GameObject ghostTower;
+    private GhostTower ghostTowerScript;
     public bool canPlaceTower = false;
 
     public Color colourCanPlace = new Color(0.1f, 0.1f, 0.1f);
@@ -36,8 +38,13 @@ public class SelectTower : MonoBehaviour{
     void Start(){
         this.gridPathfinding = GridPathfinding.instance;
         this.bfs = BFS.instance;
-        //gridParent = GameObject.Find("GridParent");
         tiles = this.GetAllTiles();
+        this.ghostTowerScript = this.ghostTower.GetComponent<GhostTower>();
+        this.towerScripts = new Tower[this.towers.Length];
+        for(int i = 0; i < this.towers.Length; i++){
+            GameObject towerObject = this.towers[i];
+            this.towerScripts[i] = towerObject.transform.FindChild(PlaceTower.instance.towerObjectName).gameObject.GetComponent<Tower>();
+        }
     }
 
     // Update is called once per frame
@@ -132,8 +139,12 @@ public class SelectTower : MonoBehaviour{
         if (!Player.instance.isPaused){
             this.selectedTowerNr = towerNr;
             this.selectedTower = this.towers[towerNr];
+            Tower selectedTowerScript = this.towerScripts[towerNr]; // OPTIMIZE : Save these references in the list.
             BFS.instance.UpdateTiles();
             this.ShowAllGridSpots();
+            this.ghostTowerScript.range = selectedTowerScript.range;
+            this.ghostTowerScript.SetRangeSphereActivity(true);
+            this.ghostTowerScript.UpdateTowerRange();
             // Call Method to display tower info (to see what you get when building the tower)  || actually needs to happen when hovering the button
         }
     }

@@ -30,6 +30,7 @@ public class Controls : MonoBehaviour {
     public Material selectedMaterial;
     public bool isGoingUp = true;
     public bool isEmissionOn = false;
+    private Tower highlightedTower;
 
     // Use this for initialization
     void Start () {
@@ -49,21 +50,26 @@ public class Controls : MonoBehaviour {
             }
             else{
                 LayerMask layerMask = (1 << 10);
-                GameObject hitObject = SelectTower.instance.GetMouseClick("tower", layerMask);
+                GameObject hitObject = SelectTower.instance.GetMouseClick("TowerObject", layerMask);
                 if (hitObject != null){
-                    if (hitObject.GetComponent<Tower>() != null){
-                        
-                        //this.selectedMaterial = this.towerInfoInstance.currentTower.GetComponent<MeshRenderer>().material;
-                        //this.selectedMaterial.SetColor("_EmissionColor", new Color(1f, 0f, 0f));
-                        this.isEmissionOn = true;
-                        // Check if the menu is open so that you only select a new tower if it isn't
-                        if (!this.towerInfoInstance.isHovering){
-                            this.towerInfoInstance.currentTower = hitObject.GetComponent<Tower>();
-                            this.towerInfoInstance.currentTowerObject = hitObject;
-                            this.towerInfoInstance.OpenMenu();
-                        }
-                        // TO DO HIGHLIGHT TOWER
+                    GameObject towerHit = hitObject.transform.FindChild("Tower").gameObject;
+                    Tower tower = towerHit.GetComponent<Tower>();
+                    //this.selectedMaterial = this.towerInfoInstance.currentTower.GetComponent<MeshRenderer>().material;
+                    //this.selectedMaterial.SetColor("_EmissionColor", new Color(1f, 0f, 0f));
+                    this.isEmissionOn = true;
+                    // Check if the menu is open so that you only select a new tower if it isn't
+                    if (!this.towerInfoInstance.isHovering){
+                        this.towerInfoInstance.currentTower = tower;
+                        this.towerInfoInstance.currentTowerObject = towerHit;
+                        this.towerInfoInstance.OpenMenu();
                     }
+                    // TO DO HIGHLIGHT TOWER, the tower range visualization can serve as a tower highlight.
+                    if (this.highlightedTower != null){
+                        this.highlightedTower.SetRangeSphereActivity(false);
+                    }
+                    tower.SetRangeSphereActivity(true);
+                    this.highlightedTower = tower;
+
                 }
                 else{
                     //this.towerInfoInstance.currentTower = null;
@@ -75,6 +81,9 @@ public class Controls : MonoBehaviour {
                         }*/
                         this.towerInfoInstance.HideMenu();
                         this.isEmissionOn = false;
+                        if (this.highlightedTower != null){
+                            this.highlightedTower.SetRangeSphereActivity(false);
+                        }
                     }
                 }
             }

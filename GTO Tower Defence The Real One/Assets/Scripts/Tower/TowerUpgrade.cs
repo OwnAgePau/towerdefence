@@ -6,9 +6,9 @@ public class TowerUpgrade : MonoBehaviour {
     public Upgrade[] upgrades;
     public bool hasEndlessUpgrades;
     public int maxProjectiles = 0;
-    public Tower tower;
+    private Tower tower;
     public HoverInfo hoverInfo;
-    public int maxLevel = 0;
+    public int maxLevel = 10;
 
     private float dmgToScaleFrom = 0;
     private float projToScaleFrom = 0;
@@ -23,6 +23,7 @@ public class TowerUpgrade : MonoBehaviour {
 
     void Start(){
         this.hoverInfo = GUIcontroller.instance.hoverUpgradeObject;
+        this.tower = this.gameObject.transform.parent.gameObject.GetComponent<Tower>();
         // Set damage to scale from and proj to scale from
         // Not sure if this part is still needed
         foreach (Upgrade upgrade in this.upgrades){

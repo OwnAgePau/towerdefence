@@ -6,14 +6,23 @@ using UnityEngine.UI;
 public class Tower : MonoBehaviour {
 
     [Header("General")]
+    public string name;
+    public float range = 110;
+    private TowerRange rangeScript;
     public List<GameObject> enemiesInRange = new List<GameObject>();
     // Upgrades and current level
     public int towerLevel = 0;
     public TowerUpgrade towerUpgradeObject;
     public Sprite towerImage;
 
+    // TO DO : add a pool of bullets to use when shooting, 
+    // the demon turrets are quite a problem as they will be spawning QUITE some bullets...
+    // so the earlier solution might have been a better one. 
+    // But that solution does not support multiple targets visually just yet.
+
     // Aura towers
     public bool isAuraTower = false;
+    public ParticleManager particleManager;
     public int aspireCost;
     public int villagerCost = 1;
 
@@ -26,17 +35,32 @@ public class Tower : MonoBehaviour {
     public DamageType type;
     public float slowAmount = 0.1f; // start with 10% slow
     public int projectiles = 1;
+    public List<DamageType> strongAgainst = new List<DamageType>();
 
     // Shooting speed TO DO CHANGE THIS!!!!!!
     [Header("Speed")]
     public float cooldown = 0.5f; // How long to wait untill shooting again
     public float currentCooldown = 0.0f; // Time till shooting
-	
+
+    void Start(){
+        this.rangeScript = this.GetComponent<TowerRange>();
+        this.rangeScript.SetTowerRange(this.range);
+        this.rangeScript.SetRangeSphereActivity(false);
+    }
+
 	// Update is called once per frame
 	void FixedUpdate () {
-        //this.target = this.GetTarget();
         // Aura Tower effect
         if (this.isAuraTower){
+            if (this.enemiesInRange.Count >= 1){
+                // Enemies in range, start the particle accelerator!
+                particleManager.PlayParticles();
+            }
+            else {
+                // No more enemies, no need to accelerate the particles!
+                particleManager.StopParticles();
+            }
+
             if (this.currentCooldown <= 0.1f){
                 this.DealAuraDamage();
                 this.currentCooldown = this.cooldown;
@@ -51,16 +75,14 @@ public class Tower : MonoBehaviour {
         foreach (GameObject enemyObj in this.enemiesInRange){
             if (enemyObj != null){
                 Enemy enemy = enemyObj.GetComponent<Enemy>();
-                if (this.type == DamageType.ICE){ // Slow
+                if (this.type == DamageType.ICE){ // Change this to use a AOEeffect script that holds all the AOE information, debuf, damage whatever
                     float newSpeed = 1f - this.slowAmount;
-                    //Debug.Log("Slow Amount : " + this.slowAmount + ", slow : " + newSpeed);
                     GameObject debufs = GameObject.Find("Debufs");
                     DebufScript debuf = debufs.transform.FindChild("Slowed").gameObject.GetComponent<DebufScript>();
                     Debuf slowDebuf = debuf.CreateDebuf();
                     slowDebuf.slow = newSpeed;
-                    enemy.ApplyEnemyDebuf(slowDebuf, slowDebuf.debufTime);
+                    enemy.ApplyEnemyDebuf(slowDebuf, false);
                     slowDebuf.SetEnemy(enemy);
-                    //enemy.currentSpeed = enemy.speed * slow;
                 }
                 else{ // Damage
                     enemy.DamageEnemy(this.damage, this.type);
@@ -96,11 +118,6 @@ public class Tower : MonoBehaviour {
         if(viableTargets.Count > 0){
             if (this.focus.Equals(Focus.FIRST)){
                 target = viableTargets[0];
-                /*foreach (GameObject enemy in this.enemiesInRange){
-                    if (enemy != null){
-                        target = enemy;
-                    }
-                }*/
             }
             else if (this.focus.Equals(Focus.LAST)){
                 target = viableTargets[viableTargets.Count - 1];
@@ -123,9 +140,6 @@ public class Tower : MonoBehaviour {
         Enemy enemy = col.GetComponent<Enemy>();
         if (enemy != null){
             this.RemoveEnemy(col.gameObject);
-            /*if(this.type == DamageType.ICE){
-                enemy.currentSpeed = enemy.speed;
-            }*/
         }
     }
 
@@ -133,13 +147,16 @@ public class Tower : MonoBehaviour {
         if (deadEnemy != null){
             if (this.enemiesInRange.Contains(deadEnemy)){
                 this.enemiesInRange.Remove(deadEnemy);
-                /*if (this.target != null){
-                    if (this.target.Equals(deadEnemy)){
-                        //this.target = this.GetTarget();
-                    }
-                }*/
             }
         }
+    }
+
+    public void SetRangeSphereActivity(bool active) {
+        this.rangeScript.SetRangeSphereActivity(active);
+    }
+
+    public void UpdateTowerRange(){
+        this.rangeScript.SetTowerRange(this.range);
     }
 }
 

@@ -30,7 +30,7 @@ public class HoverInfo : MonoBehaviour {
     void Update() {
         if (tower != null) {
             this.aspireCost = tower.aspireCost;
-            this.nameToShow = tower.gameObject.name;
+            this.nameToShow = tower.name;
             this.SetButtonState();
         }
         else if (this.isButton) {
@@ -60,7 +60,7 @@ public class HoverInfo : MonoBehaviour {
 
     // These 2 methods below could better go to GUIcontroller, or even better a new controller for the BuildButtons
     public void SetCostText(int towerNr){
-        Tower tower = SelectTower.instance.towers[towerNr].GetComponent<Tower>();
+        Tower tower = SelectTower.instance.towerScripts[towerNr];
         int cost = tower.aspireCost;
         this.towerNameTxt.text = tower.name;
         this.towerAspireCostTxt.text = cost.ToString();

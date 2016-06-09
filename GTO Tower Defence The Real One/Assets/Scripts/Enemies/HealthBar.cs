@@ -6,6 +6,7 @@ public class HealthBar : MonoBehaviour {
     private Enemy enemy;
 
     public Vector3 scale;
+    public float enemyHealthBarSize;
     public float enemyFullHealth;
     public float healthPercentage;
 
@@ -21,21 +22,35 @@ public class HealthBar : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        this.transform.LookAt(Camera.main.gameObject.transform);
-        float health = (float)enemy.health;
-        float fullHealth = (float)enemy.fullHealth;
-        this.healthPercentage = health / fullHealth;
-        float currentWidth = this.scale.x * this.healthPercentage;
-        this.transform.localScale = new Vector3(currentWidth, scale.y, scale.z);
-        if(this.healthPercentage < 0.61f && this.healthPercentage > 0.32f){
+	void FixedUpdate () { 
+    }
+
+    public void UpdateHealthBar(){
+        this.healthPercentage = this.RecalculateLifePercentage();
+        this.UpdateHealthBarSize();
+        this.UpdateHealthBarColor();
+        if (enemy.health < 0){
+            this.gameObject.SetActive(false);
+        }
+    }
+
+    private void UpdateHealthBarColor(){
+        if (this.healthPercentage < 0.61f && this.healthPercentage > 0.32f){
             bar.color = this.orange;
         }
         if (this.healthPercentage < 0.31f){
             bar.color = this.red;
         }
-        if (enemy.health < 0){
-            this.gameObject.SetActive(false);
-        }
+    }
+
+    private float RecalculateLifePercentage(){
+        float health = (float)enemy.health;
+        float fullHealth = (float)enemy.fullHealth;
+        return health / fullHealth;
+    }
+
+    private void UpdateHealthBarSize(){
+        float currentWidth = this.scale.x * this.healthPercentage;
+        this.transform.localScale = new Vector3(currentWidth, scale.y, scale.z);
     }
 }

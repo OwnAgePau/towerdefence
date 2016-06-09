@@ -7,6 +7,8 @@ public class PlaceTower : MonoBehaviour{
     public static PlaceTower instance;
     public SelectTower towerSelection;
 
+    public string towerObjectName = "Tower";
+
     private GridPathfinding gpManager;
     private BFS bfs;
 
@@ -37,14 +39,17 @@ public class PlaceTower : MonoBehaviour{
 
     public void PlaceTowerOnGrid(GameObject tower){
         //towerSelection.canPlaceTower
-        if (towerSelection.canPlaceTower && Player.instance.CheckVillagers() && this.HasEnoughPoints(tower)){
+        Tower towerScript = tower.transform.FindChild(this.towerObjectName).gameObject.GetComponent<Tower>();
+        // Move the canPay check to the Player script and provide the tower cost as a value to check, to keep the calculations in one place
+        if (towerSelection.canPlaceTower && Player.instance.CheckVillagers() && this.HasEnoughPoints(towerScript)){
             Tile tile = towerSelection.hoveringTile;
             if (tile != null){
                 float x = this.gpManager.startPosX + (tile.x * this.gpManager.tileSize);
                 float z = this.gpManager.startPosZ + (tile.z * this.gpManager.tileSize);
                 if (this.gpManager.grid[tile.x][tile.z].tower == null){
-                    this.SubstractTowerCost(tower);
+                    this.SubstractTowerCost(towerScript);
                     this.PlaceNewTower(tower, tile, x, 0.5f, z);
+                    TowerManager.instance.AddTower(towerScript);
                     // Visual effect on the tile - Could possibly be removed
                     /*GameObject child = this.gpManager.grid[tile.x][tile.z].tileObject.transform.FindChild("Bottom").gameObject;
                     child.GetComponent<MeshRenderer>().material = this.gpManager.blue;*/
@@ -59,9 +64,8 @@ public class PlaceTower : MonoBehaviour{
         }
     }
 
-    public bool HasEnoughPoints(GameObject tower){
-        Tower towerScript = tower.GetComponent<Tower>();
-        return Player.instance.CheckAspirePoints(towerScript.aspireCost);
+    public bool HasEnoughPoints(Tower tower){
+        return Player.instance.CheckAspirePoints(tower.aspireCost);
     }
 
     public GameObject PlaceOnGrid(GameObject tower, Tile tile, float x, float y, float z){
@@ -84,9 +88,8 @@ public class PlaceTower : MonoBehaviour{
         return newTower;
     }
 
-    public void SubstractTowerCost(GameObject tower){
-        Tower towerScript = tower.GetComponent<Tower>();
-        Player.instance.RemoveAspirePoints(towerScript.aspireCost);
+    public void SubstractTowerCost(Tower tower){
+        Player.instance.RemoveAspirePoints(tower.aspireCost);
         Player.instance.RemoveVillager();
     }
 }

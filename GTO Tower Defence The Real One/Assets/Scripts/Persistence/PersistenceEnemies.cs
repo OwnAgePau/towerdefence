@@ -20,12 +20,12 @@ public class PersistenceEnemies : MonoBehaviour{
             Tile destination = GridPathfinding.instance.GetTile(enemyMoveScript.destination);
             List<EnemyDebufData> debufsList = new List<EnemyDebufData>();
             foreach (Debuf debuf in enemyScript.debufs){
-                EnemyDebufData debufData = new EnemyDebufData(debuf.debufName, debuf.timeUntillNextTick, debuf.debufTime, debuf.slow);
+                EnemyDebufData debufData = new EnemyDebufData(debuf.debufName, debuf.damage, debuf.timeUntillNextTick, debuf.debufTime, debuf.slow);
                 debufsList.Add(debufData);
             }
             List<EnemyDebufData> debufsToRemoveList = new List<EnemyDebufData>();
             foreach (Debuf debuf in enemyScript.GetDebufsToRemove()){
-                EnemyDebufData debufData = new EnemyDebufData(debuf.debufName, debuf.timeUntillNextTick, debuf.debufTime, debuf.slow);
+                EnemyDebufData debufData = new EnemyDebufData(debuf.debufName, debuf.damage, debuf.timeUntillNextTick, debuf.debufTime, debuf.slow);
                 debufsToRemoveList.Add(debufData);
             }
             EnemyData enemyData = new EnemyData(enemy.name, enemyScript.fullHealth, enemyScript.health, enemyScript.score, enemyScript.currentSpeed, enemyScript.timeTillDeath,
@@ -60,6 +60,7 @@ public class PersistenceEnemies : MonoBehaviour{
             foreach (EnemyDebufData debufData in enemyData.debufs){
                 Debuf debuf = GameObject.Find(debufData.debufName).GetComponent<DebufScript>().CreateDebuf();
                 debuf.SetEnemy(enemyScript);
+                debuf.damage = debufData.debufDamage;
                 debuf.slow = debufData.slowAmount;
                 debuf.timeUntillNextTick = debufData.timeUntillNextTick;
                 debuf.debufTime = debufData.debufTime;
@@ -71,6 +72,7 @@ public class PersistenceEnemies : MonoBehaviour{
                 Debuf debuf = GameObject.Find(debufData.debufName).GetComponent<DebufScript>().CreateDebuf();
                 debuf.SetEnemy(enemyScript);
                 debuf.slow = debufData.slowAmount;
+                debuf.damage = debufData.debufDamage;
                 debuf.timeUntillNextTick = debufData.timeUntillNextTick;
                 debuf.debufTime = debufData.debufTime;
                 debufsList.Add(debuf);

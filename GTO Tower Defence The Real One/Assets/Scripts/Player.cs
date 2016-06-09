@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
@@ -33,6 +34,9 @@ public class Player : MonoBehaviour {
     [Header("Enemy Flicker Colors")]
     public Color flickerColor;
     public Color normalEmissionColor;
+
+    [Header("Enemy Type Colors")]
+    public List<EnemyTypeColor> enemyTypeColor = new List<EnemyTypeColor>();
 
     void Awake(){
         instance = this;
@@ -158,5 +162,18 @@ public class Player : MonoBehaviour {
         //popUpText.GetComponent<PopUpText>().textColor = color;
         popUpText.GetComponent<Outline>().effectColor = color;
         popUpText.transform.parent = this.canvas.transform;
+    }
+}
+
+[System.Serializable]
+public struct EnemyTypeColor
+{
+    public DamageType enemyType;
+    public Color color;
+
+    public EnemyTypeColor(DamageType dmgType, Color color)
+    {
+        this.enemyType = dmgType;
+        this.color = color;
     }
 }

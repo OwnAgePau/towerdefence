@@ -6,10 +6,29 @@ public class BulletHandler : MonoBehaviour {
 
     public static BulletHandler instance;
 
-    public GameObject[] bulletPrefabs;
-    public List<GameObject> fireballs = new List<GameObject>();
-    public List<GameObject> magicbolts = new List<GameObject>();
-    public List<GameObject> poisonorbs = new List<GameObject>();
+    public BulletType[] bulletPrefabs = new BulletType[4];
+
+    public List<BulletType> bullets = new List<BulletType>();
+
+    [System.Serializable]
+    public struct BulletType{
+        public DamageType type;
+        public GameObject bullet;
+
+        public BulletType(DamageType type, GameObject bullet){
+            this.type = type;
+            this.bullet = bullet;
+        }
+    }
+
+    /// <summary>
+    ///  Create a list of bullet prefabs where a bullet is linked to a damage Type
+    /// </summary>
+    
+   
+    /// <summary>
+    /// Create a list for each of the bullet prefabs
+    /// </summary>
 
     void Awake(){
         instance = this;
@@ -17,92 +36,72 @@ public class BulletHandler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        this.AddNewBullets(4, this.bulletPrefabs[0], this.fireballs);
-        this.AddNewBullets(4, this.bulletPrefabs[1], this.magicbolts);
-        this.AddNewBullets(4, this.bulletPrefabs[2], this.poisonorbs);
+        this.InstantiatePool();
     }
 
-    public void AddNewBullets(int amount, GameObject prefab, List<GameObject> bulletList){
+    public void InstantiatePool(){
+        foreach (BulletType type in this.bulletPrefabs) {
+            this.AddNewBullets(4, type);
+        }
+    }
+
+    public void AddNewBullets(int amount, BulletType prefab){
         for (int i = 0; i < amount; i++){
-            GameObject obj = (GameObject)Instantiate(Resources.Load(prefab.name));
-            obj.transform.parent = this.gameObject.transform;
-            obj.name = prefab.name;
-            obj.SetActive(false);
-            bulletList.Add(obj);
+            GameObject bulletObject = (GameObject)Instantiate(Resources.Load(prefab.bullet.name));
+            bulletObject.transform.parent = this.gameObject.transform;
+            bulletObject.name = prefab.bullet.name;
+            bulletObject.SetActive(false);
+            BulletType bulletType = new BulletType(prefab.type, bulletObject);
+            this.bullets.Add(bulletType);
         }
     }
 
-    public GameObject AddNewBullet(GameObject prefab, List<GameObject> bulletList){
-        GameObject obj = (GameObject)Instantiate(Resources.Load(prefab.name));
-        obj.transform.parent = this.gameObject.transform;
-        obj.name = prefab.name;
-        obj.SetActive(false);
-        bulletList.Add(obj);
-        Debug.Log(obj.name);
-        return obj;
+    public GameObject AddNewBullet(BulletType prefab){
+        GameObject bulletObject = (GameObject)Instantiate(Resources.Load(prefab.bullet.name));
+        bulletObject.transform.parent = this.gameObject.transform;
+        bulletObject.name = prefab.bullet.name;
+        bulletObject.SetActive(false);
+        BulletType bulletType = new BulletType(prefab.type, bulletObject);
+        this.bullets.Add(bulletType);
+        Debug.Log("New bullet created : " + bulletObject.name);
+        return bulletObject;
     }
 
-    public GameObject GetInactiveBullet(string name){
-        if (name.Equals(bulletPrefabs[0].name)){
-            return this.GetInactiveBullet(name, this.fireballs, 0);
-        }
-        else if (name.Equals(bulletPrefabs[1].name)){
-            return this.GetInactiveBullet(name, this.magicbolts, 1);
-        }
-        else if (name.Equals(bulletPrefabs[2].name)){
-            return this.GetInactiveBullet(name, this.poisonorbs, 2);
-        }
-        return null;
-    }
-
-    private GameObject GetInactiveBullet(string name, List<GameObject> list, int nr){
+    public GameObject GetInactiveBullet(DamageType type){
         GameObject inactiveBullet = null;
-        if (list.Count > 0){
-            inactiveBullet = list[0];
-            inactiveBullet.SetActive(true);
-            list.RemoveAt(0);
-            return inactiveBullet;
+        foreach(BulletType bulletType in this.bullets){
+            if (bulletType.type.Equals(type)){
+                if (!bulletType.bullet.active){
+                    bulletType.bullet.SetActive(true);
+                    return bulletType.bullet;
+                }
+            }
         }
-        else{
-            this.AddNewBullets(2, bulletPrefabs[nr], list);
+        // If this is reached, no bullet has been found so a new one is needed
+        BulletType newBulletType = this.GetBulletType(type);
+        if (newBulletType.bullet != null){
+            // Add a new inactive bullet, but this one will be used by this tower, so set it active
+            GameObject newBullet = this.AddNewBullet(newBulletType);
+            newBullet.SetActive(true);
+            return newBullet;
         }
-        //list.Remove(bullet);
-        //bullet.SetActive(true);
+        else {
+            Debug.Log("Bullet Could Not Be Added!!!");
+        }
         return null;
     }
 
-    public void AddActiveBullet(GameObject obj){
-        if (obj.name.Equals(bulletPrefabs[0].name)){
-            this.AddActiveBullet(obj, this.fireballs);
+    public BulletType GetBulletType(DamageType type){
+        BulletType nullType = new BulletType();
+        foreach (BulletType bulletType in this.bulletPrefabs) {
+            if (bulletType.type.Equals(type)){
+                return bulletType;
+            }
         }
-        else if (obj.name.Equals(bulletPrefabs[1].name)){
-            this.AddActiveBullet(obj, this.magicbolts);
-        }
-        else if (obj.name.Equals(bulletPrefabs[2].name)){
-            this.AddActiveBullet(obj, this.poisonorbs);
-        }
-    }
-
-    private void AddActiveBullet(GameObject obj, List<GameObject> list){
-        list.Add(obj);
-        obj.SetActive(false);
+        return nullType;
     }
 
     public void ClearPool(){
-        for (int i = this.fireballs.Count - 1; i > 0; i--){
-            GameObject obj = this.fireballs[i];
-            this.fireballs.RemoveAt(i);
-            Destroy(obj);
-        }
-        for (int i = this.magicbolts.Count - 1; i > 0; i--){
-            GameObject obj = this.magicbolts[i];
-            this.magicbolts.RemoveAt(i);
-            Destroy(obj);
-        }
-        for (int i = this.poisonorbs.Count - 1; i > 0; i--){
-            GameObject obj = this.poisonorbs[i];
-            this.poisonorbs.RemoveAt(i);
-            Destroy(obj);
-        }
+        this.bullets.Clear();
     }
 }

@@ -8,10 +8,12 @@ public class Enemy : MonoBehaviour {
     [Header("General Stats")]
     public int fullHealth = 50;
     public int health = 50;
+    public HealthBar healthBar;
     public int score = 20;
     public float currentSpeed = 1f;
     public float speed = 1f;
     public DamageType enemyType;
+    public List<string> isImmuneTo = new List<string>();
 
     [System.Serializable]
     public struct ResistanceToDamageType {
@@ -21,6 +23,16 @@ public class Enemy : MonoBehaviour {
     }
     public List<ResistanceToDamageType> resistentTo = new List<ResistanceToDamageType>();
     private Dictionary<DamageType, float> hasResistanceTo = new Dictionary<DamageType, float>();
+
+    [System.Serializable]
+    public struct WeaknessForDamageType
+    {
+        public DamageType dmgType;
+        [Range(0, 1)]
+        public float weakness;
+    }
+    public List<ResistanceToDamageType> weaknessFor = new List<ResistanceToDamageType>();
+    private Dictionary<DamageType, float> hasWeaknessFor = new Dictionary<DamageType, float>();
 
     [Header("Death")]
     public float timeTillDeath = 2.8f;
@@ -102,14 +114,7 @@ public class Enemy : MonoBehaviour {
             if (this.debufsToRemove.Count > 0) {
                 this.debufsToRemove.RemoveAt(0);
             }
-            foreach (Debuf debuf in this.debufs) {
-                Transform child = this.transform.FindChild(debuf.debufName);
-                if (child == null) {
-                    Vector3 pos = new Vector3(this.transform.position.x, this.transform.position.y + 0.5f, this.transform.position.z);
-                    GameObject childObject = GameObject.Instantiate(debuf.debufParticles, pos, this.transform.rotation) as GameObject;
-                    childObject.transform.parent = this.transform;
-                    childObject.name = debuf.debufName;
-                }
+            foreach (Debuf debuf in this.debufs) { // You only want to have the debuf tick here, you don't want to constantly instantiate it here, instantiate once when applying the debuf on the enemy                
                 debuf.DoTick();
             }
         }
@@ -137,25 +142,41 @@ public class Enemy : MonoBehaviour {
         this.debufsToRemove = debufsToRemove;
     }
 
-    public void ApplyEnemyDebuf(Debuf debuf) { // The debuf will stack with the debuf of the same kind
+    public void ApplyEnemyDebuf(Debuf debuf, bool stacking) { // The debuf will stack with the debuf of the same kind
+        if (this.HasImmunityFor(debuf.debufName)){
+            return;
+        }
         Debuf enDebuf = this.HasDebuf(debuf.debufName);
         if (enDebuf != null) {
-            enDebuf.debufTime += debuf.debufTime;
+            if (stacking){
+                enDebuf.debufTime += debuf.debufTime;
+            }
+            else {
+                enDebuf.debufTime = debuf.debufTime;
+            }
         }
         else{
             if (!debuf.debufName.Equals("")){
                 this.debufs.Add(debuf);
+                Vector3 pos = new Vector3(this.transform.position.x, this.transform.position.y + 0.5f, this.transform.position.z);
+                GameObject debufObject = DebufHandler.instance.GetInactiveDebuf(debuf.debufName);
+                debufObject.transform.parent = this.transform;
+                debufObject.transform.position = pos;
             }
         }
     }
 
-    public void ApplyEnemyDebuf(Debuf debuf, float time){ // Apply debuf, but doesn't stack with the same kind
-        Debuf enDebuf = this.HasDebuf(debuf.debufName);
-        if (enDebuf != null){
-            enDebuf.debufTime = time;
+    public bool HasImmunityFor(string debufName){
+        if (this.isImmuneTo.Contains(debufName)){
+            return true;
         }
-        else{
-            this.debufs.Add(debuf);
+        return false;
+    }
+
+    public void DeactivateDebuf(Debuf debuf){
+        Transform debufObject = this.transform.FindChild(debuf.debufName);
+        if (debufObject != null){
+            DebufHandler.instance.AddActiveDebufToPool(debufObject.gameObject);
         }
     }
 
@@ -171,10 +192,7 @@ public class Enemy : MonoBehaviour {
     public void RemoveDebuf(Debuf debuf){
         if(this != null){
             this.debufsToRemove.Add(debuf);
-            Transform child = this.transform.FindChild(debuf.debufName);
-            if (child != null){
-                Destroy(child.gameObject);
-            }
+            this.DeactivateDebuf(debuf);
         }
     }
 
@@ -206,12 +224,17 @@ public class Enemy : MonoBehaviour {
 
     void Die(){ 
         this.isDead = true;
+        foreach(Debuf debuf in this.debufs){
+            this.DeactivateDebuf(debuf);
+        }
         Destroy(this.transform.gameObject); 
     }
 
     public void DamageEnemy(float damage, DamageType damageType){
-        float damageReduction = this.CalcDamageReduction(damage, damageType);
-        this.health -= (int)(damage - damageReduction);
+        float damageReduced = this.CalcDamageReduction(damage, damageType);
+        float bonusDamage = this.CalcBonusDamage(damage, damageType);
+        float totalDamage = damage - damageReduced + bonusDamage;
+        this.health -= (int)(totalDamage);
         if (this.isEnemyDamaged){
             this.enemyCurrentFlickerTime = 0f;
         }
@@ -223,12 +246,22 @@ public class Enemy : MonoBehaviour {
                 renderer.material = mat;
             }
         }
+        this.healthBar.UpdateHealthBar();
     }
 
-    public float CalcDamageReduction(float damage, DamageType damageType){
-        float resistance = 0f;
-        if (hasResistanceTo.TryGetValue(damageType, out resistance)) {
-            float damageResisted = resistance * damage;
+    public float CalcBonusDamage(float baseDamage, DamageType damageType){
+        float weaknessMultiplier = 0f;
+        if (hasResistanceTo.TryGetValue(damageType, out weaknessMultiplier)){
+            float bonusDamage = weaknessMultiplier * baseDamage;
+            return bonusDamage;
+        }
+        return 0;
+    }
+
+    public float CalcDamageReduction(float baseDamage, DamageType damageType){
+        float resistanceMultiplier = 0f;
+        if (hasResistanceTo.TryGetValue(damageType, out resistanceMultiplier)) {
+            float damageResisted = resistanceMultiplier * baseDamage;
             return damageResisted;
         }
         return 0;

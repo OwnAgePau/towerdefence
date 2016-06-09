@@ -23,8 +23,11 @@ public class TowerInfo : MonoBehaviour {
     public Text towerName;
     public Text towerDamage;
     public Text towerLevel;
+    public string levelText = "Level: ";
     public Text towerProjectiles;
     public Text towerSlow;
+    public Text towerRange;
+    public Text towerStrongAgainst;
     public GameObject towerImage;
     [Header("Upgrade Tower Info")]
     public Text damageUpgrade;
@@ -59,7 +62,7 @@ public class TowerInfo : MonoBehaviour {
 	void Update () {
         if(GUIcontroller.instance.isUICanvasLoaded && !this.isAnimatingMenu){
             if(this.isMenuOpen && !this.shouldMenuBeOpen){
-                // Menu is open but should be close
+                // Menu is open but should be closed
                 this.HideMenu();
             }
             else if(!this.isMenuOpen && this.shouldMenuBeOpen){
@@ -77,8 +80,17 @@ public class TowerInfo : MonoBehaviour {
             this.towerSlow.text = this.currentTower.slowAmount.ToString();
             this.towerImage.GetComponent<Image>().name = this.towerName.text;
             this.towerImage.GetComponent<Image>().sprite = this.currentTower.towerImage;
-            //this.towerImage.mainTexture = this.currentTower.towerImage;
-            this.towerLevel.text = this.currentTower.towerLevel.ToString();
+            this.towerLevel.text = this.levelText + this.currentTower.towerLevel.ToString();
+            this.towerRange.text = this.currentTower.range.ToString();
+            string strongAgainst = "";
+            for(int i = 0; i < this.currentTower.strongAgainst.Count; i++) {
+                DamageType type = this.currentTower.strongAgainst[i];
+                if(i > 0){
+                    strongAgainst += ", ";
+                }
+                strongAgainst += type.ToString();
+            }
+            this.towerStrongAgainst.text = strongAgainst;
             Upgrade towerUpgrade = this.currentTower.getUpgrade();
             if(towerUpgrade == null){
                 return;
@@ -151,6 +163,7 @@ public class TowerInfo : MonoBehaviour {
         // Scale up the menu
         // Transform the tower position to a screen position to put the menu 
         Vector3 screenPos = Camera.main.WorldToScreenPoint(this.currentTowerObject.transform.position);
+        // Change this position to a normal position on the UI, maybe this looks better I DUNNO
         this.towerInfoPosMenu.transform.position = new Vector3(screenPos.x, screenPos.y, screenPos.z);
         this.shouldMenuBeOpen = true;
         if (!this.isAnimatingMenu && !this.isMenuOpen){

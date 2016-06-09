@@ -80,12 +80,15 @@ public class EnemyData{
 public class EnemyDebufData{
     public string debufName;
 
+    public float debufDamage;
+
     public float timeUntillNextTick = 2f;
     public float debufTime = 0.0f;
     public float slowAmount;
 
-    public EnemyDebufData(string debufName, float timeUntillNextTick, float debufTime, float slowAmount){
+    public EnemyDebufData(string debufName, float debufDamage, float timeUntillNextTick, float debufTime, float slowAmount){
         this.debufName = debufName;
+        this.debufDamage = debufDamage;
         this.timeUntillNextTick = timeUntillNextTick;
         this.debufTime = debufTime;
         this.slowAmount = slowAmount;

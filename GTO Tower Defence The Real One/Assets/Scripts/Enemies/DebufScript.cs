@@ -11,14 +11,12 @@ public class DebufScript : MonoBehaviour {
     public DamageType typeOfDamage;
     public GameObject debufParticles;
 
-    //public Debuf debufTemplate;
-
-    // Use this for initialization
-    void Start () {
-        //debufTemplate = new Debuf(this.debufName, this.damage, this.debufTime);
-	}
+    // Create a debuf that is scaled to the tower Level
+    public Debuf CreateDebuf(int towerLevel){
+        return new Debuf(this.debufName, this.damage * (towerLevel + 1 / 2), this.slow, this.isTimed, this.typeOfDamage, this.debufTime, debufParticles);
+    }
 
     public Debuf CreateDebuf(){
-        return new Debuf(this.debufName, this.damage, this.slow, this.isTimed, this.typeOfDamage, this.debufTime, debufParticles);
+        return new Debuf(this.debufName, (float)this.damage, this.slow, this.isTimed, this.typeOfDamage, this.debufTime, debufParticles);
     }
 }

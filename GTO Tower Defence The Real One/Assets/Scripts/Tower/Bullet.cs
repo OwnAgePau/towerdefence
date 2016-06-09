@@ -12,20 +12,22 @@ public class Bullet : MonoBehaviour {
     //public int damage = 10;
 
     public float deathTimer = 5f;
+    public float startDeathTimer = 5f;
 
     private BulletParticle particleObject;
     public GameObject explosion;
 
     public string debufName;
     public Debuf debuf;
+    private DebufScript debufScript;
 
 	// Use this for initialization
 	void Start () {
         this.particleObject = this.GetComponentInChildren<BulletParticle>();
         GameObject debufs = GameObject.Find("Debufs");
-        DebufScript debufScript = debufs.transform.FindChild(debufName).gameObject.GetComponent<DebufScript>();
+        debufScript = debufs.transform.FindChild(debufName).gameObject.GetComponent<DebufScript>();
         if(debufScript != null){
-            this.debuf = debufScript.CreateDebuf();
+            this.debuf = debufScript.CreateDebuf(this.firedFrom.towerLevel);
         } 
 	}
 	
@@ -43,7 +45,7 @@ public class Bullet : MonoBehaviour {
             this.transform.position = Vector3.MoveTowards(this.transform.position, targetPos, step);
         }
         else{
-            Destroy(this.transform.gameObject);
+            this.SetInactive();
             //BulletHandler.instance.AddActiveBullet(this.gameObject);
         }
 
@@ -51,8 +53,7 @@ public class Bullet : MonoBehaviour {
             this.deathTimer -= Time.deltaTime;
         }
         else{
-            Destroy(this.transform.gameObject);
-            //BulletHandler.instance.AddActiveBullet(this.gameObject);
+            this.SetInactive();
         }
     }
 
@@ -61,14 +62,13 @@ public class Bullet : MonoBehaviour {
         if (enemy != null){
             enemy.DamageEnemy(this.firedFrom.damage, this.firedFrom.type);
             if (!debuf.debufName.Equals("")){
-                enemy.ApplyEnemyDebuf(this.debuf);
+                enemy.ApplyEnemyDebuf(this.debuf, true);
                 debuf.SetEnemy(enemy);
             }
             if (this.explosion != null){
                 this.CreateExplosion(col.gameObject);
             }
-            Destroy(this.transform.gameObject);
-            //BulletHandler.instance.AddActiveBullet(this.gameObject);
+            this.SetInactive();
         }
     }
 
@@ -82,9 +82,21 @@ public class Bullet : MonoBehaviour {
 
     public void SetFiredFrom(Tower tower){
         this.firedFrom = tower;
+        if (debufScript != null) {
+            // If this bullet contains a debuf, re-instantiate it with the correct towerlevel
+            this.debuf = debufScript.CreateDebuf(this.firedFrom.towerLevel);
+        }
     }
 
     public Tower GetFiredFrom(){
         return this.firedFrom;
+    }
+
+    private void SetInactive(){
+        // Reset the bullet to go inactive again
+        this.deathTimer = this.startDeathTimer;
+        this.firedFrom = null;
+        this.destination = null;
+        this.gameObject.SetActive(false);
     }
 }

@@ -16,15 +16,13 @@ public class TowerProjectile : MonoBehaviour {
     public GameObject bullet;
 
     private AudioScript projectileSounds;
-    public AudioSource source;
 
-    public List<GameObject> bullets = new List<GameObject>();
+    public List<GameObject> bullets = new List<GameObject>(); // A tower Projectile should have a pool of bullets avaible to choose from, to keep from destroying creating and just recycling bullets.
 
     // Use this for initialization
     void Start () {
         this.bulletParent = GameObject.FindGameObjectWithTag("bulletParent");
         this.projectileSounds = this.gameObject.GetComponent<AudioScript>();
-        this.source = this.gameObject.GetComponent<AudioSource>();
         
         this.towerScript = this.GetComponent<Tower>();
         if (this.debuf != null){
@@ -55,22 +53,20 @@ public class TowerProjectile : MonoBehaviour {
         GameObject target = towerScript.GetTarget(this.targets);
         if(target != null){
             this.targets.Add(target);
-            // Was this.target = towerScript.GetTarget();
-            Vector3 bulletStartPos = new Vector3(this.transform.position.x, this.transform.position.y + (towerScript.height / 2), this.transform.position.z);
-            // bulletStartPos, this.transform.rotation
-            //GameObject bullet = BulletHandler.instance.GetInactiveBullet(this.bullet.name);
-            GameObject bullet = (GameObject)Instantiate(this.bullet, bulletStartPos, this.transform.rotation);
-            bullet.transform.parent = this.bulletParent.transform;
-            bullet.name = this.bullet.name;
-            bullet.transform.position = bulletStartPos;
-            Bullet bulletScript = bullet.GetComponent<Bullet>();
-            bulletScript.bulletStartPos = bulletStartPos;
-            bulletScript.SetDestination(target);
-            bulletScript.SetFiredFrom(towerScript);
-            if (this.debuf != null)
-            {
-                bulletScript.debuf = this.debufScript.CreateDebuf();
-            }
+            GameObject bullet = BulletHandler.instance.GetInactiveBullet(this.towerScript.type);
+            if (bullet != null) {
+                Vector3 bulletStartPos = new Vector3(this.transform.position.x, this.transform.position.y + (towerScript.height / 2), this.transform.position.z);
+                bullet.transform.position = bulletStartPos;
+                bullet.name = this.bullet.name;
+                bullet.transform.position = bulletStartPos;
+                Bullet bulletScript = bullet.GetComponent<Bullet>();
+                bulletScript.bulletStartPos = bulletStartPos;
+                bulletScript.SetDestination(target);
+                bulletScript.SetFiredFrom(towerScript);
+                if (this.debuf != null){
+                    bulletScript.debuf = this.debufScript.CreateDebuf(this.towerScript.towerLevel);
+                }
+            }            
         }
         
     }

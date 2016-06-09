@@ -63,7 +63,7 @@ public class Achievements : MonoBehaviour {
         bool poisonUpgraded = false;
         bool demonUpgraded = false;
         bool earthUpgraded = false;
-        List<Tower> towers = this.GetAllTowers();
+        List<Tower> towers = TowerManager.instance.GetAllTowers();
         if (towers.Count > 0){
             foreach (Tower tower in towers){
                 if (tower.type.Equals(DamageType.FIRE)){
@@ -121,7 +121,7 @@ public class Achievements : MonoBehaviour {
         }
 	}
 
-    public List<Tower> GetAllTowers(){
+    /*public List<Tower> GetAllTowers(){
         GameObject[] towerObjects = GameObject.FindGameObjectsWithTag("tower");
         List<Tower> towers = new List<Tower>();
         foreach(GameObject towerObject in towerObjects){
@@ -129,7 +129,7 @@ public class Achievements : MonoBehaviour {
             towers.Add(towerScript);
         }
         return towers;
-    }
+    }*/
 
     public void UnlockTrophy(int trophyID){
         if(GameJolt.UI.Manager.Instance != null){
