@@ -29,7 +29,10 @@ public class TowerInfo : MonoBehaviour {
     public Text towerRange;
     public Text towerStrongAgainst;
     public GameObject towerImage;
+
     [Header("Upgrade Tower Info")]
+    public Text upgradeCost;
+    public Outline upgradeCostOutline;
     public Text damageUpgrade;
     //public Text speedUpgrade;
     public Text projUpgrade;
@@ -97,6 +100,13 @@ public class TowerInfo : MonoBehaviour {
             }
 
             this.SetUpgradeText(false);
+            this.upgradeCost.text = towerUpgrade.upgradeCost.ToString();
+            if (Player.instance.CheckAspirePoints(towerUpgrade.upgradeCost)){
+                this.upgradeCostOutline.effectColor = Player.instance.goodColor;
+            }
+            else{
+                this.upgradeCostOutline.effectColor = Player.instance.badColor;
+            }     
             // The stuff below should go in its own method, and possible even split up in some methods to make it more generic
             foreach (UpgradePart part in towerUpgrade.upgrades){
                 if (part.type.Equals(UpgradeType.DAMAGE)){

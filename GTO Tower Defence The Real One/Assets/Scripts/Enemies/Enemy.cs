@@ -24,17 +24,11 @@ public class Enemy : MonoBehaviour {
     public List<ResistanceToDamageType> resistentTo = new List<ResistanceToDamageType>();
     private Dictionary<DamageType, float> hasResistanceTo = new Dictionary<DamageType, float>();
 
-    [System.Serializable]
-    public struct WeaknessForDamageType
-    {
-        public DamageType dmgType;
-        [Range(0, 1)]
-        public float weakness;
-    }
     public List<ResistanceToDamageType> weaknessFor = new List<ResistanceToDamageType>();
     private Dictionary<DamageType, float> hasWeaknessFor = new Dictionary<DamageType, float>();
 
     [Header("Death")]
+    private BoxCollider boxCol;
     public float timeTillDeath = 2.8f;
     public bool isDead = false;
     public bool deathScoreRecieved = false;
@@ -57,8 +51,12 @@ public class Enemy : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        foreach (ResistanceToDamageType resDmgType in this.resistentTo) {
+        boxCol = this.GetComponent<BoxCollider>();
+        foreach(ResistanceToDamageType resDmgType in this.resistentTo) {
             this.hasResistanceTo.Add(resDmgType.dmgType, resDmgType.resistance);
+        }
+        foreach(ResistanceToDamageType bonusDmgType in this.weaknessFor){
+            this.hasWeaknessFor.Add(bonusDmgType.dmgType, bonusDmgType.resistance);
         }
         this.animatorComp = this.GetComponent<Animator>();
         this.animationComp = this.GetComponent<Animation>();
@@ -78,6 +76,7 @@ public class Enemy : MonoBehaviour {
 
     // Update is called once per frame
     void FixedUpdate() {
+        animatorComp.speed = this.currentSpeed;
         if (this.isEnemyDamaged) {
             if(this.enemyCurrentFlickerTime < this.enemyFlickerTime){
                 this.enemyCurrentFlickerTime += Time.deltaTime;
@@ -96,7 +95,8 @@ public class Enemy : MonoBehaviour {
 
         if (this.health <= 0) {
             if (!this.deathScoreRecieved) {
-                this.GetComponent<BoxCollider>().enabled = false;
+                // This getComponent should be saved on the start
+                this.boxCol.enabled = false;
                 this.SetAnimationDead();
                 this.PreDeath();
                 this.RemoveEnemyFromTowers();
@@ -203,21 +203,13 @@ public class Enemy : MonoBehaviour {
     }
 
     void RemoveEnemyFromTowers(){
-        GameObject[] towers = GameObject.FindGameObjectsWithTag("tower");
-        foreach (GameObject tower in towers){
-            Tower towerScript = tower.GetComponent<Tower>();
-            if(towerScript != null){
-                if (towerScript.enemiesInRange.Contains(this.gameObject)){
-                    towerScript.RemoveEnemy(this.gameObject);
-                }
-            } 
-        }
+        TowerManager.instance.RemoveEnemyFromTower(this.gameObject);
     }
 
     void EnemyKilledScore(){ 
         if (!this.GetComponent<EnemyMovement>().hasReachedEnding){
             Player.instance.AddScore(this.score);
-            Player.instance.AddAspirePoints(this.score / 2);
+            Player.instance.AddAspirePoints(this.score / 2); // Not sure if that is what it should be though
             Player.instance.EnemyKilled();
         }
     }
@@ -251,7 +243,7 @@ public class Enemy : MonoBehaviour {
 
     public float CalcBonusDamage(float baseDamage, DamageType damageType){
         float weaknessMultiplier = 0f;
-        if (hasResistanceTo.TryGetValue(damageType, out weaknessMultiplier)){
+        if (hasWeaknessFor.TryGetValue(damageType, out weaknessMultiplier)){
             float bonusDamage = weaknessMultiplier * baseDamage;
             return bonusDamage;
         }

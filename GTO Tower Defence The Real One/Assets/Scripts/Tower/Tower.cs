@@ -98,10 +98,12 @@ public class Tower : MonoBehaviour {
 
     public Upgrade UpgradeTower(){
         // Check upgrade cost
+        int oldDamage = this.damage;
         TowerUpgrade upgradeScript = this.towerUpgradeObject;
         Upgrade upgrade = upgradeScript.UpgradeTower(this.towerLevel);
         if(upgrade != null){
             this.towerLevel++;
+            Player.instance.AddPower(this.damage - oldDamage);
         }
         return upgrade;
     }
@@ -144,8 +146,16 @@ public class Tower : MonoBehaviour {
     }
 
     public void RemoveEnemy(GameObject deadEnemy){
+        //Debug.Log(deadEnemy);
         if (deadEnemy != null){
+            //Debug.Log(this.enemiesInRange.Count);
+            foreach(GameObject enemy in this.enemiesInRange)
+            {
+                //Debug.Log(enemy.Equals(deadEnemy));
+            }
+            //Debug.Log(this.enemiesInRange.Contains(deadEnemy));
             if (this.enemiesInRange.Contains(deadEnemy)){
+                //Debug.Log(deadEnemy);
                 this.enemiesInRange.Remove(deadEnemy);
             }
         }

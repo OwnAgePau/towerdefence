@@ -4,6 +4,7 @@ using System.Collections;
 public class SelfDestruct : MonoBehaviour {
 
     public float timeUntillDestruction = 5f;
+    public float destructionTime = 3f;
 	
 	// Update is called once per frame
 	void Update () {
@@ -11,7 +12,10 @@ public class SelfDestruct : MonoBehaviour {
             this.timeUntillDestruction -= Time.deltaTime;
         }
         else{
-            Destroy(this.gameObject);
+            // Change this to go back to the explosionHandler
+            ExplosionHandler.instance.AddActiveExplosionToPool(this.gameObject);
+            this.timeUntillDestruction = this.destructionTime;
+            //Destroy(this.gameObject);
         }
 	}
 }

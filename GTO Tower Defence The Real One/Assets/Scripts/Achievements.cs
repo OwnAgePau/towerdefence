@@ -12,14 +12,14 @@ public class Achievements : MonoBehaviour {
         instance = this;
     }
 
-    private int firstDayID = 48488; // First Day - Kill 1.000 enemies [x]
+    private int firstDayID = 48488; // First Day - Kill a 1.000 enemies [x]
     private int firestarterID = 48489; // The Firestarter - Have 20 fire towers in one game [x]
     private int allrdounderID = 48493; // Allrounder - Build at least one tower of every type in one game. [x]
     private int villageHeroID = 48494; // Village Hero - Have a total power of 9.000 or more in one game. [x]
     private int fullHouseID = 48490; // Full House - Upgrade a tower of every type to level 5 or higher in one game. [x]
     private int arenasChampionID = 48495; // Arena's Champion - Have a total power of 50.000 or more in one game. [x]
     private int trueSurviorID = 48491; // True Survivor - Have the 200th villager enter the village in one game. [x]
-    private int ironWillID = 48492; // Iron Will - Kill 1.000.000 Enemies in one game.
+    private int ironWillID = 48492; // Iron Will - Kill a 1.000.000 enemies in one game.
 
     // Use this for initialization
     void Start () {

@@ -37,9 +37,9 @@ public class PlaceTower : MonoBehaviour{
         myNewThread.Join();
     }
 
-    public void PlaceTowerOnGrid(GameObject tower){
+    public void PlaceTowerOnGrid(GameObject towerPrefab){
         //towerSelection.canPlaceTower
-        Tower towerScript = tower.transform.FindChild(this.towerObjectName).gameObject.GetComponent<Tower>();
+        Tower towerScript = towerPrefab.transform.FindChild(this.towerObjectName).gameObject.GetComponent<Tower>();
         // Move the canPay check to the Player script and provide the tower cost as a value to check, to keep the calculations in one place
         if (towerSelection.canPlaceTower && Player.instance.CheckVillagers() && this.HasEnoughPoints(towerScript)){
             Tile tile = towerSelection.hoveringTile;
@@ -48,8 +48,9 @@ public class PlaceTower : MonoBehaviour{
                 float z = this.gpManager.startPosZ + (tile.z * this.gpManager.tileSize);
                 if (this.gpManager.grid[tile.x][tile.z].tower == null){
                     this.SubstractTowerCost(towerScript);
-                    this.PlaceNewTower(tower, tile, x, 0.5f, z);
-                    TowerManager.instance.AddTower(towerScript);
+                    GameObject towerInstance = this.PlaceNewTower(towerPrefab, tile, x, 0.5f, z);
+                    Tower theTower = towerInstance.transform.FindChild(this.towerObjectName).gameObject.GetComponent<Tower>();
+                    TowerManager.instance.AddTower(theTower);
                     // Visual effect on the tile - Could possibly be removed
                     /*GameObject child = this.gpManager.grid[tile.x][tile.z].tileObject.transform.FindChild("Bottom").gameObject;
                     child.GetComponent<MeshRenderer>().material = this.gpManager.blue;*/

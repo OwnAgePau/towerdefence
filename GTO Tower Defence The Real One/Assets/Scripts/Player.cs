@@ -6,6 +6,10 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour {
 
     public static Player instance;
+    public ImageHoverInfo villagersPopUp;
+    public string nextVillagerTime = ", next villager in : ";
+    public ImageHoverInfo enemiesKilledPopUp;
+    public string enemiesKilledText = ", enemies killed : ";
 
     [Header("Global Player Stats")]
     public int villagers = 5;
@@ -16,7 +20,7 @@ public class Player : MonoBehaviour {
     public int lives = 50;
 
     public int enemyHealth = 2;
-    public int enemyScore = 2;
+    public float enemyScore = 1;
 
     public bool isPaused = false;
     public bool hasLost = false;
@@ -53,6 +57,7 @@ public class Player : MonoBehaviour {
 	void FixedUpdate () {
         if (this.currentTime > 0f){
             this.currentTime -= Time.deltaTime;
+            this.villagersPopUp.extraInfo = this.nextVillagerTime + (int)this.currentTime;
         }
         else{
             this.currentTime = this.timeUntillNextVillager;
@@ -60,7 +65,7 @@ public class Player : MonoBehaviour {
         }
 
         // Do a calculation of power whenever a tower is added instead of the continues calculation you are doing now
-        GameObject[] towers = GameObject.FindGameObjectsWithTag("tower");
+        /*GameObject[] towers = GameObject.FindGameObjectsWithTag("tower");
         int damage = 0;
         if (towers.Length > 0){
             foreach (GameObject tower in towers){
@@ -70,10 +75,12 @@ public class Player : MonoBehaviour {
                 }
                  
             }
-        }
-
+        }*/
         /// Change the way power is being managed, add power whenever a new tower is placed (works well with showing pop up texts aswell)
-        this.power = damage;
+        //this.power = damage;
+
+        this.enemiesKilledPopUp.extraInfo = this.enemiesKilledText + this.enemiesKilled;
+
         if (this.lives <= 0) {
             this.hasLost = true;
             Controls.instance.menu.SetActive(true);
@@ -88,6 +95,14 @@ public class Player : MonoBehaviour {
             }
             //controls.PauseGame();
         }
+    }
+
+    public void AddPower(int damage){
+        this.power += damage;
+    }
+
+    public void RemovePower(int damage){
+        this.power -= damage;
     }
 
     public void AddScore(int score){
@@ -141,9 +156,9 @@ public class Player : MonoBehaviour {
             float enemyHealth = this.enemyHealth;
             enemyHealth = enemyHealth / 3;
             this.enemyHealth += (int)enemyHealth;
-            float enemyScore = this.enemyScore;
-            enemyScore = enemyScore / 3;
-            this.enemyScore += (int)enemyScore;
+            //float enemyScore = this.enemyScore;
+            float score = this.enemyScore / 3;
+            this.enemyScore += score;
         }
     }
 

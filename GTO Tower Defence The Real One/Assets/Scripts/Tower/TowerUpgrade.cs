@@ -28,10 +28,12 @@ public class TowerUpgrade : MonoBehaviour {
         // Not sure if this part is still needed
         foreach (Upgrade upgrade in this.upgrades){
             foreach (UpgradePart part in upgrade.upgrades){
-                if (part.type.Equals(UpgradeType.DAMAGE)){
+                if (part.type.Equals(UpgradeType.DAMAGE))
+                {
                     this.dmgToScaleFrom = part.amount;
                 }
-                else if (part.type.Equals(UpgradeType.PROJNR)){
+                else if (part.type.Equals(UpgradeType.PROJNR))
+                {
                     this.projToScaleFrom = part.amount;
                 }
             }
@@ -121,6 +123,9 @@ public class TowerUpgrade : MonoBehaviour {
                     // Update the speed at which the tower shoots bullets
                     tower.cooldown = part.amount;
                     break;
+                case UpgradeType.RANGE:
+                    tower.range = part.amount;
+                    break;
             }
         }
     }
@@ -129,16 +134,19 @@ public class TowerUpgrade : MonoBehaviour {
         float currentDamage = (this.damageEndMod * this.dmgToScaleFrom) + this.dmgToScaleFrom;
         float currentProjectile = this.projToScaleFrom + 1;
         float currentSpeed = 1;
+        float currentRange = 1;
         float currentCost = (this.costEndMod * this.costToScaleFrom) + this.costToScaleFrom;
         hoverInfo.aspireCost = (int)currentCost;
         //Debug.Log("Cost Scale From : " + this.costToScaleFrom + ", " + (this.costToScaleFrom * this.costEndMod) + ", towerLevel : " + towerLevel + ", total : " + currentCost);
         // Determine what upgrade is being done (damage / proj)
         UpgradePart[] parts = new UpgradePart[1];
-        if (this.currentUpgradeType.Equals(0)){
+        if (this.currentUpgradeType.Equals(0))
+        {
             // Damage
             parts[0] = new UpgradePart(UpgradeType.DAMAGE, (int)currentDamage);
         }
-        else if (this.currentUpgradeType.Equals(1)){
+        else if (this.currentUpgradeType.Equals(1))
+        {
             // Projectile
             parts[0] = new UpgradePart(UpgradeType.PROJNR, (int)currentProjectile);
         }
@@ -146,6 +154,10 @@ public class TowerUpgrade : MonoBehaviour {
         {
             parts[0] = new UpgradePart(UpgradeType.SPEED, (int)currentSpeed);
         }
+        else if (this.currentUpgradeType.Equals(4)) {
+            parts[0] = new UpgradePart(UpgradeType.RANGE, (int)currentRange);
+        }
+
         return new Upgrade(parts, towerLevel + 1, (int)currentCost);
     }
 }
@@ -180,4 +192,5 @@ public enum UpgradeType{
     SPEED,
     PROJNR,
     SLOW,
+    RANGE,
 }

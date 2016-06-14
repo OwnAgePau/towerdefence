@@ -22,9 +22,6 @@ public class GUIcontroller : MonoBehaviour {
     public Text hoverTowerAspireText;
     public Text hoverUpgradeCostText;
 
-    [Header("Upgrade Cost")]
-    public Outline upgradCost;
-
     [Header("Building Cost")]
     public GameObject buildCost;
     public GameObject buildName;
@@ -49,10 +46,6 @@ public class GUIcontroller : MonoBehaviour {
     void Awake(){
         instance = this;
     }
-
-    // Use this for initialization
-    void Start () {
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -68,6 +61,7 @@ public class GUIcontroller : MonoBehaviour {
                 gameSaved.SetActive(true);
             }
         }
+        // Not sure if this should still be in here
         if (!Application.platform.Equals(RuntimePlatform.WindowsPlayer) && !Application.platform.Equals(RuntimePlatform.WindowsEditor)){
             foreach(GameObject obj in mobileGUIButtons){
                 obj.SetActive(true);
@@ -87,23 +81,5 @@ public class GUIcontroller : MonoBehaviour {
         else{
             return Player.instance.score;
         }
-    }
-
-    void OnGUI(){
-        /*this.hoverImage.enabled = this.isHoverAspireCost;
-        this.hoverTowerAspireText.text = this.hoverAspireText;
-        this.hoverTowernameText.text = this.hoverText;*/
-        /*if (this.isHovering) {
-            //Vector3 mousePos = Input.mousePosition;
-            // To do check whether you are at the left side or right side of the screen and position the text likewise (so it is readable)
-            GUI.Label(new Rect(mousePos.x + 10 - (this.hoverText.Length * 6), Screen.height - (mousePos.y + 40), 200, 40), this.hoverText);
-            if (this.isHoverAspireCost){
-                GUI.Label(new Rect(mousePos.x + 30 - (this.hoverText.Length * 6), Screen.height - (mousePos.y + 20), 200, 40), this.hoverAspireText);
-                GUI.DrawTexture(new Rect(mousePos.x + 10 - (this.hoverText.Length * 6), Screen.height - (mousePos.y + 20), 20, 20), this.hoverAspireImage);
-            }
-            else{
-                GUI.Label(new Rect(mousePos.x + 10 - (this.hoverText.Length * 6), Screen.height - (mousePos.y + 20), 200, 40), this.hoverAspireText);
-            }
-        }*/
     }
 }

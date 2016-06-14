@@ -7,6 +7,7 @@ public class HoverInfo : MonoBehaviour {
     public Tower tower;
 
     public int aspireCost;
+    public int villagerCost;
     public string nameToShow;
     public bool isDisabled;
     public bool isButton; // Veranderen naar button object
@@ -30,6 +31,7 @@ public class HoverInfo : MonoBehaviour {
     void Update() {
         if (tower != null) {
             this.aspireCost = tower.aspireCost;
+            this.villagerCost = tower.villagerCost;
             this.nameToShow = tower.name;
             this.SetButtonState();
         }
@@ -45,7 +47,7 @@ public class HoverInfo : MonoBehaviour {
     private void SetButtonState() {
         Image image = this.gameObject.GetComponent<Image>();
         Button button = this.gameObject.GetComponent<Button>();
-        if (Player.instance.aspirePoints < this.aspireCost || Player.instance.villagers < 1){
+        if (Player.instance.aspirePoints < this.aspireCost || Player.instance.villagers < this.villagerCost){
             image.color = new Color(0.5f, 0.001f, 0.001f);
             this.isDisabled = true;
             button.enabled = false;
@@ -64,7 +66,7 @@ public class HoverInfo : MonoBehaviour {
         int cost = tower.aspireCost;
         this.towerNameTxt.text = tower.name;
         this.towerAspireCostTxt.text = cost.ToString();
-        this.towerVillagerCostTxt.text = 1.ToString();
+        this.towerVillagerCostTxt.text = tower.villagerCost.ToString();
         this.towerAspireImg.gameObject.SetActive(true);
         this.towerVillagerImg.gameObject.SetActive(true);
         Outline costOutline = this.towerAspireCostTxt.GetComponent<Outline>();

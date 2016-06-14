@@ -14,9 +14,9 @@ public class PlayerData {
     public int lives;
 
     public int enemyHealth;
-    public int enemyScore;
+    public float enemyScore;
 
-    public PlayerData(int villagers, int aspirePoints, int power, int score, int enemiesKilled, int lives, int enemyHealth, int enemyScore){
+    public PlayerData(int villagers, int aspirePoints, int power, int score, int enemiesKilled, int lives, int enemyHealth, float enemyScore){
         this.villagers = villagers;
         this.aspirePoints = aspirePoints;
         this.power = power;

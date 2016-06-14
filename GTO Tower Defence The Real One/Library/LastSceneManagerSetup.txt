@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/testscene.unity
+- path: Assets/towerCreation.unity
   isLoaded: 1
   isActive: 1

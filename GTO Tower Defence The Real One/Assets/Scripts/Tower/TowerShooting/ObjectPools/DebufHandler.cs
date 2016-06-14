@@ -101,7 +101,7 @@ public class DebufHandler : MonoBehaviour{
             return newDebuf;
         }
         else{
-            Debug.Log("Debuf Could Not Be Added!!!");
+            Debug.Log("A new Debuf : '" + name + "' could not be created!!!");
         }
         return null;
     }

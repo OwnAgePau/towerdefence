@@ -6,7 +6,8 @@ public class BulletHandler : MonoBehaviour {
 
     public static BulletHandler instance;
 
-    public BulletType[] bulletPrefabs = new BulletType[4];
+    public BulletType[] bulletPrefabs = new BulletType[4]; 
+    // Maybe not use the damageType, as there could potentially be more mage towers to use different bullets
 
     public List<BulletType> bullets = new List<BulletType>();
 
@@ -63,14 +64,13 @@ public class BulletHandler : MonoBehaviour {
         bulletObject.SetActive(false);
         BulletType bulletType = new BulletType(prefab.type, bulletObject);
         this.bullets.Add(bulletType);
-        Debug.Log("New bullet created : " + bulletObject.name);
         return bulletObject;
     }
 
-    public GameObject GetInactiveBullet(DamageType type){
+    public GameObject GetInactiveBullet(string name){
         GameObject inactiveBullet = null;
         foreach(BulletType bulletType in this.bullets){
-            if (bulletType.type.Equals(type)){
+            if (bulletType.bullet.name.Equals(name)){
                 if (!bulletType.bullet.active){
                     bulletType.bullet.SetActive(true);
                     return bulletType.bullet;
@@ -78,7 +78,7 @@ public class BulletHandler : MonoBehaviour {
             }
         }
         // If this is reached, no bullet has been found so a new one is needed
-        BulletType newBulletType = this.GetBulletType(type);
+        BulletType newBulletType = this.GetBulletType(name);
         if (newBulletType.bullet != null){
             // Add a new inactive bullet, but this one will be used by this tower, so set it active
             GameObject newBullet = this.AddNewBullet(newBulletType);
@@ -86,15 +86,15 @@ public class BulletHandler : MonoBehaviour {
             return newBullet;
         }
         else {
-            Debug.Log("Bullet Could Not Be Added!!!");
+            Debug.Log("A new Bullet : '" + name + "' could not be created!!!");
         }
         return null;
     }
 
-    public BulletType GetBulletType(DamageType type){
+    public BulletType GetBulletType(string name){
         BulletType nullType = new BulletType();
         foreach (BulletType bulletType in this.bulletPrefabs) {
-            if (bulletType.type.Equals(type)){
+            if (bulletType.bullet.name.Equals(name)){
                 return bulletType;
             }
         }

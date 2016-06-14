@@ -100,6 +100,7 @@
     <Compile Include="Assets\Scripts\GUI\GUIcontroller.cs" />
     <Compile Include="Assets\Scripts\GUI\HoverInfo.cs" />
     <Compile Include="Assets\Scripts\GUI\ImageHover.cs" />
+    <Compile Include="Assets\Scripts\GUI\ImageHoverInfo.cs" />
     <Compile Include="Assets\Scripts\GUI\MenuSelector.cs" />
     <Compile Include="Assets\Scripts\GUI\PopUpText.cs" />
     <Compile Include="Assets\Scripts\GUI\TowerInfo.cs" />
@@ -128,15 +129,16 @@
     <Compile Include="Assets\Scripts\Tower\Bullet.cs" />
     <Compile Include="Assets\Scripts\Tower\BulletParticle.cs" />
     <Compile Include="Assets\Scripts\Tower\GhostTower.cs" />
-    <Compile Include="Assets\Scripts\Tower\ParticleManager.cs" />
     <Compile Include="Assets\Scripts\Tower\PlaceTower.cs" />
     <Compile Include="Assets\Scripts\Tower\SelectTower.cs" />
     <Compile Include="Assets\Scripts\Tower\Tower.cs" />
     <Compile Include="Assets\Scripts\Tower\TowerManager.cs" />
     <Compile Include="Assets\Scripts\Tower\TowerRange.cs" />
-    <Compile Include="Assets\Scripts\Tower\TowerShooting\BulletHandler.cs" />
-    <Compile Include="Assets\Scripts\Tower\TowerShooting\DebufHandler.cs" />
     <Compile Include="Assets\Scripts\Tower\TowerShooting\DemonBeam.cs" />
+    <Compile Include="Assets\Scripts\Tower\TowerShooting\ObjectPools\BulletHandler.cs" />
+    <Compile Include="Assets\Scripts\Tower\TowerShooting\ObjectPools\DebufHandler.cs" />
+    <Compile Include="Assets\Scripts\Tower\TowerShooting\ObjectPools\ExplosionHandler.cs" />
+    <Compile Include="Assets\Scripts\Tower\TowerShooting\ParticleManager.cs" />
     <Compile Include="Assets\Scripts\Tower\TowerShooting\TowerProjectile.cs" />
     <Compile Include="Assets\Scripts\Tower\TowerUpgrade.cs" />
     <Compile Include="Assets\Scripts\Wave\WaveInfoDisplayer.cs" />

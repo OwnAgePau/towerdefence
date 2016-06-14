@@ -53,13 +53,13 @@ public class TowerProjectile : MonoBehaviour {
         GameObject target = towerScript.GetTarget(this.targets);
         if(target != null){
             this.targets.Add(target);
-            GameObject bullet = BulletHandler.instance.GetInactiveBullet(this.towerScript.type);
-            if (bullet != null) {
+            GameObject bulletObj = BulletHandler.instance.GetInactiveBullet(this.bullet.name);
+            if (bulletObj != null) {
                 Vector3 bulletStartPos = new Vector3(this.transform.position.x, this.transform.position.y + (towerScript.height / 2), this.transform.position.z);
-                bullet.transform.position = bulletStartPos;
-                bullet.name = this.bullet.name;
-                bullet.transform.position = bulletStartPos;
-                Bullet bulletScript = bullet.GetComponent<Bullet>();
+                bulletObj.transform.position = bulletStartPos;
+                bulletObj.name = this.bullet.name;
+                bulletObj.transform.position = bulletStartPos;
+                Bullet bulletScript = bulletObj.GetComponent<Bullet>();
                 bulletScript.bulletStartPos = bulletStartPos;
                 bulletScript.SetDestination(target);
                 bulletScript.SetFiredFrom(towerScript);

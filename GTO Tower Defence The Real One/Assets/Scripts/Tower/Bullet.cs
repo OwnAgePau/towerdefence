@@ -5,6 +5,8 @@ public class Bullet : MonoBehaviour {
 
     public GameObject destination;
     public Vector3 bulletStartPos;
+    private float minimalDistance = 0.5f;
+    private float enemyHeightOffset;
 
     private Tower firedFrom;
 
@@ -39,14 +41,19 @@ public class Bullet : MonoBehaviour {
                 this.particleObject.lookAt = bulletStartPos;
             }
             var step = speed * Time.deltaTime;
-            float enemyHeightOffset = this.destination.GetComponent<BoxCollider>().size.y / 2;
+            // This get component should be saved elsewhere
             Vector3 destPos = this.destination.transform.position;
-            Vector3 targetPos = new Vector3(destPos.x, destPos.y + enemyHeightOffset, destPos.z);
-            this.transform.position = Vector3.MoveTowards(this.transform.position, targetPos, step);
+            Vector3 targetPos = new Vector3(destPos.x, destPos.y + this.enemyHeightOffset, destPos.z);
+            bool isNear = this.CheckNearDestination(targetPos);
+            if (isNear){
+                this.SetInactive();
+            }
+            else{
+                this.transform.position = Vector3.MoveTowards(this.transform.position, targetPos, step);
+            }
         }
         else{
             this.SetInactive();
-            //BulletHandler.instance.AddActiveBullet(this.gameObject);
         }
 
         if (this.deathTimer > 0f){
@@ -57,27 +64,60 @@ public class Bullet : MonoBehaviour {
         }
     }
 
+    // This bullet collided with an object
     void OnTriggerEnter(Collider col){
         Enemy enemy = col.GetComponent<Enemy>();
         if (enemy != null){
-            enemy.DamageEnemy(this.firedFrom.damage, this.firedFrom.type);
-            if (!debuf.debufName.Equals("")){
-                enemy.ApplyEnemyDebuf(this.debuf, true);
-                debuf.SetEnemy(enemy);
+            // Check wether this is the destination object
+            if (col.gameObject.Equals(this.destination)){
+                // Deal damage, apply debuf and create explosion
+                enemy.DamageEnemy(this.firedFrom.damage, this.firedFrom.type);
+                if (!debuf.debufName.Equals("")){
+                    enemy.ApplyEnemyDebuf(this.debuf, true);
+                    debuf.SetEnemy(enemy);
+                }
+                if (this.explosion != null){
+                    this.CreateExplosion(col.gameObject);
+                }
+                this.SetInactive();
             }
-            if (this.explosion != null){
-                this.CreateExplosion(col.gameObject);
+            else if(enemy.health <= 0){
+                if (this.explosion != null){
+                    this.CreateExplosion(col.gameObject);
+                }
+                this.SetInactive();
             }
-            this.SetInactive();
         }
     }
 
     void CreateExplosion(GameObject destination){
-        GameObject gameObject = GameObject.Instantiate(explosion, destination.transform.position, destination.transform.rotation) as GameObject;
+        // Get a new explosion object and let it explode!!!
+        GameObject explosion = ExplosionHandler.instance.GetInactiveExplosionType(this.explosion.name);
+        explosion.transform.position = destination.transform.position;
+    }
+
+    public bool CheckNearDestination(Vector3 targetPos){
+        float xDif = targetPos.x - this.transform.position.x;
+        if(xDif < 0){
+            xDif = -xDif;
+        }
+        float yDif = targetPos.y - this.transform.position.y;
+        if (yDif < 0){
+            yDif = -yDif;
+        }
+        float zDif = targetPos.z - this.transform.position.z;
+        if (zDif < 0){
+            zDif = -zDif;
+        }
+        if(xDif < this.minimalDistance && yDif < this.minimalDistance & zDif < this.minimalDistance){
+            return true;
+        }
+        return false;
     }
 
     public void SetDestination(GameObject destination){
         this.destination = destination;
+        this.enemyHeightOffset = this.destination.GetComponent<BoxCollider>().size.y / 2;
     }
 
     public void SetFiredFrom(Tower tower){
