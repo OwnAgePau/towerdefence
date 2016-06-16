@@ -85,11 +85,13 @@ public class Enemy : MonoBehaviour {
                 // Enemy has taken damage, make it flicker
                 this.isEnemyDamaged = false;
                 this.enemyCurrentFlickerTime = 0f;
-                foreach (SkinnedMeshRenderer renderer in this.meshes){
-                    Material mat = renderer.material;
-                    mat.SetColor("_Color", Player.instance.normalEmissionColor);
-                    renderer.material = mat;
-                }
+                if (Player.instance != null) {
+                    foreach (SkinnedMeshRenderer renderer in this.meshes){
+                        Material mat = renderer.material;
+                        mat.SetColor("_Color", Player.instance.normalEmissionColor);
+                        renderer.material = mat;
+                    }
+                }   
             }
         }
 
@@ -232,11 +234,13 @@ public class Enemy : MonoBehaviour {
         }
         this.isEnemyDamaged = true;
         foreach (SkinnedMeshRenderer renderer in this.meshes){
-            if(renderer != null){
-                Material mat = renderer.material;
-                mat.SetColor("_Color", Player.instance.flickerColor);
-                renderer.material = mat;
-            }
+            if (Player.instance != null) {
+                if (renderer != null){
+                    Material mat = renderer.material;
+                    mat.SetColor("_Color", Player.instance.flickerColor);
+                    renderer.material = mat;
+                }
+            } 
         }
         this.healthBar.UpdateHealthBar();
     }

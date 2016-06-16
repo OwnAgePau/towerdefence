@@ -6,18 +6,18 @@ public class BulletHandler : MonoBehaviour {
 
     public static BulletHandler instance;
 
-    public BulletType[] bulletPrefabs = new BulletType[4]; 
+    public int startPrefabs = 4;
+
+    public BulletType[] bulletPrefabs;
     // Maybe not use the damageType, as there could potentially be more mage towers to use different bullets
 
     public List<BulletType> bullets = new List<BulletType>();
 
     [System.Serializable]
     public struct BulletType{
-        public DamageType type;
         public GameObject bullet;
 
-        public BulletType(DamageType type, GameObject bullet){
-            this.type = type;
+        public BulletType(GameObject bullet){
             this.bullet = bullet;
         }
     }
@@ -42,7 +42,7 @@ public class BulletHandler : MonoBehaviour {
 
     public void InstantiatePool(){
         foreach (BulletType type in this.bulletPrefabs) {
-            this.AddNewBullets(4, type);
+            this.AddNewBullets(this.startPrefabs, type);
         }
     }
 
@@ -52,7 +52,7 @@ public class BulletHandler : MonoBehaviour {
             bulletObject.transform.parent = this.gameObject.transform;
             bulletObject.name = prefab.bullet.name;
             bulletObject.SetActive(false);
-            BulletType bulletType = new BulletType(prefab.type, bulletObject);
+            BulletType bulletType = new BulletType(bulletObject);
             this.bullets.Add(bulletType);
         }
     }
@@ -62,7 +62,7 @@ public class BulletHandler : MonoBehaviour {
         bulletObject.transform.parent = this.gameObject.transform;
         bulletObject.name = prefab.bullet.name;
         bulletObject.SetActive(false);
-        BulletType bulletType = new BulletType(prefab.type, bulletObject);
+        BulletType bulletType = new BulletType(bulletObject);
         this.bullets.Add(bulletType);
         return bulletObject;
     }

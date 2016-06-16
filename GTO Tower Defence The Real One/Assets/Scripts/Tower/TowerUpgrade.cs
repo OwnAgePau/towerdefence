@@ -22,7 +22,10 @@ public class TowerUpgrade : MonoBehaviour {
     private int upgradesTillProjUpgr = 3;
 
     void Start(){
-        this.hoverInfo = GUIcontroller.instance.hoverUpgradeObject;
+        if (GUIcontroller.instance != null) {
+            this.hoverInfo = GUIcontroller.instance.hoverUpgradeObject;
+        }
+        
         this.tower = this.gameObject.transform.parent.gameObject.GetComponent<Tower>();
         // Set damage to scale from and proj to scale from
         // Not sure if this part is still needed

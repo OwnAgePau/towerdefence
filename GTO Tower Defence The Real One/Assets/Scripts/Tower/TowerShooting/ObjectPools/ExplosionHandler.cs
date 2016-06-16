@@ -6,6 +6,8 @@ public class ExplosionHandler : MonoBehaviour{
 
     public static ExplosionHandler instance;
 
+    public int startPrefabs = 4;
+
     //public DebufScript[] explosionScripts = new DebufScript[3];
 
     public ExplosionType[] explosionPrefabs;
@@ -46,7 +48,7 @@ public class ExplosionHandler : MonoBehaviour{
 
     public void InstantiatePool(){
         foreach (ExplosionType explosionType in this.explosionPrefabs){
-            this.AddNewExplosionObjects(4, explosionType);
+            this.AddNewExplosionObjects(this.startPrefabs, explosionType);
         }
     }
 

@@ -126,6 +126,7 @@
     <Compile Include="Assets\Scripts\SceneManager.cs" />
     <Compile Include="Assets\Scripts\SelfDestruct.cs" />
     <Compile Include="Assets\Scripts\Sound\AudioScript.cs" />
+    <Compile Include="Assets\Scripts\Tower Creation\TowerCreationGUI.cs" />
     <Compile Include="Assets\Scripts\Tower\Bullet.cs" />
     <Compile Include="Assets\Scripts\Tower\BulletParticle.cs" />
     <Compile Include="Assets\Scripts\Tower\GhostTower.cs" />

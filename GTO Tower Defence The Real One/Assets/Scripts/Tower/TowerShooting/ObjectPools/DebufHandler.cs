@@ -6,7 +6,9 @@ public class DebufHandler : MonoBehaviour{
 
     public static DebufHandler instance;
 
-    public DebufScript[] debufScripts = new DebufScript[3];
+    public int startPrefabs = 3;
+
+    public DebufScript[] debufScripts;
 
     public DebufType[] debufPrefabs;
     // Using scripts instead of gameobjects so proper prefabs of the debufs are initiated.
@@ -57,7 +59,7 @@ public class DebufHandler : MonoBehaviour{
 
     public void InstantiatePool(){
         foreach (DebufType type in this.debufPrefabs){
-            this.AddNewDebufObjects(4, type);
+            this.AddNewDebufObjects(this.startPrefabs, type);
         }
     }
 
