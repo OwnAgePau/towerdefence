@@ -101,7 +101,38 @@ public class BulletHandler : MonoBehaviour {
         return nullType;
     }
 
+    public List<BulletType> GetAllBulletsOfType(string name){
+        List<BulletType> foundBullets = new List<BulletType>();
+        foreach(BulletType type in this.bullets){
+            if (type.bullet.name.Equals(name)){
+                foundBullets.Add(type);
+            }
+        }
+        return foundBullets;
+    }
+
     public void ClearPool(){
         this.bullets.Clear();
+    }
+
+    public void ChangeBulletColor(string prefabName, Color color) {
+        List<BulletType> bullets = this.GetAllBulletsOfType(prefabName);
+        foreach(BulletType type in bullets){
+            type.bullet.GetComponent<ParticleSystem>().startColor = color;
+        }
+    }
+
+    public void ChangeBulletExplosion(string prefabName, GameObject explosion){
+        List<BulletType> bullets = this.GetAllBulletsOfType(prefabName);
+        foreach (BulletType type in bullets){
+            type.bullet.GetComponent<Bullet>().explosion = explosion;
+        }
+    }
+
+    public void ChangeBulletEDebuf(string prefabName, string debufName){
+        List<BulletType> bullets = this.GetAllBulletsOfType(prefabName);
+        foreach (BulletType type in bullets){
+            type.bullet.GetComponent<Bullet>().debufName = debufName;
+        }
     }
 }
