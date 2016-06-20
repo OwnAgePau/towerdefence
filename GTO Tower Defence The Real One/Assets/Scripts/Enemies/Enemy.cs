@@ -114,7 +114,9 @@ public class Enemy : MonoBehaviour {
         }
         else {
             if (this.debufsToRemove.Count > 0) {
-                this.debufsToRemove.RemoveAt(0);
+                Debuf debuf = this.debufsToRemove[0];
+                this.debufs.Remove(debuf);
+                this.debufsToRemove.Remove(debuf);
             }
             foreach (Debuf debuf in this.debufs) { // You only want to have the debuf tick here, you don't want to constantly instantiate it here, instantiate once when applying the debuf on the enemy                
                 debuf.DoTick();

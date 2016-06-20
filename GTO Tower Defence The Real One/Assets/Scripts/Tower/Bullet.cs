@@ -72,7 +72,7 @@ public class Bullet : MonoBehaviour {
             if (col.gameObject.Equals(this.destination)){
                 // Deal damage, apply debuf and create explosion
                 enemy.DamageEnemy(this.firedFrom.damage, this.firedFrom.type);
-                if (!debuf.debufName.Equals("")){
+                if (!this.debufName.Equals("")){
                     enemy.ApplyEnemyDebuf(this.debuf, true);
                     debuf.SetEnemy(enemy);
                 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class TowerProjectile : MonoBehaviour {
 
-    private DebufScript debufScript;
+    public DebufScript debufScript;
     public GameObject debuf;
 
     private GameObject target;
@@ -61,11 +61,17 @@ public class TowerProjectile : MonoBehaviour {
                 bulletObj.transform.position = bulletStartPos;
                 Bullet bulletScript = bulletObj.GetComponent<Bullet>();
                 bulletScript.bulletStartPos = bulletStartPos;
+                if (this.debufScript != null){
+                    bulletScript.debuf = this.debufScript.CreateDebuf(this.towerScript.towerLevel);
+                    Debug.Log(this.debufScript.debufName + ", " + bulletScript.debuf.debufName);
+                    bulletScript.debufName = this.debufScript.debufName;
+                }
+                else
+                {
+                    bulletScript.debufName = "";
+                }
                 bulletScript.SetDestination(target);
                 bulletScript.SetFiredFrom(towerScript);
-                if (this.debuf != null){
-                    bulletScript.debuf = this.debufScript.CreateDebuf(this.towerScript.towerLevel);
-                }
             }            
         }
         

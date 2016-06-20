@@ -54,6 +54,10 @@ public class TowerCreationGUI : MonoBehaviour {
     public List<GameObject> debufParticles = new List<GameObject>();
     public Text selectedDebufParticles;
     public GameObject[] towerColors;
+    public GameObject debufScript;
+
+    [Header("Enemy")]
+    public Enemy enemy;
 
     // Use this for initialization
     void Start () {
@@ -69,6 +73,10 @@ public class TowerCreationGUI : MonoBehaviour {
             this.debufDropdown.options.Add(new Dropdown.OptionData(debuf.gameObject.name));
         }
         this.chosenColor = new Color(this.r, this.g, this.b);
+        this.selectedExplosionParticle.text = "None";
+        this.selectedDebufParticles.text = "None";
+        this.SetBulletExplosion();
+        this.SetBulletDebuf();
     }
 	
 	// Update is called once per frame
@@ -85,22 +93,26 @@ public class TowerCreationGUI : MonoBehaviour {
         string name = this.selectedExplosionParticle.text;
         if (!name.Equals("None")){
             GameObject explosion = this.explosionParticles.Find(x => x.name == name);
-            BulletHandler.instance.ChangeBulletExplosion(name, explosion);
+            BulletHandler.instance.ChangeBulletExplosion(this.projectile.bullet.name, explosion);
         }
         else{
-            //this.bullet.explosion = null;
-            BulletHandler.instance.ChangeBulletExplosion(name, null);
+            BulletHandler.instance.ChangeBulletExplosion(this.projectile.bullet.name, null);
         }
     }
     public void SetBulletDebuf(){
         string name = this.selectedDebufParticles.text;
+        for(int i = 0; i < this.enemy.debufs.Count; i++) {
+            Debuf debuf = this.enemy.debufs[i];
+            this.enemy.RemoveDebuf(debuf);
+        }
         if (!name.Equals("None")) {
-            //this.bullet.debufName = name;
-            BulletHandler.instance.ChangeBulletEDebuf(name, name);
+            //DebufScript debufScript = this.debufScript.transform.FindChild(name).GetComponent<DebufScript>();
+            //BulletHandler.instance.ChangeBulletEDebuf(this.projectile.bullet.name, debufScript);
+            this.projectile.debufScript = this.debufScript.transform.FindChild(name).GetComponent<DebufScript>();
         }
         else{
-            //this.bullet.debufName = "";
-            BulletHandler.instance.ChangeBulletEDebuf(name, "");
+            //BulletHandler.instance.ChangeBulletEDebuf(this.projectile.bullet.name, null);
+            this.projectile.debufScript = null;
         }
     }
 

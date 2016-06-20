@@ -129,10 +129,10 @@ public class BulletHandler : MonoBehaviour {
         }
     }
 
-    public void ChangeBulletEDebuf(string prefabName, string debufName){
+    public void ChangeBulletEDebuf(string prefabName, string debuf){
         List<BulletType> bullets = this.GetAllBulletsOfType(prefabName);
         foreach (BulletType type in bullets){
-            type.bullet.GetComponent<Bullet>().debufName = debufName;
+            type.bullet.GetComponent<Bullet>().debufName = debuf;
         }
     }
 }
