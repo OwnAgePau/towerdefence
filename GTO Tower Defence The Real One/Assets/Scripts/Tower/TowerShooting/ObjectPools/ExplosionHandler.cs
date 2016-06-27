@@ -128,6 +128,15 @@ public class ExplosionHandler : MonoBehaviour{
         return nullType;
     }
 
+    public void SetExplosionSound(string explosionName, AudioClip[] sounds){
+        foreach(ExplosionType explosion in this.explosions){
+            if(explosion.explosion.name.Equals(explosionName)){
+                AudioScript script = explosion.explosion.GetComponent<AudioScript>();
+                script.clips = sounds;
+            }
+        }
+    }
+
     public void ClearPool(){
         this.explosions.Clear();
     }

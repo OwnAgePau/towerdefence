@@ -29,7 +29,6 @@ public class ParticleManager : MonoBehaviour {
             if (partSystem.isPlaying){
                 partSystem.gameObject.SetActive(false);
             }
-
         }
         isPlaying = false;
     }

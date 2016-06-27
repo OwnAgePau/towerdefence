@@ -66,8 +66,7 @@ public class TowerProjectile : MonoBehaviour {
                     Debug.Log(this.debufScript.debufName + ", " + bulletScript.debuf.debufName);
                     bulletScript.debufName = this.debufScript.debufName;
                 }
-                else
-                {
+                else{
                     bulletScript.debufName = "";
                 }
                 bulletScript.SetDestination(target);

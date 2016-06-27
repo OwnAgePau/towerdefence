@@ -114,6 +114,7 @@
     <Compile Include="Assets\Scripts\Movement\NavmeshPathfinding.cs" />
     <Compile Include="Assets\Scripts\Movement\SpawnCube.cs" />
     <Compile Include="Assets\Scripts\Movement\TileScript.cs" />
+    <Compile Include="Assets\Scripts\Persistence\CustomTowers\CustomTowerList.cs" />
     <Compile Include="Assets\Scripts\Persistence\PersistenceData.cs" />
     <Compile Include="Assets\Scripts\Persistence\PersistenceEnemies.cs" />
     <Compile Include="Assets\Scripts\Persistence\PersistenceTowers.cs" />
