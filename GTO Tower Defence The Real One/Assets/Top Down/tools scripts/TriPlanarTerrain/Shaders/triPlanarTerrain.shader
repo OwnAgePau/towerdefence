@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
     Shader "Hidden/TerrainEngine/Splatmap/Lightmap-FirstPass" {
         Properties {
             _Control ("Control (RGBA)", 2D) = "red" {}
@@ -45,8 +47,8 @@
                 };
        
                 void vert(inout appdata_full v, out Input o) {
-                    o.worldPos = mul(_Object2World, v.vertex).xyz;
-                    o.worldNormal = mul(_Object2World, float4(v.normal, 0.0)).xyz;
+                    o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                    o.worldNormal = mul(unity_ObjectToWorld, float4(v.normal, 0.0)).xyz;
                     o.lightDir = normalize(ObjSpaceLightDir(v.vertex));
                     o.viewDir = normalize(ObjSpaceViewDir(v.vertex));
                 }
