@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using MovementEffects;
 
-public class AudioBackgroundController : SingletonMonobehaviour<AudioBackgroundController>{
+public class AudioBackgroundController : MonoBehaviour {
+
+    public static AudioBackgroundController instance;
 
     [Header("UI")]
     public AudioScript ambientUI;

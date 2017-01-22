@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 using UnityEngine.UI;
 
-public class SceneManager : MonoBehaviour {
+public class GameLoadManager : MonoBehaviour {
 
     public string sceneName;
     public Slider loadingBar;

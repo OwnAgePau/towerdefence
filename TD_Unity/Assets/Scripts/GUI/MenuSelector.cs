@@ -6,6 +6,8 @@ public class MenuSelector : MonoBehaviour {
 
     [Header("Animation Objects")]
     public GameObject[] menuOptions = new GameObject[5];
+    public GameObject[] menuTexts;
+    public GameObject[] menuHighlights;
     private Vector3[] startLocations = new Vector3[5];
 
     [Header("Animation Values")]
@@ -19,6 +21,9 @@ public class MenuSelector : MonoBehaviour {
 
     private Coroutine moveRoutine;
     private Coroutine fadeRoutine;
+
+    public MultipleLerper fadeLerper;
+    public MultipleLerper moveLerper;
 
 	// Use this for initialization
 	void Start () {
@@ -75,9 +80,14 @@ public class MenuSelector : MonoBehaviour {
         target.x += this.toMoveOffset;
         // TO DO: Return Instance of coroutine, save this locally and use this to check wether to deselect or select
         // TO DO: Search for a way of disabling all coroutines on current object.
-        this.moveRoutine = StartCoroutine(LerpHandler.instance.LerpPositionTo(this.toMoveDuration, this.selectedOption.transform, this.selectedOption.transform.position, target, LerpHandler.instance.curves[2]));
+
+        this.fadeLerper.LerpObject(this.menuHighlights[this.selectedIndex]);
+        this.moveLerper.LerpObject(this.menuTexts[this.selectedIndex]);
+
+        //this.moveRoutine = StartCoroutine(LerpHandler.instance.LerpPositionTo(this.toMoveDuration, this.selectedOption.transform, this.selectedOption.transform.position, target, LerpHandler.instance.curves[2]));
         // Get the highlight from the gameObjects child
-        this.fadeRoutine = StartCoroutine(LerpHandler.instance.Fade(this.toMoveDuration, this.selectedOption, this.alphaValue, LerpHandler.instance.curves[3]));
+
+        //this.fadeRoutine = StartCoroutine(LerpHandler.instance.Fade(this.toMoveDuration, this.selectedOption, this.alphaValue, LerpHandler.instance.curves[3]));
         // Fade in the background of the text while sliding to the right (use the alpha value of the image)
 
     }
@@ -85,10 +95,16 @@ public class MenuSelector : MonoBehaviour {
     public void DeselectMenuOption(){
         Vector3 target = this.startLocations[this.selectedIndex];
         GameObject menuItem = this.menuOptions[this.selectedIndex];
-        StartCoroutine(LerpHandler.instance.LerpPositionTo(this.toMoveBackDuration, menuItem.transform, menuItem.transform.position, target, LerpHandler.instance.curves[2]));
+
+        /*this.fadeLerper.StopLerps();
+        this.moveLerper.StopLerps();*/
+        this.fadeLerper.LerpObjectBackwards(this.menuHighlights[this.selectedIndex]);
+        this.moveLerper.LerpObjectBackwards(this.menuTexts[this.selectedIndex]);
+
+        //StartCoroutine(LerpHandler.instance.LerpPositionTo(this.toMoveBackDuration, menuItem.transform, menuItem.transform.position, target, LerpHandler.instance.curves[2]));
         // Get the highlight from the gameObjects child
-        StopCoroutine(this.moveRoutine);
-        StopCoroutine(this.fadeRoutine);
-        StartCoroutine(LerpHandler.instance.Fade(this.toMoveDuration, this.selectedOption, this.alphaValue, LerpHandler.instance.curves[5]));
+        //StopCoroutine(this.moveRoutine);
+        //StopCoroutine(this.fadeRoutine);
+        //StartCoroutine(LerpHandler.instance.Fade(this.toMoveDuration, this.selectedOption, this.alphaValue, LerpHandler.instance.curves[5]));
     }
 }

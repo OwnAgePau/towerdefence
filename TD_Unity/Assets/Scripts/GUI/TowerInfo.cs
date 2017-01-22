@@ -178,10 +178,10 @@ public class TowerInfo : MonoBehaviour {
         this.shouldMenuBeOpen = true;
         if (!this.isAnimatingMenu && !this.isMenuOpen){
             this.isAnimatingMenu = true;
-            StartCoroutine(LerpHandler.instance.Scale(0.5f, this.towerInfoMenu, true, LerpHandler.instance.curves[3], true));
+            //StartCoroutine(LerpHandler.instance.Scale(0.5f, this.towerInfoMenu, true, LerpHandler.instance.curves[3], true));
         }
         if (this.currentTower.towerLevel < this.currentTower.towerUpgradeObject.maxLevel){
-            StartCoroutine(LerpHandler.instance.Scale(0.5f, this.towerUpgradeArrowMenu, true, LerpHandler.instance.curves[3], true));
+            //StartCoroutine(LerpHandler.instance.Scale(0.5f, this.towerUpgradeArrowMenu, true, LerpHandler.instance.curves[3], true));
         }
         else{
             this.towerUpgradeArrowMenu.transform.localScale = new Vector3(0, 0, 0);
@@ -192,9 +192,9 @@ public class TowerInfo : MonoBehaviour {
         // Scale down the menu
         this.shouldMenuBeOpen = false;
         if (!this.isAnimatingMenu && this.isMenuOpen){
-            StartCoroutine(LerpHandler.instance.Scale(0.3f, this.towerInfoMenu, true, LerpHandler.instance.curves[2], false));
+            //StartCoroutine(LerpHandler.instance.Scale(0.3f, this.towerInfoMenu, true, LerpHandler.instance.curves[2], false));
             if (this.currentTower.towerLevel < this.currentTower.towerUpgradeObject.maxLevel){
-                StartCoroutine(LerpHandler.instance.Scale(0.3f, this.towerUpgradeArrowMenu, true, LerpHandler.instance.curves[2], false));
+                //StartCoroutine(LerpHandler.instance.Scale(0.3f, this.towerUpgradeArrowMenu, true, LerpHandler.instance.curves[2], false));
             }
         }
     }

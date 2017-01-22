@@ -16,23 +16,7 @@ public class Lerper : MonoBehaviour{
                     this.lerpWrapper.rigid = this.lerpWrapper.objectToLerp.GetComponent<Rigidbody>();
                 }
             }
-            if (this.lerpWrapper.lerpMaterialType.Equals(LerpMaterialType.Image)) {
-                this.lerpWrapper.lerpChildImages.Add(this.lerpWrapper.objectToLerp.GetComponent<Image>());
-                if (this.lerpWrapper.applyToChildren) {
-                    this.lerpWrapper.lerpChildImages.AddRange(this.lerpWrapper.objectToLerp.transform.GetChildImages());
-                }
-            }
-            else {
-                if (this.lerpWrapper.normalMaterial != null) {
-                    this.lerpWrapper.lerpChildMaterials.Add(this.lerpWrapper.normalMaterial);
-                }
-                else {
-                    this.lerpWrapper.lerpChildMaterials.Add(this.lerpWrapper.objectToLerp.GetComponent<MeshRenderer>().materials[0]);
-                }
-                if (this.lerpWrapper.applyToChildren) {
-                    this.lerpWrapper.lerpChildMaterials.AddRange(this.lerpWrapper.objectToLerp.transform.GetChildMaterials());
-                }
-            }
+            this.lerpWrapper.Init();
 
             RectTransform rectTransform = this.GetComponent<RectTransform>();
             if(rectTransform != null) {
@@ -130,10 +114,6 @@ public class Lerper : MonoBehaviour{
                     }
                 }
             }
-
-            /*if (this.lerpWrapper.startOnAwake) {
-                this.DoLerp();
-            }*/
         }
         // Save the data of the lerper in a wrapper to be used in a multiple lerper. Eventually in a new project use the Lerpwrapper data instead of the lerper data.
         this.isLoaded = true;
@@ -503,6 +483,7 @@ public class LerpWrapper{
         lerpChildMaterials = new List<Material>();
         lerpChildImages = new List<Image>();
         lerps = new List<Coroutine>();
+        Init();
     }
 
     public List<Material> lerpChildMaterials;
@@ -584,8 +565,29 @@ public class LerpWrapper{
 
     public Rigidbody rigid;
 
-    public void Init()
-    {
+    public void Init() {
+        this.CheckImageChilds();
+    }
 
+    void CheckImageChilds() {
+        if (this.lerpType.Equals(LerpType.Color)) {
+            if (this.lerpMaterialType.Equals(LerpMaterialType.Image)) {
+                this.lerpChildImages.Add(this.objectToLerp.GetComponent<Image>());
+                if (this.applyToChildren) {
+                    this.lerpChildImages.AddRange(this.objectToLerp.transform.GetChildImages());
+                }
+            }
+            else {
+                if (this.normalMaterial != null) {
+                    this.lerpChildMaterials.Add(this.normalMaterial);
+                }
+                else {
+                    this.lerpChildMaterials.Add(this.objectToLerp.GetComponent<MeshRenderer>().materials[0]);
+                }
+                if (this.applyToChildren) {
+                    this.lerpChildMaterials.AddRange(this.objectToLerp.transform.GetChildMaterials());
+                }
+            }
+        }
     }
 }

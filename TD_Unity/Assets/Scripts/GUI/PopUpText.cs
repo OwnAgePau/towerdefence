@@ -13,7 +13,7 @@ public class PopUpText : MonoBehaviour {
 	void Start () {
         this.textComponent = this.GetComponent<Text>();
         Vector3 target = new Vector3(this.transform.position.x, this.transform.position.y + moveUpAmount, this.transform.position.z);
-        this.StartCoroutine(LerpFromTable(this.transform.gameObject, target));
+        //this.StartCoroutine(LerpFromTable(this.transform.gameObject, target));
 	}
 	
 	// Update is called once per frame
@@ -30,7 +30,7 @@ public class PopUpText : MonoBehaviour {
         }
 	}
 
-    private IEnumerator LerpFromTable(GameObject obj, Vector3 target){
+    /*private IEnumerator LerpFromTable(GameObject obj, Vector3 target){
         yield return StartCoroutine(LerpHandler.instance.LerpPositionTo(1f, obj.transform, obj.transform.position, target, LerpHandler.instance.curves[1]));
-    }
+    }*/
 }

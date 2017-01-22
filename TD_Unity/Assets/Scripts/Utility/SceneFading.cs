@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SceneFading : SingletonMonobehaviour<SceneFading> {
+public class SceneFading : MonoBehaviour {
+
+    public static SceneFading instance;
 
     public Texture2D fadeOutTexture;
     public float fadeSpeed = 0.3f;

@@ -13,7 +13,6 @@ public class LoadScene : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
         Application.backgroundLoadingPriority = ThreadPriority.Low;
-        AdManager.LoadKetchappPromo();
 	}
 
     void Start() {

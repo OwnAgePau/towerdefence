@@ -83,7 +83,7 @@ public class MultipleLerper : MonoBehaviour {
                 this.lerp.rectTransform == null ? null : objectToLerp.GetComponent<RectTransform>(), this.lerp.startPosUI, this.lerp.endPosUI, 
                 this.lerp.tempMaterial, this.lerp.materialType, this.lerp.startColor, this.lerp.endColor, this.lerp.resetOnFinish)*/
             this.objectsEnabled[i] = false;
-            this.lerps.Add(objectToLerp, newLerp);
+            this.lerps.Add(objectToLerp, newLerp);     
         }
     }
 
