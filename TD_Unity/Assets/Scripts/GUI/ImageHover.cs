@@ -46,48 +46,12 @@ public class ImageHover : MonoBehaviour {
                 Vector3 imagePos = raycastResults[0].gameObject.transform.position;
                 Vector3 pos = new Vector3(imagePos.x, this.infoPopUp.transform.position.y, imagePos.z);
                 this.infoPopUp.gameObject.transform.position = pos;
+                this.infoPopUp.gameObject.SetActive(true);
             }
             else{
                 this.infoPopUp.text = "";
+                this.infoPopUp.gameObject.SetActive(false);
             }
         }
     }
-
-    // Update is called once per frame
-    /*void FixedUpdate () {
-        var pointer = new PointerEventData(EventSystem.current);
-        pointer.position = Input.mousePosition;
-        var raycastResults = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointer, raycastResults);
-        if (raycastResults.Count > 0){ 
-            if (raycastResults[0].gameObject.tag.Equals("Image")){
-                HoverInfo info = raycastResults[0].gameObject.GetComponent<HoverInfo>();
-                GUIcontroller.instance.isHovering = true;
-                GUIcontroller.instance.hoverText = info.nameToShow;
-                if (info.aspireCost > 0){
-                    GUIcontroller.instance.isHoverAspireCost = true;
-                    GUIcontroller.instance.hoverAspireText = info.aspireCost.ToString();
-                    GUIcontroller.instance.hoverUpgradeCostText.text = info.aspireCost.ToString();
-                    if(info.aspireCost <= Player.instance.aspirePoints){
-                        // Set the colour of the outline of upgrade info to green
-                        GUIcontroller.instance.upgradCost.effectColor = Player.instance.goodColor;
-                        
-                    }
-                    else{
-                        // Set the colour of the outline of ugprade info to red
-                        GUIcontroller.instance.upgradCost.effectColor = Player.instance.badColor;
-                    }
-                }
-                else{
-                    GUIcontroller.instance.isHoverAspireCost = false;
-                }
-            }
-            else{
-                GUIcontroller.instance.isHoverAspireCost = false;
-                GUIcontroller.instance.isHovering = false;
-                GUIcontroller.instance.hoverText = "";
-                GUIcontroller.instance.hoverAspireText = "";
-            }
-        }  
-    }*/
 }

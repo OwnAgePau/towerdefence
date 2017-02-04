@@ -172,17 +172,14 @@ public class LerpHandler : MonoBehaviour
         lerper.FinishLerp(wrapper, isBackwards);
     }
 
-    public IEnumerator FadeImage(Lerper lerper, LerpWrapper wrapper, bool isBackwards, Image forceUseImage = null)
-    {
+    public IEnumerator FadeImage(Lerper lerper, LerpWrapper wrapper, bool isBackwards, Image forceUseImage = null) {
         float timerCur = 0f;
         Image image = wrapper.objectToLerp.GetComponentInChildren<Image>();
-        if (forceUseImage != null)
-        {
+        if (forceUseImage != null) {
             image = forceUseImage;
         }
         AnimationCurve curve = wrapper.curve;
-        while (timerCur <= wrapper.duration)
-        {
+        while (timerCur <= wrapper.duration) {
             timerCur += Time.deltaTime;
             float curveValue = isBackwards ? curve.Evaluate(1 - (timerCur / wrapper.duration)) : curve.Evaluate(timerCur / wrapper.duration);
             float alpha = curveValue * (wrapper.endAlpha - wrapper.startAlpha);
@@ -192,12 +189,27 @@ public class LerpHandler : MonoBehaviour
         lerper.FinishLerp(wrapper, isBackwards);
     }
 
-    public IEnumerator FadeMeshMaterial(Lerper lerper, LerpWrapper wrapper, bool isBackwards, Material forceMaterial = null)
-    {
+    public IEnumerator FadeImage(Lerper lerper, LerpWrapper wrapper, bool isBackwards, Text forceUseText = null) {
+        float timerCur = 0f;
+        Text text = wrapper.objectToLerp.GetComponentInChildren<Text>();
+        if (forceUseText != null) {
+            text = forceUseText;
+        }
+        AnimationCurve curve = wrapper.curve;
+        while (timerCur <= wrapper.duration) {
+            timerCur += Time.deltaTime;
+            float curveValue = isBackwards ? curve.Evaluate(1 - (timerCur / wrapper.duration)) : curve.Evaluate(timerCur / wrapper.duration);
+            float alpha = curveValue * (wrapper.endAlpha - wrapper.startAlpha);
+            text.color = new Color(text.color.r, text.color.g, text.color.b, wrapper.startAlpha + alpha);
+            yield return new WaitForSeconds(0.01f);
+        }
+        lerper.FinishLerp(wrapper, isBackwards);
+    }
+
+    public IEnumerator FadeMeshMaterial(Lerper lerper, LerpWrapper wrapper, bool isBackwards, Material forceMaterial = null) {
         float timerCur = 0f;
         Material material = wrapper.objectToLerp.GetComponentInChildren<MeshRenderer>().materials[0];
-        if (forceMaterial != null)
-        {
+        if (forceMaterial != null) {
             material = forceMaterial;
         }
         Color usedColor = new Color();
@@ -205,8 +217,7 @@ public class LerpHandler : MonoBehaviour
         AnimationCurve curve = wrapper.curve;
         usedColor = MaterialColorHelper.GetColor(material);
         alphaDif = wrapper.endAlpha - wrapper.startAlpha;
-        while (timerCur <= wrapper.duration)
-        {
+        while (timerCur <= wrapper.duration) {
             timerCur += Time.deltaTime;
             float curveValue = isBackwards ? curve.Evaluate(1 - (timerCur / wrapper.duration)) : curve.Evaluate(timerCur / wrapper.duration);
             float alpha = curveValue * alphaDif;
@@ -217,20 +228,17 @@ public class LerpHandler : MonoBehaviour
         lerper.FinishLerp(wrapper, isBackwards);
     }
 
-    public IEnumerator FadeOtherMaterial(Lerper lerper, LerpWrapper wrapper, bool isBackwards, Material forceMaterial = null)
-    {
+    public IEnumerator FadeOtherMaterial(Lerper lerper, LerpWrapper wrapper, bool isBackwards, Material forceMaterial = null) {
         float timerCur = 0f;
         float alphaDif = 0f;
         AnimationCurve curve = wrapper.curve;
         Material mat = wrapper.normalMaterial;
-        if (forceMaterial != null)
-        {
+        if (forceMaterial != null) {
             mat = forceMaterial;
         }
         Color startColor = MaterialColorHelper.GetColor(mat);
         alphaDif = wrapper.endAlpha - wrapper.startAlpha;
-        while (timerCur <= wrapper.duration)
-        {
+        while (timerCur <= wrapper.duration) {
             timerCur += Time.deltaTime;
             float curveValue = isBackwards ? curve.Evaluate(1 - (timerCur / wrapper.duration)) : curve.Evaluate(timerCur / wrapper.duration);
             float alpha = curveValue * alphaDif;
@@ -241,12 +249,10 @@ public class LerpHandler : MonoBehaviour
         lerper.FinishLerp(wrapper, isBackwards);
     }
 
-    public IEnumerator Scale(Lerper lerper, LerpWrapper wrapper, bool isBackwards)
-    {
+    public IEnumerator Scale(Lerper lerper, LerpWrapper wrapper, bool isBackwards) {
         float timerCur = 0f;
         AnimationCurve curve = wrapper.curve;
-        while (timerCur <= wrapper.duration)
-        {
+        while (timerCur <= wrapper.duration) {
             timerCur += Time.deltaTime;
             float curveValue = isBackwards ? curve.Evaluate(1 - (timerCur / wrapper.duration)) : curve.Evaluate(timerCur / wrapper.duration);
             float scaleX = curveValue * (wrapper.endScale.x - wrapper.startScale.x);
@@ -258,12 +264,10 @@ public class LerpHandler : MonoBehaviour
         lerper.FinishLerp(wrapper, isBackwards);
     }
 
-    public IEnumerator HueShift(Lerper lerper, LerpWrapper wrapper, bool isBackwards)
-    {
+    public IEnumerator HueShift(Lerper lerper, LerpWrapper wrapper, bool isBackwards) {
         float timerCur = 0f;
         AnimationCurve curve = wrapper.curve;
-        while (timerCur <= wrapper.duration)
-        {
+        while (timerCur <= wrapper.duration) {
             timerCur += Time.deltaTime;
             HSBColor hsbColor = HSBColor.FromColor(wrapper.startHueColor);
             hsbColor.h = isBackwards ? curve.Evaluate(1 - (timerCur / wrapper.duration)) : curve.Evaluate(timerCur / wrapper.duration);
@@ -277,13 +281,11 @@ public class LerpHandler : MonoBehaviour
         lerper.FinishLerp(wrapper, isBackwards);
     }
 
-    public IEnumerator HueShiftText(Lerper lerper, LerpWrapper wrapper, bool isBackwards)
-    {
+    public IEnumerator HueShiftText(Lerper lerper, LerpWrapper wrapper, bool isBackwards) {
         float timerCur = 0f;
         Color usedColor = wrapper.text.color;
         AnimationCurve curve = wrapper.curve;
-        while (timerCur <= wrapper.duration)
-        {
+        while (timerCur <= wrapper.duration) {
             timerCur += Time.deltaTime;
             HSBColor hsbColor = HSBColor.FromColor(usedColor);
             hsbColor.h = isBackwards ? curve.Evaluate(1 - (timerCur / wrapper.duration)) : curve.Evaluate(timerCur / wrapper.duration);
@@ -297,12 +299,10 @@ public class LerpHandler : MonoBehaviour
         lerper.FinishLerp(wrapper, isBackwards);
     }
 
-    public IEnumerator FillCircle(float targetFillAmount, AnimationCurve curve, float duration, Image image, Text text)
-    {
+    public IEnumerator FillCircle(float targetFillAmount, AnimationCurve curve, float duration, Image image, Text text) {
         float currentFillAmount = 0f;
         float timerCur = 0f;
-        while (timerCur <= duration)
-        {
+        while (timerCur <= duration) {
             timerCur += Time.deltaTime;
             currentFillAmount = curve.Evaluate(timerCur / duration) * targetFillAmount;
             image.fillAmount = currentFillAmount;
@@ -311,15 +311,13 @@ public class LerpHandler : MonoBehaviour
         }
     }
 
-    public IEnumerator ColorShift(Lerper lerper, LerpWrapper wrapper, bool isBackwards)
-    {
+    public IEnumerator ColorShift(Lerper lerper, LerpWrapper wrapper, bool isBackwards) {
         float timerCur = 0f;
         MaterialColorHelper.SetColor(wrapper.normalMaterial, wrapper.startColor);
         HSBColor hsbStartColor = HSBColor.FromColor(wrapper.startColor);
         HSBColor hsbEndColor = HSBColor.FromColor(wrapper.endColor);
 
-        while (timerCur <= wrapper.duration)
-        {
+        while (timerCur <= wrapper.duration) {
             timerCur += Time.deltaTime;
             float time = isBackwards ? wrapper.curve.Evaluate(1 - (timerCur / wrapper.duration)) : wrapper.curve.Evaluate(timerCur / wrapper.duration);
             HSBColor hsbResult = HSBColor.Lerp(hsbStartColor, hsbEndColor, time);

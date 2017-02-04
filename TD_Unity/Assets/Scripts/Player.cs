@@ -174,8 +174,7 @@ public class Player : MonoBehaviour {
         GameObject popUpText = GameObject.Instantiate(this.popUpTextPrefab, aboveTextLocation, this.gameObject.transform.rotation) as GameObject;
         popUpText.name = this.popUpTextPrefab.name;
         popUpText.GetComponent<Text>().text = text;
-        //popUpText.GetComponent<PopUpText>().textColor = color;
-        popUpText.GetComponent<Outline>().effectColor = color;
+        popUpText.GetComponent<Text>().color = color;
         popUpText.transform.parent = this.canvas.transform;
     }
 }

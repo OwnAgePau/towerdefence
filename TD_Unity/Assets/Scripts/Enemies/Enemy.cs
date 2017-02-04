@@ -76,7 +76,9 @@ public class Enemy : MonoBehaviour {
 
     // Update is called once per frame
     void FixedUpdate() {
-        animatorComp.speed = this.currentSpeed;
+        if (this.animationComp != null) {
+            animatorComp.speed = this.currentSpeed;
+        }
         if (this.isEnemyDamaged) {
             if(this.enemyCurrentFlickerTime < this.enemyFlickerTime){
                 this.enemyCurrentFlickerTime += Time.deltaTime;

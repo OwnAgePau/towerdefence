@@ -133,6 +133,10 @@ public class EditorLerper : Editor {
                 EditorGUILayout.PropertyField(lerpWrapper.FindPropertyRelative("alpha"));
                 EditorGUILayout.PropertyField(this.lerpToOrFrom);
                 break;
+            case LerpMaterialType.Text:
+                EditorGUILayout.PropertyField(lerpWrapper.FindPropertyRelative("alpha"));
+                EditorGUILayout.PropertyField(this.lerpToOrFrom);
+                break;
             case LerpMaterialType.Particle:
                 EditorGUILayout.PropertyField(lerpWrapper.FindPropertyRelative("alpha"));
                 //EditorGUILayout.PropertyField(lerpWrapper.FindPropertyRelative("endAlpha"));
