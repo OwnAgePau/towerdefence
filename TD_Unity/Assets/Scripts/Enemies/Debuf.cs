@@ -58,7 +58,8 @@ public class Debuf {
                     this.timeUntillNextTick -= Time.deltaTime;
                 }
                 else{
-                    enemy.DamageEnemy(this.damage, this.typeOfDamage);
+                    if(enemy != null)
+                        enemy.DamageEnemy(this.damage, this.typeOfDamage);
                     this.timeUntillNextTick = this.damageTickInterval;
                 }
             }

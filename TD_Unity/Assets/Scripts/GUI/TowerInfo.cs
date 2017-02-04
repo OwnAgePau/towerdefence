@@ -86,8 +86,9 @@ public class TowerInfo : MonoBehaviour {
             this.towerLevel.text = this.levelText + this.currentTower.towerLevel.ToString();
             this.towerRange.text = this.currentTower.range.ToString();
             string strongAgainst = "";
+            DamageType type = DamageType.NONE;
             for(int i = 0; i < this.currentTower.strongAgainst.Count; i++) {
-                DamageType type = this.currentTower.strongAgainst[i];
+                type = this.currentTower.strongAgainst[i];
                 if(i > 0){
                     strongAgainst += ", ";
                 }
@@ -106,11 +107,14 @@ public class TowerInfo : MonoBehaviour {
             }
             else{
                 this.upgradeCostOutline.effectColor = Player.instance.badColor;
-            }     
+            }
             // The stuff below should go in its own method, and possible even split up in some methods to make it more generic
-            foreach (UpgradePart part in towerUpgrade.upgrades){
+            int amount = 0;
+            UpgradePart part = null;
+            for(int i = 0; i < towerUpgrade.upgrades.Length; i++) {
+                part = towerUpgrade.upgrades[i];
                 if (part.type.Equals(UpgradeType.DAMAGE)){
-                    int amount = part.amount - this.currentTower.damage;
+                    amount = part.amount - this.currentTower.damage;
                     this.damageUpgrade.text = "+" + amount.ToString();// + this.standardDamageText;
                     if(this.isHoveringUpgrade)
                         this.damageUpgrade.gameObject.SetActive(true);
@@ -121,13 +125,13 @@ public class TowerInfo : MonoBehaviour {
                         this.speedUpgrade.gameObject.SetActive(true);
                 }*/
                 else if (part.type.Equals(UpgradeType.PROJNR)){
-                    int amount = part.amount - this.currentTower.projectiles;
+                    amount = part.amount - this.currentTower.projectiles;
                     this.projUpgrade.text = "+" + amount.ToString();// + this.standardProjectilesText;
                     if (this.isHoveringUpgrade)
                         this.projUpgrade.gameObject.SetActive(true);
                 }
                 else if (part.type.Equals(UpgradeType.SLOW)){
-                    int amount = part.amount - (int)(this.currentTower.slowAmount * 100);
+                    amount = part.amount - (int)(this.currentTower.slowAmount * 100);
                     this.slowUpgrade.text = "+" + amount.ToString() + "%";// + this.standardSlowText;
                     if (this.isHoveringUpgrade)
                         this.slowUpgrade.gameObject.SetActive(true);

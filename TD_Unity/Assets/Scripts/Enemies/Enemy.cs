@@ -66,8 +66,9 @@ public class Enemy : MonoBehaviour {
             }
             this.animationClips.RemoveAt(0);
         }
+        SkinnedMeshRenderer childRenderer = null;
         foreach(Transform child in this.transform){
-            SkinnedMeshRenderer childRenderer = child.gameObject.GetComponent<SkinnedMeshRenderer>();
+            childRenderer = child.gameObject.GetComponent<SkinnedMeshRenderer>();
             if (childRenderer != null) {
                 this.meshes.Add(childRenderer);
             }
@@ -76,7 +77,7 @@ public class Enemy : MonoBehaviour {
 
     // Update is called once per frame
     void FixedUpdate() {
-        if (this.animationComp != null) {
+        if (this.animatorComp != null) {
             animatorComp.speed = this.currentSpeed;
         }
         if (this.isEnemyDamaged) {
@@ -88,8 +89,11 @@ public class Enemy : MonoBehaviour {
                 this.isEnemyDamaged = false;
                 this.enemyCurrentFlickerTime = 0f;
                 if (Player.instance != null) {
-                    foreach (SkinnedMeshRenderer renderer in this.meshes){
-                        Material mat = renderer.material;
+                    SkinnedMeshRenderer renderer = null;
+                    Material mat = null;
+                    for(int i = 0; i < this.meshes.Count; i++) {
+                        renderer = meshes[i];
+                        mat = renderer.material;
                         mat.SetColor("_Color", Player.instance.normalEmissionColor);
                         renderer.material = mat;
                     }
@@ -115,12 +119,14 @@ public class Enemy : MonoBehaviour {
             }
         }
         else {
+            Debuf debuf = null;
             if (this.debufsToRemove.Count > 0) {
-                Debuf debuf = this.debufsToRemove[0];
+                debuf = this.debufsToRemove[0];
                 this.debufs.Remove(debuf);
                 this.debufsToRemove.Remove(debuf);
             }
-            foreach (Debuf debuf in this.debufs) { // You only want to have the debuf tick here, you don't want to constantly instantiate it here, instantiate once when applying the debuf on the enemy                
+            for (int i = 0; i < this.debufs.Count; i++) {
+                debuf = this.debufs[i];  
                 debuf.DoTick();
             }
         }
@@ -187,12 +193,14 @@ public class Enemy : MonoBehaviour {
     }
 
     public Debuf HasDebuf(string debufName){
-        foreach (Debuf enDebuf in this.debufs){
-            if (enDebuf.debufName.Equals(debufName)){
-                return enDebuf;
+        Debuf debuf = null;
+        for(int i = 0; i < this.debufs.Count; i++) {
+            debuf = this.debufs[i];
+            if (debuf.debufName.Equals(debufName)){
+                return debuf;
             }
         }
-        return null;
+        return debuf;
     }
 
     public void RemoveDebuf(Debuf debuf){
@@ -237,10 +245,13 @@ public class Enemy : MonoBehaviour {
             this.enemyCurrentFlickerTime = 0f;
         }
         this.isEnemyDamaged = true;
-        foreach (SkinnedMeshRenderer renderer in this.meshes){
+        SkinnedMeshRenderer renderer = null;
+        Material mat = null;
+        for(int i = 0; i < this.meshes.Count; i++) {
+            renderer = this.meshes[i];
             if (Player.instance != null) {
                 if (renderer != null){
-                    Material mat = renderer.material;
+                    mat = renderer.material;
                     mat.SetColor("_Color", Player.instance.flickerColor);
                     renderer.material = mat;
                 }
