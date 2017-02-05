@@ -18,6 +18,11 @@ public class HoverInfo : MonoBehaviour {
     private Image towerAspireImg;
     private Image towerVillagerImg;
 
+    public Image image;
+    public Button button;
+
+    public Lerper scaleLerp;
+
     // Use this for initialization
     void Start() {
         this.towerAspireCostTxt = GUIcontroller.instance.buildCost.GetComponent<Text>();
@@ -29,24 +34,27 @@ public class HoverInfo : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (tower != null) {
-            this.aspireCost = tower.aspireCost;
-            this.villagerCost = tower.villagerCost;
-            this.nameToShow = tower.name;
-            this.SetButtonState();
-        }
-        else if (this.isButton) {
-            this.SetButtonState();
-            this.nameToShow = this.gameObject.name;
-        }
-        else {
-            this.nameToShow = this.gameObject.name;
+        Debug.Log(scaleLerp.lerpWrapper.isDone);
+        if (scaleLerp.lerpWrapper.isDone) {
+            if (tower != null) {
+                this.aspireCost = tower.aspireCost;
+                this.villagerCost = tower.villagerCost;
+                this.nameToShow = tower.name;
+                this.SetButtonState();
+            }
+            else if (this.isButton) {
+                this.SetButtonState();
+                this.nameToShow = this.gameObject.name;
+            }
+            else {
+                this.nameToShow = this.gameObject.name;
+            }
         }
     }
 
     private void SetButtonState() {
-        Image image = this.gameObject.GetComponent<Image>();
-        Button button = this.gameObject.GetComponent<Button>();
+        //Image image = this.gameObject.GetComponent<Image>();
+        //Button button = this.gameObject.GetComponent<Button>();
         if (Player.instance.aspirePoints < this.aspireCost || Player.instance.villagers < this.villagerCost){
             image.color = new Color(0.5f, 0.001f, 0.001f);
             this.isDisabled = true;
