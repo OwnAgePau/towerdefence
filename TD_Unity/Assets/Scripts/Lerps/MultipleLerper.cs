@@ -76,12 +76,8 @@ public class MultipleLerper : MonoBehaviour {
                 this.lerp.lerpWrapper.resetOnFinish, this.lerp.lerpWrapper.color, this.lerp.lerpWrapper.startColor, this.lerp.lerpWrapper.endColor, this.lerp.lerpWrapper.startHueColor, 
                 this.lerp.lerpWrapper.text == null ? null : objectToLerp.GetComponent<Text>(), this.lerp.lerpWrapper.alpha, this.lerp.lerpWrapper.startAlpha, this.lerp.lerpWrapper.endAlpha, 
                 this.lerp.lerpWrapper.applyToChildren, this.lerp.lerpWrapper.goToAfterFinished, this.lerp.lerpWrapper.amountOfLoops, this.lerp.lerpWrapper.loopWithDelay, 
-                this.lerp.lerpWrapper.rectTransform == null ? null : objectToLerp.GetComponent<RectTransform>(), this.lerp.lerpWrapper.UI_Position, this.lerp.lerpWrapper.UI_StartPosition, this.lerp.lerpWrapper.UI_EndPosition);
-            /*LerpWrapper newLerp2 = new LerpWrapper(this.lerp.duration, this.lerp.curveNr, this.lerp.startOnAwake, this.lerp.startOnEnable, this.lerp.lerpType, this.lerp.startPos, this.lerp.endPos,
-                this.lerp.target, this.lerp.targetOffset, this.lerp.startRotation, this.lerp.endRotation, this.lerp.startAlpha, this.lerp.targetAlpha, this.lerp.startScale, this.lerp.endScale, this.lerp.timeToWaitBeforeContinue,
-                this.lerp.goToAfterFinished, this.lerp.normalMaterial, this.lerp.text == null ? null : objectToLerp.GetComponent<Text>(), objectToLerp, null, null, false, 
-                this.lerp.rectTransform == null ? null : objectToLerp.GetComponent<RectTransform>(), this.lerp.startPosUI, this.lerp.endPosUI, 
-                this.lerp.tempMaterial, this.lerp.materialType, this.lerp.startColor, this.lerp.endColor, this.lerp.resetOnFinish)*/
+                this.lerp.lerpWrapper.rectTransform == null ? null : objectToLerp.GetComponent<RectTransform>(), this.lerp.lerpWrapper.UI_Position, this.lerp.lerpWrapper.UI_StartPosition, this.lerp.lerpWrapper.UI_EndPosition, 
+                objectToLerp.GetComponent<MeshRenderer>(), objectToLerp.GetComponent<ParticleSystemRenderer>());
             this.objectsEnabled[i] = false;
             this.lerps.Add(objectToLerp, newLerp);     
         }

@@ -3,6 +3,33 @@ using System.Collections;
 
 public static class MaterialColorHelper {
 
+    public static Material GetTempMaterial(LerpWrapper wrapper, Material material, GameObject forceGameObject = null) {
+        Material tempMaterial = new Material(material);
+        if(wrapper.renderer != null) {
+            if(forceGameObject != null) {
+                MeshRenderer renderer = forceGameObject.GetComponent<MeshRenderer>();
+                if(renderer != null) {
+                    renderer.material = tempMaterial;
+                }
+            }
+            else {
+                wrapper.renderer.material = tempMaterial;
+            }    
+        }
+        else if(wrapper.particleSystem != null) {
+            if (forceGameObject != null) {
+                ParticleSystemRenderer particleSystem = forceGameObject.GetComponent<ParticleSystemRenderer>();
+                if (particleSystem != null) {
+                    particleSystem.material = tempMaterial;
+                }
+            }
+            else {
+                wrapper.particleSystem.material = tempMaterial;
+            }        
+        }
+        return tempMaterial;
+    }
+
     public static Color GetColor(Material mat) {
         if(mat.GetColor("_Color") != null) {
             return mat.GetColor("_Color");

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using P_Lerper;
 
 public class Lerper : MonoBehaviour{
 
@@ -66,14 +67,6 @@ public class Lerper : MonoBehaviour{
                 }
             }
 
-            // Set starting color
-
-            // Alpha
-
-            // alpha = Text, Image or Material alpha
-            // - TO
-            // - FROM
-
             // Get the color from the component
             Color componentColor = new Color();
             if (this.lerpWrapper.lerpChildMaterials.Count > 0) {
@@ -132,13 +125,11 @@ public class Lerper : MonoBehaviour{
             this.lerpWrapper = wrapper;
         }
         LerpWrapper currentWrapper = this.lerpWrapper;
-        //Debug.Log(this.lerpWrapper + ", " + this.lerpWrapper.lerps);
-        /*if (this.lerpWrapper.lerps != null){
-            StopAllCoroutines();
-            //StopCoroutine(this.lerpWrapper.lerps);
-        }*/
         if (currentWrapper.lerps == null) {
             currentWrapper.lerps = new List<Coroutine>();
+        }
+        else {
+            currentWrapper.lerps.Clear();
         }
         // This starts the lerp and when it is finished it calls the 2e lerper
         if (!currentWrapper.objectToLerp.activeInHierarchy) {
@@ -160,9 +151,6 @@ public class Lerper : MonoBehaviour{
     void DoLoop(bool withDelay = true, bool isBackwards = false, LerpWrapper wrapper = null) {
         if(wrapper == null) {
             wrapper = this.lerpWrapper;
-        }
-        if (wrapper.lerps != null) {
-            //StopAllCoroutines();
         }
         if (!wrapper.objectToLerp.activeInHierarchy) {
             return;
@@ -228,30 +216,30 @@ public class Lerper : MonoBehaviour{
     /// Different lerps that modify the darkness of the color of the object
     /// </summary>
     void DoFadeLerp(bool isBackwards, LerpWrapper wrapper) {
-        switch (wrapper.lerpMaterialType) {
-            case LerpMaterialType.Mesh:
+        switch (wrapper.lerpMaterialType) {          
+            case LerpMaterialType.Mesh:         
                 for (int i = 0; i < wrapper.lerpChildMaterials.Count; i++) {
-                    wrapper.lerps.Add(StartCoroutine(LerpHandler.instance.FadeMeshMaterial(this, wrapper, isBackwards, wrapper.lerpChildMaterials[0])));
+                    wrapper.lerps.Add(StartCoroutine(LerpHandler.instance.FadeMeshMaterial(this, wrapper, isBackwards, i == 0, wrapper.lerpChildMaterials[i], wrapper.lerpChilds[i])));
                 }
                 break;
             case LerpMaterialType.Image:
                 for (int i = 0; i < wrapper.lerpChildImages.Count; i++) {
-                    wrapper.lerps.Add(StartCoroutine(LerpHandler.instance.FadeImage(this, wrapper, isBackwards, wrapper.lerpChildImages[0])));
+                    wrapper.lerps.Add(StartCoroutine(LerpHandler.instance.FadeImage(this, wrapper, isBackwards, i == 0, wrapper.lerpChildImages[i])));
                 }
                 break;
             case LerpMaterialType.Particle:
                 for (int i = 0; i < wrapper.lerpChildMaterials.Count; i++) {
-                    wrapper.lerps.Add(StartCoroutine(LerpHandler.instance.FadeOtherMaterial(this, wrapper, isBackwards, wrapper.lerpChildMaterials[0])));
+                    wrapper.lerps.Add(StartCoroutine(LerpHandler.instance.FadeOtherMaterial(this, wrapper, isBackwards, i == 0, wrapper.lerpChildMaterials[i], wrapper.lerpChilds[i])));
                 }
                 break;
             case LerpMaterialType.Other:
                 for (int i = 0; i < wrapper.lerpChildMaterials.Count; i++) {
-                    wrapper.lerps.Add(StartCoroutine(LerpHandler.instance.FadeOtherMaterial(this, wrapper, isBackwards, wrapper.lerpChildMaterials[0])));
+                    wrapper.lerps.Add(StartCoroutine(LerpHandler.instance.FadeOtherMaterial(this, wrapper, isBackwards, i == 0, wrapper.lerpChildMaterials[i], wrapper.lerpChilds[i])));
                 }
                 break;
             case LerpMaterialType.Text:
                 for(int i = 0; i < wrapper.lerpChildTexts.Count;i ++) {
-                    wrapper.lerps.Add(StartCoroutine(LerpHandler.instance.FadeImage(this, wrapper, isBackwards, wrapper.lerpChildTexts[i])));
+                    wrapper.lerps.Add(StartCoroutine(LerpHandler.instance.FadeImage(this, wrapper, isBackwards, i == 0, wrapper.lerpChildTexts[i])));
                 }
                 break;
         }
@@ -437,7 +425,7 @@ public class LerpWrapper{
         GameObject objectToLerp, GameObject target, Vector3 targetOffset, Vector3 position, Vector3 startPos, Vector3 endPos, Vector3 rotation, Vector3 startRotation, Vector3 endRotation,
         Vector3 scale, Vector3 startScale, Vector3 endScale, Material tempMaterial, Material normalMaterial, bool resetOnFinish, Color color, Color startColor, Color endColor, Color startHueColor,
         Text text, float alpha, float startAlpha, float endAlpha, bool applyToAllchildren, Lerper goToAfterFinished, int amountOfLoops, bool loopWithDelay, RectTransform rectTransform, 
-        Vector2 UI_Position, Vector2 UI_StartPosition, Vector2 UI_EndPosition) {
+        Vector2 UI_Position, Vector2 UI_StartPosition, Vector2 UI_EndPosition, MeshRenderer renderer, ParticleSystemRenderer particleSystem) {
         this.duration = duration;
         this.curve = curve;
         this.startOnAwake = startOnAwake;
@@ -484,13 +472,17 @@ public class LerpWrapper{
         lerpChildMaterials = new List<Material>();
         lerpChildImages = new List<Image>();
         lerpChildTexts = new List<Text>();
+        lerpChilds = new List<GameObject>();
         lerps = new List<Coroutine>();
+        this.renderer = renderer;
+        this.particleSystem = particleSystem;
         Init();
     }
 
     public List<Material> lerpChildMaterials;
     public List<Image> lerpChildImages;
     public List<Text> lerpChildTexts;
+    public List<GameObject> lerpChilds;
 
     public float duration;
     public AnimationCurve curve;
@@ -567,12 +559,21 @@ public class LerpWrapper{
     public bool isDone;
 
     public Rigidbody rigid;
+    public MeshRenderer renderer;
+    public ParticleSystemRenderer particleSystem;
 
     public void Init() {
         this.CheckImageChilds();
+        if (this.particleSystem == null) {
+            this.particleSystem = this.objectToLerp.GetComponent<ParticleSystemRenderer>();
+        }
+        if (this.renderer == null) {
+            this.renderer = this.objectToLerp.GetComponent<MeshRenderer>();
+        }
     }
 
     void CheckImageChilds() {
+        this.lerpChilds.Add(this.objectToLerp);
         if (this.lerpType.Equals(LerpType.Color)) {
             if (this.lerpMaterialType.Equals(LerpMaterialType.Image)) {
                 this.lerpChildImages.Add(this.objectToLerp.GetComponent<Image>());
@@ -587,15 +588,16 @@ public class LerpWrapper{
                     this.lerpChildTexts.AddRange(this.objectToLerp.transform.GetChildTexts());
                 }
             }
-            else {
+            else if(!this.lerpMaterialType.Equals(LerpMaterialType.None)){
                 if (this.normalMaterial != null) {
                     this.lerpChildMaterials.Add(this.normalMaterial);
                 }
                 else {
-                    this.lerpChildMaterials.Add(this.objectToLerp.GetComponent<MeshRenderer>().materials[0]);
+                    this.lerpChildMaterials.Add(this.objectToLerp.GetComponent<MeshRenderer>().material);
                 }
-                if (this.applyToChildren) {
+                if (this.applyToChildren) {    
                     this.lerpChildMaterials.AddRange(this.objectToLerp.transform.GetChildMaterials());
+                    this.lerpChilds.AddRange(this.objectToLerp.transform.GetChildren());
                 }
             }
         }
