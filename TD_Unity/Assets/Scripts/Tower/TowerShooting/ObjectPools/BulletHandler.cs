@@ -48,7 +48,7 @@ public class BulletHandler : MonoBehaviour {
 
     public void AddNewBullets(int amount, BulletType prefab){
         for (int i = 0; i < amount; i++){
-            GameObject bulletObject = (GameObject)Instantiate(Resources.Load(prefab.bullet.name));
+            GameObject bulletObject = (GameObject)Instantiate(Resources.Load("bullets/" + prefab.bullet.name));
             bulletObject.transform.parent = this.gameObject.transform;
             bulletObject.name = prefab.bullet.name;
             bulletObject.SetActive(false);

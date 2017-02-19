@@ -150,7 +150,6 @@ public class TowerCreationGUI : MonoBehaviour {
 
     public void SetAOEParticle(){ // TO DO: This can easily be saved and adjusted using the booleans, but it is not implemented in the actual game
         int selectedParticle = this.aoeParticlesDropdown.value - 1;
-        Debug.Log(selectedParticle);
         this.tower.selectedParticle = selectedParticle;
         for (int i = 0; i < this.particleDamageObjects.Length; i++){
             this.particleDamageObjects[i].SetActive(i == selectedParticle);
