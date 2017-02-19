@@ -63,7 +63,6 @@ public class TowerProjectile : MonoBehaviour {
                 bulletScript.bulletStartPos = bulletStartPos;
                 if (this.debufScript != null){
                     bulletScript.debuf = this.debufScript.CreateDebuf(this.towerScript.towerLevel);
-                    Debug.Log(this.debufScript.debufName + ", " + bulletScript.debuf.debufName);
                     bulletScript.debufName = this.debufScript.debufName;
                 }
                 else{

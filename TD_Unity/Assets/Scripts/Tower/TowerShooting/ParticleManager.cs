@@ -15,10 +15,12 @@ public class ParticleManager : MonoBehaviour {
         }*/
     }
 
-    public void PlayParticles(){
-        foreach (ParticleSystem partSystem in this.particleSystems){
-            if (!partSystem.isPlaying){
-                partSystem.gameObject.SetActive(true);
+    public void PlayParticles(int particleNr){
+        ParticleSystem partSystem = null;
+        for (int i = 0; i < this.particleSystems.Count; i++) {
+            partSystem = this.particleSystems[i];
+            if (!partSystem.isPlaying) {
+                partSystem.gameObject.SetActive(i == particleNr || particleNr == -1);
             }
         }
         isPlaying = true;

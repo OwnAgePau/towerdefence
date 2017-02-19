@@ -23,6 +23,7 @@ public class Tower : MonoBehaviour {
     // Aura towers
     public bool isAuraTower = false;
     public ParticleManager particleManager;
+    public int selectedParticle = -1;
     public int aspireCost;
     public int villagerCost = 1;
 
@@ -54,7 +55,7 @@ public class Tower : MonoBehaviour {
         if (this.isAuraTower){
             if (this.enemiesInRange.Count >= 1){
                 // Enemies in range, start the particle accelerator!
-                particleManager.PlayParticles();
+                particleManager.PlayParticles(this.selectedParticle);
             }
             else {
                 // No more enemies, no need to accelerate the particles!

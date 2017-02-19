@@ -167,7 +167,6 @@ public class TowerInfo : MonoBehaviour {
     }
 
     public void OpenMenu(){
-        Debug.Log("Show tower info");
         // Scale up the menu
         // Transform the tower position to a screen position to put the menu 
         Vector3 screenPos = Camera.main.WorldToScreenPoint(this.currentTowerObject.transform.position);
@@ -190,7 +189,6 @@ public class TowerInfo : MonoBehaviour {
 
     public void HideMenu(){
         // Scale down the menu
-        Debug.Log("Hide");
         this.shouldMenuBeOpen = false;
         if (!this.isAnimatingMenu && this.isMenuOpen){
             //StartCoroutine(LerpHandler.instance.Scale(0.3f, this.towerInfoMenu, true, LerpHandler.instance.curves[2], false));

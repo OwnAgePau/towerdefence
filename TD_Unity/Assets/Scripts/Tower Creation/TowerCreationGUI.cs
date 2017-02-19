@@ -15,13 +15,6 @@ public class TowerCreationGUI : MonoBehaviour {
     public Tower tower;
     public Text nameText;
     public CustomTower customTower; // This object can be use to store all the data from below
-    /*public DamageType damageType;
-    public DamageType strengths;
-    public int damage;
-    public float range;
-    public int aspireCost;
-    public bool isAOE;
-    public bool isSlow;*/
     public int towerColor;
     public Text damageText;
     public Slider damageSlider;
@@ -38,6 +31,7 @@ public class TowerCreationGUI : MonoBehaviour {
     public int debufParticlesIndex;
     public float cooldown;
     public Slider cooldownSlider;
+    public Slider aoeCooldownSlider;
 
     [Header("Bullet Color")]
     public float r;
@@ -87,6 +81,7 @@ public class TowerCreationGUI : MonoBehaviour {
     public GameObject[] particleDamageObjects;
     public GameObject[] particleSlowObjects;
     public Dropdown aoeParticlesDropdown;
+    public ParticleSystem aoeParticleSystem;
 
     // Use this for initialization
     void Start () {
@@ -118,8 +113,9 @@ public class TowerCreationGUI : MonoBehaviour {
             this.damageTypeDropdown.options.Add(new Dropdown.OptionData(type.ToString().ToLower()));
             this.strengthsDropdown.options.Add(new Dropdown.OptionData(type.ToString().ToLower()));
         }
-        this.aoeParticlesDropdown.options.Add(new Dropdown.OptionData("Rocketblast"));
-        this.aoeParticlesDropdown.options.Add(new Dropdown.OptionData("Iceblast"));
+        for(int i = 0; i < this.particleDamageObjects.Length; i++) {
+            this.aoeParticlesDropdown.options.Add(new Dropdown.OptionData(this.particleDamageObjects[i].gameObject.name));
+        }
         this.SetAOEParticle();
         this.chosenColor = new Color(this.r, this.g, this.b);
         this.selectedExplosionParticle.text = "None";
@@ -153,17 +149,11 @@ public class TowerCreationGUI : MonoBehaviour {
     }
 
     public void SetAOEParticle(){ // TO DO: This can easily be saved and adjusted using the booleans, but it is not implemented in the actual game
-        int selectedParticle = this.aoeParticlesDropdown.value;
-        bool isDamage = false;
-        if (selectedParticle.Equals(0)){
-            isDamage = true;
-        }
-
-        foreach (GameObject g in this.particleDamageObjects){
-            g.SetActive(isDamage);
-        }
-        foreach (GameObject g in this.particleSlowObjects){
-            g.SetActive(!isDamage);
+        int selectedParticle = this.aoeParticlesDropdown.value - 1;
+        Debug.Log(selectedParticle);
+        this.tower.selectedParticle = selectedParticle;
+        for (int i = 0; i < this.particleDamageObjects.Length; i++){
+            this.particleDamageObjects[i].SetActive(i == selectedParticle);
         }
     }
 
@@ -224,7 +214,10 @@ public class TowerCreationGUI : MonoBehaviour {
     }
 
     public void SetCooldown(){
-        this.cooldown = this.cooldownSlider.value;
+        this.cooldown = this.customTower.isAOE ? this.aoeCooldownSlider.value : this.cooldownSlider.value;
+        if (this.customTower.isAOE) {
+            this.aoeParticleSystem.playbackSpeed = 3.6f - this.aoeCooldownSlider.value;
+        }
         this.tower.cooldown = this.cooldown;
     }
 
@@ -277,7 +270,7 @@ public class TowerCreationGUI : MonoBehaviour {
     }
 
     public void CalculateTowerCost(){
-        float towerCost = 0;
+        float towerCost = 100;
         // All used values should not be hardcoded
         if (this.customTower.isAOE){
             towerCost += 50;
@@ -291,9 +284,12 @@ public class TowerCreationGUI : MonoBehaviour {
                 towerCost += 25;
             }
         }
-        towerCost += this.tower.damage;
-        towerCost += 10 - (this.tower.cooldown * 10);
-        towerCost += this.tower.range / 10;
+        if(this.customTower.bonusDamage != DamageType.NONE) {
+            towerCost += 15;
+        }
+        towerCost += this.tower.damage * 2;
+        towerCost -= (this.tower.cooldown * 30);
+        towerCost += this.tower.range / 5;
 
         // If tower is AOE - damage +75
         // tower AOE - slow +50
