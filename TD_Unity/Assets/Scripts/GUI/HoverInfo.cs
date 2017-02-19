@@ -34,8 +34,8 @@ public class HoverInfo : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        Debug.Log(scaleLerp.lerpWrapper.isDone);
-        if (scaleLerp.lerpWrapper.isDone) {
+        bool canTower = scaleLerp != null ? scaleLerp.lerpWrapper.isDone : true;
+        if (canTower) {
             if (tower != null) {
                 this.aspireCost = tower.aspireCost;
                 this.villagerCost = tower.villagerCost;

@@ -17,7 +17,7 @@ public class TowerInfo : MonoBehaviour {
     public GameObject currentTowerObject;
     public Tower currentTower;
 
-    public GameObject towerSelection;
+    public Lerper towerSelection;
 
     [Header("Basic Tower Info")]
     public Text towerName;
@@ -55,16 +55,11 @@ public class TowerInfo : MonoBehaviour {
     void Awake(){
         instance = this;
     }
-
-    // Use this for initialization
-    void Start () {
-	
-	}
 	
 	// Update is called once per frame
 	void Update () {
-        if(GUIcontroller.instance.isUICanvasLoaded && !this.isAnimatingMenu){
-            if(this.isMenuOpen && !this.shouldMenuBeOpen){
+        if (GUIcontroller.instance.isUICanvasLoaded && !this.isAnimatingMenu){
+            if (this.isMenuOpen && !this.shouldMenuBeOpen){
                 // Menu is open but should be closed
                 this.HideMenu();
             }
@@ -76,7 +71,6 @@ public class TowerInfo : MonoBehaviour {
 
         if(this.currentTower != null && GUIcontroller.instance.isUICanvasLoaded){
             // Display info of tower on screen
-            this.towerSelection.SetActive(true);
             this.towerName.text = this.currentTowerObject.name;
             this.towerDamage.text = this.currentTower.damage.ToString();
             this.towerProjectiles.text = this.currentTower.projectiles.ToString();
@@ -139,7 +133,6 @@ public class TowerInfo : MonoBehaviour {
             }
         }
         else{
-            this.towerSelection.SetActive(false);
             this.SetUpgradeText(false);
         }
 	}
@@ -174,6 +167,7 @@ public class TowerInfo : MonoBehaviour {
     }
 
     public void OpenMenu(){
+        Debug.Log("Show tower info");
         // Scale up the menu
         // Transform the tower position to a screen position to put the menu 
         Vector3 screenPos = Camera.main.WorldToScreenPoint(this.currentTowerObject.transform.position);
@@ -190,10 +184,13 @@ public class TowerInfo : MonoBehaviour {
         else{
             this.towerUpgradeArrowMenu.transform.localScale = new Vector3(0, 0, 0);
         }
+        this.towerSelection.gameObject.SetActive(true);
+        CancelInvoke("DelayedDisableMenu");
     }
 
     public void HideMenu(){
         // Scale down the menu
+        Debug.Log("Hide");
         this.shouldMenuBeOpen = false;
         if (!this.isAnimatingMenu && this.isMenuOpen){
             //StartCoroutine(LerpHandler.instance.Scale(0.3f, this.towerInfoMenu, true, LerpHandler.instance.curves[2], false));
@@ -201,6 +198,13 @@ public class TowerInfo : MonoBehaviour {
                 //StartCoroutine(LerpHandler.instance.Scale(0.3f, this.towerUpgradeArrowMenu, true, LerpHandler.instance.curves[2], false));
             }
         }
+        // Add a delay to this
+        this.towerSelection.DoLerp(true, true);
+        Invoke("DelayedDisableMenu", this.towerSelection.lerpWrapper.duration);
+    }
+
+    void DelayedDisableMenu() {
+        this.towerSelection.gameObject.SetActive(false);
     }
 
     public void ShowTowerUpgradeInfo(){
