@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -37,7 +38,18 @@ public class BulletHandler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        LoadBullets();
         this.InstantiatePool();
+    }
+
+    public void LoadBullets() {
+        string[] search_results = BulletSaveLoad.instance.GetAllBulletPrefabs();
+        GameObject obj = null;
+        bullets.Clear();
+        for (int i = 0; i < search_results.Length; i++) {
+            obj = (GameObject)AssetDatabase.LoadMainAssetAtPath(search_results[i]);
+            bullets.Add(new BulletType(obj));
+        }
     }
 
     public void InstantiatePool(){
@@ -48,7 +60,7 @@ public class BulletHandler : MonoBehaviour {
 
     public void AddNewBullets(int amount, BulletType prefab){
         for (int i = 0; i < amount; i++){
-            GameObject bulletObject = (GameObject)Instantiate(Resources.Load("bullets/" + prefab.bullet.name));
+            GameObject bulletObject = (GameObject)Instantiate(Resources.Load("CustomCreations/Bullets/" + prefab.bullet.name));
             bulletObject.transform.parent = this.gameObject.transform;
             bulletObject.name = prefab.bullet.name;
             bulletObject.SetActive(false);

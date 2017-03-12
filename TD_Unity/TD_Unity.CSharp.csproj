@@ -141,6 +141,8 @@
     <Compile Include="Assets\Scripts\Tower\GhostTower.cs" />
     <Compile Include="Assets\Scripts\Tower\PlaceTower.cs" />
     <Compile Include="Assets\Scripts\Tower\SelectTower.cs" />
+    <Compile Include="Assets\Scripts\Tower\Tower Creation\BulletSaveLoad.cs" />
+    <Compile Include="Assets\Scripts\Tower\Tower Creation\TowerSaveLoad.cs" />
     <Compile Include="Assets\Scripts\Tower\Tower.cs" />
     <Compile Include="Assets\Scripts\Tower\TowerManager.cs" />
     <Compile Include="Assets\Scripts\Tower\TowerRange.cs" />

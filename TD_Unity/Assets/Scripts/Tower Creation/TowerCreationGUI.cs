@@ -144,14 +144,18 @@ public class TowerCreationGUI : MonoBehaviour {
     public void SetBulletParticle() {
         string name = this.selectedBulletParticle.text;
         this.projectile.bullet = this.bulletParticles.Find(x => x.name == name);
-        this.customTower.customBullet.name = name; // TO DO : Make it so the player chooses the bullet name
+        this.customTower.customBullet.name = name;
+        Material newMat = BulletSaveLoad.instance.SaveParticleTexture(this.projectile.bullet.GetComponent<ParticleSystemRenderer>().sharedMaterial, BulletSaveLoad.material_path);
+        // A new material is going to be used instead of the obave used bullet
+        BulletSaveLoad.instance.CreateBullet(name, newMat);
+
         this.SetBulletSound();
     }
 
-    public void SetAOEParticle(){ // TO DO: This can easily be saved and adjusted using the booleans, but it is not implemented in the actual game
+    public void SetAOEParticle() { // TO DO: This can easily be saved and adjusted using the booleans, but it is not implemented in the actual game
         int selectedParticle = this.aoeParticlesDropdown.value - 1;
         this.tower.selectedParticle = selectedParticle;
-        for (int i = 0; i < this.particleDamageObjects.Length; i++){
+        for (int i = 0; i < this.particleDamageObjects.Length; i++) {
             this.particleDamageObjects[i].SetActive(i == selectedParticle);
         }
     }
@@ -302,9 +306,9 @@ public class TowerCreationGUI : MonoBehaviour {
     }
 
     public void ChangeTab() {
-        bool bulletTabActive = this.bulletTab.active;
+        bool bulletTabActive = this.bulletTab.activeSelf;
         this.bulletTab.SetActive(!bulletTabActive);
-        bool aoeTabActive = this.aoeTab.active;
+        bool aoeTabActive = this.aoeTab.activeSelf;
         this.aoeTab.SetActive(!aoeTabActive);
     }
 
@@ -319,6 +323,7 @@ public class TowerCreationGUI : MonoBehaviour {
     }
 
     public void CreateTower(){
+        // Create a prefab of the tower, Also when entering a name of the tower you can implement a check to see if one of those towers exists
     }
 
 
